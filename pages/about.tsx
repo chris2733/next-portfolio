@@ -1,6 +1,7 @@
 import { NextSeo } from "next-seo";
 import AnimateIn from "./components/animateIn";
-import { LetterSplitter, WordSplitter } from "./components/animateSplitter";
+import LetterSplitter from "./components/letterSplitter";
+import WordSplitter from "./components/workSplitter";
 import PageTransitionWrapper from "./components/pageTransition";
 import RoundedLinks from "./elements/roundedlinks";
 
