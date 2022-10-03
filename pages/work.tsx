@@ -31,6 +31,12 @@ const About = () => {
 				"Wedding and conference venue in historic building, focusing on animations and visuals, with Wordpress & Twig, using Sass alongside Bootstrap and Jquery",
 			link: "https://www.hensolcastle.com/",
 		},
+		{
+			title: "Repool",
+			description:
+				"Hedge fund services site built as a headless Wordpress CMS with Nextjs and Tailwind",
+			link: "https://repool.com/",
+		},
 	];
 
 	return (
@@ -56,7 +62,7 @@ const About = () => {
 												text={el.description}
 												boldText={el.title}
 												initialDelay={0.07 * (i + 1) + 1}
-												wordDelay={0.005 * (i + 1)}
+												wordDelay={0.002 * (i + 1)}
 												wordClass=""
 											/>
 										</div>

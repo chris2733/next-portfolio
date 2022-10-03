@@ -11,8 +11,15 @@ const Masthead = () => {
 				<div className="block">
 					<h1 className="inline-block overflow-hidden leading-5">
 						<LetterSplitter
-							text={"chris law"}
-							initialDelay={0.5}
+							text={"chris"}
+							initialDelay={0.4}
+							letterDelay={0.03}
+							letterClass={headlineClasses}
+						/>
+						{` `}
+						<LetterSplitter
+							text={"law"}
+							initialDelay={0.6}
 							letterDelay={0.03}
 							letterClass={headlineClasses}
 						/>

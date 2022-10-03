@@ -51,6 +51,7 @@ export function WordSplitter({
 	initialDelay,
 	wordDelay,
 	wordClass,
+	speed = "duration-500",
 }: {
 	text?: string;
 	boldText?: string;
@@ -58,6 +59,7 @@ export function WordSplitter({
 	initialDelay?: number;
 	wordDelay?: number;
 	wordClass?: string;
+	speed?: string;
 }) {
 	// check over this, needed to check if text was undefined so it didnt throw a non iterable error
 	// and theres some repetition
@@ -72,7 +74,7 @@ export function WordSplitter({
 		boldText !== undefined ? boldText.length * (wordDelay ? wordDelay : 0) : 0;
 
 	return (
-		<div className=" px-1 group hover:px-0 duration-200">
+		<div className={`px-1 group hover:px-0 ${speed}`}>
 			{splitboldtext !== undefined &&
 				splitboldtext.map((el, i, arr) => (
 					<span key={`wordsplitter${i}`}>
@@ -93,7 +95,7 @@ export function WordSplitter({
 										},
 									},
 								}}
-								className={`duration-200 inline-block mr-[0.2em] font-medium ${wordClass} ${boldTextClass}`}
+								className={`${speed} inline-block mr-[0.2em] font-medium ${wordClass} ${boldTextClass}`}
 							>
 								{`${el} `}
 							</motion.span>
@@ -116,7 +118,7 @@ export function WordSplitter({
 											},
 										},
 									}}
-									className={`duration-200 inline-block mr-[0.2em] font-medium px-0 group-hover:px-1 ${wordClass} ${boldTextClass}`}
+									className={`${speed} inline-block mr-[0.2em] font-medium px-0 group-hover:px-1 ${wordClass} ${boldTextClass}`}
 								>
 									{` - `}
 								</motion.span>
@@ -144,9 +146,9 @@ export function WordSplitter({
 									},
 								},
 							}}
-							className={
-								wordClass ? wordClass : "duration-200 inline-block mr-[0.2em]"
-							}
+							className={`${speed} inline-block mr-[0.2em] ${
+								wordClass && wordClass
+							}`}
 						>
 							{`${el} `}
 						</motion.span>
