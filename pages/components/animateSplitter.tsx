@@ -77,7 +77,7 @@ export function WordSplitter({
 		<div className={`px-1 group hover:px-0 ${speed}`}>
 			{splitboldtext !== undefined &&
 				splitboldtext.map((el, i, arr) => (
-					<span key={`wordsplitter${i}`}>
+					<span key={`boldwordsplitter${i}`}>
 						<span className="overflow-hidden inline-block">
 							<motion.span
 								initial="hidden"
@@ -128,9 +128,11 @@ export function WordSplitter({
 				))}
 			{splittext !== undefined &&
 				splittext.map((el, i) => (
-					<span className="overflow-hidden inline-block">
+					<span
+						className="overflow-hidden inline-block"
+						key={`wordsplitter${i}`}
+					>
 						<motion.span
-							key={`wordsplitter${i}`}
 							initial="hidden"
 							animate="visible"
 							variants={{

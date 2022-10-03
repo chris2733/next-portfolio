@@ -25,7 +25,6 @@ export default function RoundedLinks({
 			const buttonWidth: number = buttonEl.current.offsetWidth - 3;
 			const buttonHeight: number = buttonEl.current.offsetHeight - 3;
 			const buttonRoundedCircum: number = buttonHeight * Math.PI;
-			console.log(buttonEl);
 
 			const buttonCircum =
 				(buttonWidth - buttonHeight) * 2 + buttonRoundedCircum;
