@@ -8,7 +8,7 @@ module.exports = {
 		extend: {
 			fontFamily: {
 				sans: [
-					"Sen",
+					"Geometria",
 					"-apple-system",
 					"BlinkMacSystemFont",
 					"Segoe UI",
