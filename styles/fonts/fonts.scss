@@ -29,143 +29,128 @@
 
 @font-face {
 	font-family: "Geometria";
-	font-style: normal;
-	font-weight: normal;
+	src: url("./geometria/Geometria-ExtraBoldItalic.woff") format("woff");
+	font-weight: bold;
+	font-style: italic;
 	font-display: swap;
-	src: local("Geometria"), url("./geometria/Geometria.woff") format("woff");
 }
 
 @font-face {
-	font-family: "Geometria-Italic";
+	font-family: "Geometria";
+	src: url("./geometria/Geometria-ExtraBold.woff") format("woff");
+	font-weight: bold;
 	font-style: normal;
-	font-weight: normal;
 	font-display: swap;
-	src: local("Geometria-Italic"),
-		url("./geometria/Geometria-Italic.woff") format("woff");
 }
 
 @font-face {
-	font-family: "Geometria-Thin";
-	font-style: normal;
+	font-family: "Geometria";
+	src: url("./geometria/Geometria.woff") format("woff");
 	font-weight: normal;
+	font-style: normal;
 	font-display: swap;
-	src: local("Geometria-Thin"),
-		url("./geometria/Geometria-Thin.woff") format("woff");
 }
 
 @font-face {
-	font-family: "Geometria-ThinItalic";
+	font-family: "Geometria";
+	src: url("./geometria/Geometria-Bold.woff") format("woff");
+	font-weight: bold;
 	font-style: normal;
-	font-weight: normal;
 	font-display: swap;
-	src: local("Geometria-ThinItalic"),
-		url("./geometria/Geometria-ThinItalic.woff") format("woff");
 }
 
 @font-face {
-	font-family: "Geometria-ExtraLight";
+	font-family: "Geometria";
+	src: url("./geometria/Geometria-Heavy.woff") format("woff");
+	font-weight: 900;
 	font-style: normal;
-	font-weight: normal;
 	font-display: swap;
-	src: local("Geometria-ExtraLight"),
-		url("./geometria/Geometria-ExtraLight.woff") format("woff");
 }
 
 @font-face {
-	font-family: "Geometria-ExtraLightItalic";
-	font-style: normal;
-	font-weight: normal;
+	font-family: "Geometria";
+	src: url("./geometria/Geometria-BoldItalic.woff") format("woff");
+	font-weight: bold;
+	font-style: italic;
 	font-display: swap;
-	src: local("Geometria-ExtraLightItalic"),
-		url("./geometria/Geometria-ExtraLightItalic.woff") format("woff");
 }
 
 @font-face {
-	font-family: "Geometria-Light";
+	font-family: "Geometria";
+	src: url("./geometria/Geometria-ExtraLight.woff") format("woff");
+	font-weight: 200;
 	font-style: normal;
-	font-weight: normal;
 	font-display: swap;
-	src: local("Geometria-Light"),
-		url("./geometria/Geometria-Light.woff") format("woff");
 }
 
 @font-face {
-	font-family: "Geometria-LightItalic";
-	font-style: normal;
-	font-weight: normal;
+	font-family: "Geometria";
+	src: url("./geometria/Geometria-ExtraLightItalic.woff") format("woff");
+	font-weight: 200;
+	font-style: italic;
 	font-display: swap;
-	src: local("Geometria-LightItalic"),
-		url("./geometria/Geometria-LightItalic.woff") format("woff");
 }
 
 @font-face {
-	font-family: "Geometria-Medium";
-	font-style: normal;
-	font-weight: normal;
+	font-family: "Geometria";
+	src: url("./geometria/Geometria-HeavyItalic.woff") format("woff");
+	font-weight: 900;
+	font-style: italic;
 	font-display: swap;
-	src: local("Geometria-Medium"),
-		url("./geometria/Geometria-Medium.woff") format("woff");
 }
 
 @font-face {
-	font-family: "Geometria-MediumItalic";
-	font-style: normal;
+	font-family: "Geometria";
+	src: url("./geometria/Geometria-Italic.woff") format("woff");
 	font-weight: normal;
+	font-style: italic;
 	font-display: swap;
-	src: local("Geometria-MediumItalic"),
-		url("./geometria/Geometria-MediumItalic.woff") format("woff");
 }
 
 @font-face {
-	font-family: "Geometria-Bold";
-	font-style: normal;
-	font-weight: normal;
+	font-family: "Geometria";
+	src: url("./geometria/Geometria-MediumItalic.woff") format("woff");
+	font-weight: 500;
+	font-style: italic;
 	font-display: swap;
-	src: local("Geometria-Bold"),
-		url("./geometria/Geometria-Bold.woff") format("woff");
 }
 
 @font-face {
-	font-family: "Geometria-BoldItalic";
-	font-style: normal;
-	font-weight: normal;
+	font-family: "Geometria";
+	src: url("./geometria/Geometria-LightItalic.woff") format("woff");
+	font-weight: 300;
+	font-style: italic;
 	font-display: swap;
-	src: local("Geometria-BoldItalic"),
-		url("./geometria/Geometria-BoldItalic.woff") format("woff");
 }
 
 @font-face {
-	font-family: "Geometria-ExtraBold";
+	font-family: "Geometria";
+	src: url("./geometria/Geometria-Light.woff") format("woff");
+	font-weight: 300;
 	font-style: normal;
-	font-weight: normal;
 	font-display: swap;
-	src: local("Geometria-ExtraBold"),
-		url("./geometria/Geometria-ExtraBold.woff") format("woff");
 }
 
 @font-face {
-	font-family: "Geometria-ExtraBoldItalic";
+	font-family: "Geometria";
+	src: url("./geometria/Geometria-Medium.woff") format("woff");
+	font-weight: 500;
 	font-style: normal;
-	font-weight: normal;
 	font-display: swap;
-	src: local("Geometria-ExtraBoldItalic"),
-		url("./geometria/Geometria-ExtraBoldItalic.woff") format("woff");
 }
 
 @font-face {
-	font-family: "Geometria-Heavy";
+	font-family: "Geometria";
+	src: url("./geometria/Geometria-Thin.woff") format("woff");
+	font-weight: 100;
 	font-style: normal;
-	font-weight: normal;
 	font-display: swap;
-	src: local("Geometria-Heavy"),
-		url("./geometria/Geometria-Heavy.woff") format("woff");
 }
 
 @font-face {
-	font-family: "Geometria-HeavyItalic";
-	font-style: normal;
-	font-weight: normal;
+	font-family: "Geometria";
+	src: url("./geometria/Geometria-ThinItalic.woff") format("woff");
+	font-weight: 100;
+	font-style: italic;
 	font-display: swap;
-	src: local("Geometria-HeavyItalic"),
-		url("./geometria/Geometria-HeavyItalic.woff") format("woff");
 }
