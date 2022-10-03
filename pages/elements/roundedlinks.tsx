@@ -60,7 +60,7 @@ export default function RoundedLinks({
 							fill="none"
 							strokeWidth="2"
 							pathLength={pathLength}
-							strokeDasharray={pathLength}
+							strokeDasharray={pathLength * 1.05} // adding 5% to avoid gap on mobile
 							strokeDashoffset={dashoffset}
 							stroke={strokeColour ? strokeColour : "white"}
 							width="97%"

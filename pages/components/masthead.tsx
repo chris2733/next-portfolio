@@ -41,7 +41,7 @@ const Masthead = () => {
 						letterClass={headlineClasses}
 					/>
 				</h2>
-				<div className="text-sm mt-2 flex items-center justify-center gap-3">
+				<div className="text-sm mt-2 flex items-center justify-center gap-3 font-medium">
 					<AnimateIn delay={1.8} duration={0.6}>
 						<RoundedLinks link="/about">about</RoundedLinks>
 					</AnimateIn>
