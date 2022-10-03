@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 
-export default function Splitter({
+export default function LetterSplitter({
 	text,
 	initialDelay,
 	letterDelay,

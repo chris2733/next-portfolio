@@ -1,5 +1,5 @@
 import AnimateIn from "./animateIn";
-import Splitter from "./animateSplitter";
+import LetterSplitter from "./animateSplitter";
 import RoundedLinks from "./../elements/roundedlinks";
 
 const Masthead = () => {
@@ -10,7 +10,7 @@ const Masthead = () => {
 			<div className="container text-center uppercase">
 				<div className="block">
 					<h1 className="inline-block overflow-hidden leading-5">
-						<Splitter
+						<LetterSplitter
 							text={"chris law"}
 							initialDelay={0.5}
 							letterDelay={0.03}
@@ -19,7 +19,7 @@ const Masthead = () => {
 					</h1>
 				</div>
 				<h2 className="inline-block overflow-hidden mr-1 leading-5">
-					<Splitter
+					<LetterSplitter
 						text={"front end"}
 						initialDelay={1}
 						letterDelay={0.03}
@@ -27,7 +27,7 @@ const Masthead = () => {
 					/>
 				</h2>
 				<h2 className="inline-block overflow-hidden leading-5">
-					<Splitter
+					<LetterSplitter
 						text={"developer"}
 						initialDelay={1.3}
 						letterDelay={0.03}
