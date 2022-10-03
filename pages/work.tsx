@@ -1,5 +1,5 @@
 import Link from "next/link";
-import LetterSplitter from "./components/animateSplitter";
+import { LetterSplitter, WordSplitter } from "./components/animateSplitter";
 import PageTransitionWrapper from "./components/pageTransition";
 import { NextSeo } from "next-seo";
 import RoundedLinks from "./elements/roundedlinks";
@@ -10,7 +10,7 @@ const About = () => {
 		{
 			title: "Cadw",
 			description:
-				"Welsh Government&apos;s historic environment service, with a focus on accessibilty",
+				"Welsh Government's historic environment service, with a focus on accessibilty",
 			link: "https://cadw.gov.wales/",
 		},
 		{
@@ -49,26 +49,25 @@ const About = () => {
 					<div className="mx-auto max-w-[730px]">
 						<ul className="pb-5">
 							{WorkSites.map((el, i) => (
-								<li className="" key={el.id}>
+								<li className="" key={`work${i}`}>
 									<a href={el.link} target="_blank" rel="nofollow">
-										<div className="mb-2 underlineanim cursor-pointer">
-											<h3 className="inline font-medium">
-												<span className="underlineanim-line">{el.title}</span>
-											</h3>
-											<span> - </span>
-											<p
-												className="inline"
-												dangerouslySetInnerHTML={{ __html: el.description }}
-											></p>
+										<div className="mb-2 cursor-pointer">
+											<WordSplitter
+												text={el.description}
+												boldText={el.title}
+												initialDelay={0.07 * (i + 1) + 1}
+												wordDelay={0.005 * (i + 1)}
+												wordClass=""
+											/>
 										</div>
 									</a>
 								</li>
 							))}
 						</ul>
-						<AnimateIn delay={1.9} duration={0.6}>
+						<AnimateIn delay={2} duration={0.6}>
 							<RoundedLinks
 								link="/"
-								buttonClasses="text-black font-medium text-sm"
+								buttonClasses="text-black font-bold text-sm"
 								borderClasses="stroke-black"
 							>
 								home

@@ -1,5 +1,5 @@
 import AnimateIn from "./animateIn";
-import LetterSplitter from "./animateSplitter";
+import { LetterSplitter } from "./animateSplitter";
 import RoundedLinks from "./../elements/roundedlinks";
 
 const Masthead = () => {
