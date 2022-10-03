@@ -6,11 +6,13 @@ export default function RoundedLinks({
 	children,
 	buttonClasses,
 	borderClasses,
+	strokeColour,
 }: {
 	link: string;
 	children: React.ReactNode | React.ReactNode[];
 	buttonClasses?: string;
 	borderClasses?: string;
+	strokeColour?: string;
 }) {
 	const [dashoffset, setDashoffset] = useState<number>(0);
 	const [pathLength, setPathLength] = useState<number>(0);
@@ -60,9 +62,10 @@ export default function RoundedLinks({
 							pathLength={pathLength}
 							strokeDasharray={pathLength}
 							strokeDashoffset={dashoffset}
+							stroke={strokeColour ? strokeColour : "white"}
 							width="97%"
 							height="97%"
-							className={`duration-[0.4s] ease-in-out stroke-white ${borderClasses}`}
+							className={`duration-[0.4s] ease-in-out ${borderClasses}`}
 						></rect>
 					</svg>
 				</span>

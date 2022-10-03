@@ -75,7 +75,7 @@ const About = () => {
 								<RoundedLinks
 									link="/"
 									buttonClasses="text-black font-bold text-sm"
-									borderClasses="stroke-black"
+									strokeColour="black"
 								>
 									home
 								</RoundedLinks>
@@ -84,7 +84,7 @@ const About = () => {
 								<RoundedLinks
 									link="/about"
 									buttonClasses="text-black font-bold text-sm"
-									borderClasses="stroke-black"
+									strokeColour="black"
 								>
 									about
 								</RoundedLinks>
