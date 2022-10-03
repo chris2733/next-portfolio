@@ -5,6 +5,7 @@ import { DefaultSeo } from "next-seo";
 
 function MyApp({ Component, pageProps, router }: AppProps) {
 	return (
+		// mode="wait" apparently might cause issues, error in console, but causes scrollbar issues on page transition otherwise
 		<AnimatePresence mode="wait">
 			<DefaultSeo
 				title="Home"

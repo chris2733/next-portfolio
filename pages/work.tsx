@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { LetterSplitter, WordSplitter } from "./components/animateSplitter";
 import PageTransitionWrapper from "./components/pageTransition";
 import { NextSeo } from "next-seo";
@@ -56,7 +55,7 @@ const About = () => {
 						<ul className="pb-5">
 							{WorkSites.map((el, i) => (
 								<li className="" key={`work${i}`}>
-									<a href={el.link} target="_blank" rel="nofollow">
+									<a href={el.link} target="_blank" rel="noreferrer">
 										<div className="mb-2 cursor-pointer">
 											<WordSplitter
 												text={el.description}
@@ -70,15 +69,26 @@ const About = () => {
 								</li>
 							))}
 						</ul>
-						<AnimateIn delay={2} duration={0.6}>
-							<RoundedLinks
-								link="/"
-								buttonClasses="text-black font-bold text-sm"
-								borderClasses="stroke-black"
-							>
-								home
-							</RoundedLinks>
-						</AnimateIn>
+						<div className="mt-2 flex items-center justify-center gap-3">
+							<AnimateIn delay={2} duration={0.6}>
+								<RoundedLinks
+									link="/"
+									buttonClasses="text-black font-bold text-sm"
+									borderClasses="stroke-black"
+								>
+									home
+								</RoundedLinks>
+							</AnimateIn>
+							<AnimateIn delay={2.1} duration={0.6}>
+								<RoundedLinks
+									link="/about"
+									buttonClasses="text-black font-bold text-sm"
+									borderClasses="stroke-black"
+								>
+									about
+								</RoundedLinks>
+							</AnimateIn>
+						</div>
 					</div>
 				</div>
 			</PageTransitionWrapper>

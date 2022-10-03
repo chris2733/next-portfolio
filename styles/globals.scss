@@ -46,7 +46,7 @@ a {
 }
 
 .container {
-	@apply mx-auto max-w-[90%];
+	@apply mx-auto max-w-[90%] w-[90%];
 }
 
 // @media (prefers-color-scheme: dark) {
