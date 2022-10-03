@@ -16,6 +16,31 @@ a {
 	text-decoration: none;
 }
 
+.underline-line {
+	/* I don't know why this is needed, I just added it and it worked in IE Edge. If we remove this width, the gradient breaks in IE Edge */
+	width: calc(100%);
+	background-image: linear-gradient(transparent calc(100% - 50px), black 0px);
+	background-repeat: no-repeat;
+	background-size: 50% 10%;
+	background-position: left bottom;
+	transition: background-size 1s;
+}
+
+.underlineanim {
+	&-line {
+		/* I don't know why this is needed, I just added it and it worked in IE Edge. If we remove this width, the gradient breaks in IE Edge */
+		width: calc(100%);
+		background-image: linear-gradient(transparent calc(100% - 20px), black 0px);
+		background-repeat: no-repeat;
+		background-size: 0% 6%;
+		background-position: left bottom;
+		transition: background-size 0.4s;
+	}
+	&:hover .underlineanim-line {
+		background-size: 100% 6%;
+	}
+}
+
 * {
 	box-sizing: border-box;
 }
