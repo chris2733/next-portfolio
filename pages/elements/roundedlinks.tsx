@@ -43,7 +43,7 @@ export default function RoundedLinks({
 			<Link href={link ? link : "/"}>
 				<span
 					ref={buttonEl}
-					className={`px-[18px] py-[6px] inline-block rounded-full relative opacity-80 outlinehover ${buttonClasses}`}
+					className={`px-[18px] py-[6px] inline-block rounded-full relative opacity-80 outlinehover uppercase ${buttonClasses}`}
 					onMouseOver={() => setDashoffset(pathLength - pathLengthHover)}
 					onMouseLeave={() => setDashoffset(0)}
 				>

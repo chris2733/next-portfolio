@@ -2,13 +2,15 @@ import Link from "next/link";
 import LetterSplitter from "./components/animateSplitter";
 import PageTransitionWrapper from "./components/pageTransition";
 import { NextSeo } from "next-seo";
+import RoundedLinks from "./elements/roundedlinks";
+import AnimateIn from "./components/animateIn";
 
 const About = () => {
 	const WorkSites: { title: string; description: string; link: string }[] = [
 		{
 			title: "Cadw",
 			description:
-				"Welsh Government&quot;s historic environment service, with a focus on accessibilty",
+				"Welsh Government&apos;s historic environment service, with a focus on accessibilty",
 			link: "https://cadw.gov.wales/",
 		},
 		{
@@ -34,32 +36,44 @@ const About = () => {
 	return (
 		<>
 			<NextSeo title="Work" />
-			<PageTransitionWrapper classes="bg-white">
-				<div className="container py-32 sm:py-[20vw] lg:py-[15vw] text-center">
-					<h1 className="inline-block overflow-hidden leading-5">
+			<PageTransitionWrapper classes="bg-white min-h-screen flex items-center justify-center">
+				<div className="container py-24 sm:py-32 text-center">
+					<h1 className="inline-block overflow-hidden leading-5 mb-4">
 						<LetterSplitter
 							text={"work"}
 							initialDelay={0.5}
 							letterDelay={0.03}
-							letterClass="text-lg uppercase duration-[1.2s] ease-[cubic-bezier(0.25,1,0.5,1)] cursor-default inline-block mx-[1px"
+							letterClass="text-lg uppercase duration-[1.2s] ease-[cubic-bezier(0.25,1,0.5,1)] cursor-default inline-block font-medium"
 						/>
 					</h1>
-					<div className="">
-						<ul>
+					<div className="mx-auto max-w-[730px]">
+						<ul className="pb-5">
 							{WorkSites.map((el, i) => (
-								<li className="">
-									<Link href={el.link}>
-										<div className="mb-2">
-											<h3 className="inline font-bold">{el.title}</h3>
-											<p className="inline"> - {el.description}</p>
+								<li className="" key={el.id}>
+									<a href={el.link} target="_blank" rel="nofollow">
+										<div className="mb-2 underlineanim cursor-pointer">
+											<h3 className="inline font-medium">
+												<span className="underlineanim-line">{el.title}</span>
+											</h3>
+											<span> - </span>
+											<p
+												className="inline"
+												dangerouslySetInnerHTML={{ __html: el.description }}
+											></p>
 										</div>
-									</Link>
+									</a>
 								</li>
 							))}
 						</ul>
-						<Link href="/">
-							<a>Home</a>
-						</Link>
+						<AnimateIn delay={1.9} duration={0.6}>
+							<RoundedLinks
+								link="/"
+								buttonClasses="text-black font-medium text-sm"
+								borderClasses="stroke-black"
+							>
+								home
+							</RoundedLinks>
+						</AnimateIn>
 					</div>
 				</div>
 			</PageTransitionWrapper>
