@@ -44,14 +44,14 @@ export default function RoundedLinks({
 			<Link href={link ? link : "/"}>
 				<span
 					ref={buttonEl}
-					className={`px-[18px] py-[6px] inline-block rounded-full relative opacity-80 outlinehover uppercase ${buttonClasses}`}
+					className={`px-[12px] py-[4px] inline-block rounded-full relative opacity-80 outlinehover uppercase ${buttonClasses}`}
 					onMouseOver={() => setDashoffset(pathLength - pathLengthHover)}
 					onMouseLeave={() => setDashoffset(0)}
 				>
 					<span ref={textEl}>{children}</span>
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
-						className="absolute w-[90%] h-[90%] scale-y-[-1] left-[5%] top-[5%]"
+						className="absolute w-[100%] h-[100%] scale-y-[-1] left-[0%] top-[0%]"
 					>
 						<rect
 							rx="15"
@@ -63,8 +63,8 @@ export default function RoundedLinks({
 							strokeDasharray={pathLength * 1.05} // adding 5% to avoid gap on mobile
 							strokeDashoffset={dashoffset}
 							stroke={strokeColour ? strokeColour : "white"}
-							width="97%"
-							height="97%"
+							width="95%"
+							height="95%"
 							className={`duration-[0.4s] ease-in-out ${borderClasses}`}
 						></rect>
 					</svg>
