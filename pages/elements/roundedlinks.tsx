@@ -53,7 +53,7 @@ export default function RoundedLinks({
 					</span>
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
-						className="absolute w-[100%] h-[100%] scale-y-[-1] left-[0%] top-[0%]"
+						className="absolute w-[100%] h-[90%] scale-y-[-1] left-[0%] top-[5%]"
 					>
 						<rect
 							rx="15"
@@ -62,7 +62,7 @@ export default function RoundedLinks({
 							fill="none"
 							strokeWidth="2"
 							pathLength={pathLength}
-							strokeDasharray={pathLength * 1.0} // adding 5% to avoid gap on mobile
+							strokeDasharray={pathLength * (dashoffset === 0 ? 1.03 : 1)} // adding 5% to avoid gap on mobile
 							strokeDashoffset={dashoffset}
 							stroke={strokeColour ? strokeColour : "white"}
 							width="95%"
