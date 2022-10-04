@@ -23,9 +23,9 @@ export default function RoundedLinks({
 	useEffect(() => {
 		if (buttonEl.current !== null) {
 			// getting the circumference of the whole button, using pi to calc the rounded edges
-			// button widths and heights here -3, due to the stroke and that the svg is 97% of the total element
-			const buttonWidth: number = buttonEl.current.offsetWidth - 3;
-			const buttonHeight: number = buttonEl.current.offsetHeight - 3;
+			// button widths and heights here +2 for adjustment
+			const buttonWidth: number = buttonEl.current.offsetWidth + 2;
+			const buttonHeight: number = buttonEl.current.offsetHeight + 2;
 			const buttonRoundedCircum: number = buttonHeight * Math.PI;
 
 			const buttonCircum =
@@ -48,7 +48,9 @@ export default function RoundedLinks({
 					onMouseOver={() => setDashoffset(pathLength - pathLengthHover)}
 					onMouseLeave={() => setDashoffset(0)}
 				>
-					<span ref={textEl}>{children}</span>
+					<span ref={textEl} className=" align-middle">
+						{children}
+					</span>
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
 						className="absolute w-[100%] h-[100%] scale-y-[-1] left-[0%] top-[0%]"
@@ -60,7 +62,7 @@ export default function RoundedLinks({
 							fill="none"
 							strokeWidth="2"
 							pathLength={pathLength}
-							strokeDasharray={pathLength * 1.05} // adding 5% to avoid gap on mobile
+							strokeDasharray={pathLength * 1.0} // adding 5% to avoid gap on mobile
 							strokeDashoffset={dashoffset}
 							stroke={strokeColour ? strokeColour : "white"}
 							width="95%"
