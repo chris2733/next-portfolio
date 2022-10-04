@@ -48,7 +48,7 @@ export default function RoundedLinks({
 					onMouseOver={() => setDashoffset(pathLength - pathLengthHover)}
 					onMouseLeave={() => setDashoffset(0)}
 				>
-					<span ref={textEl} className=" align-middle">
+					<span ref={textEl} className=" align-text-top">
 						{children}
 					</span>
 					<svg
