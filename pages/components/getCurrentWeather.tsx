@@ -1,89 +1,57 @@
-import { Get } from "react-axios";
-import {
-	ReactElement,
-	JSXElementConstructor,
-	ReactFragment,
-	ReactPortal,
-} from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 
-export default function CurrentWeather() {
+export default function CurrentWeather({
+	passDataToParent,
+}: {
+	passDataToParent: Function;
+}) {
+	const [apiData, setapiData] = useState({});
+	const [apiCallOk, setApiCallOk] = useState(false);
+	const [weatherData, setWeatherData] = useState({});
 	const currentTime = new Date().getTime();
-	return (
-		<Get
-			url={`http://api.openweathermap.org/data/2.5/weather?id=2653822&appid=${process.env.NEXT_PUBLIC_OPENMAP_API}&units=metric`}
-		>
-			{(
-				error: {
-					message:
-						| string
-						| number
-						| boolean
-						| ReactElement<any, string | JSXElementConstructor<any>>
-						| ReactFragment
-						| ReactPortal
-						| null
-						| undefined;
-				},
-				response: {
-					data: {
-						message:
-							| string
-							| number
-							| boolean
-							| ReactElement<any, string | JSXElementConstructor<any>>
-							| ReactFragment
-							| ReactPortal
-							| null
-							| undefined;
-					};
-				} | null,
-				isLoading: any,
-				makeRequest: (arg0: {
-					params: { reload: boolean } | { refresh: boolean };
-				}) => void,
-				axios: any
-			) => {
-				if (error) {
-					return (
-						<div>
-							Something bad happened: {error.message}{" "}
-							<button onClick={() => makeRequest({ params: { reload: true } })}>
-								Retry
-							</button>
-						</div>
-					);
-				} else if (isLoading) {
-					return <div>Loading...</div>;
-				} else if (response !== null) {
-					console.log(response.data);
-					return (
-						<div>
-							<SuccessfulResult
-								data={response.data}
-								currentTime={currentTime}
-							/>
 
-							<button
-								onClick={() => makeRequest({ params: { refresh: true } })}
-							>
-								Refresh
-							</button>
-						</div>
-					);
-				}
-				return <div>Default message before request is made.</div>;
-			}}
-		</Get>
+	useEffect(() => {
+		// this may look like it's calling twice in dev, but thats because of strictmode - if this is set to false in next.config.js it only happens once
+		const response = axios
+			.get(
+				`http://api.openweathermap.org/data/2.5/weather?id=2653822&appid=${process.env.NEXT_PUBLIC_OPENMAP_API}&units=metric`
+			)
+			.then(function (response) {
+				// handle success
+				console.log("Openmanp weather api GREAET SUCCESS");
+				setapiData(response.data);
+				return;
+			})
+			.catch(function (error) {
+				// handle error
+				console.log("Openmap wather api " + error.message);
+				return;
+			});
+	}, []);
+
+	useEffect(() => {
+		if (Object.keys(apiData).length !== 0) {
+			const apiDataConverted = SuccessfulResult(apiData, currentTime);
+			setWeatherData(apiDataConverted);
+			passDataToParent(apiData);
+			setApiCallOk(true);
+		}
+	}, [apiData]);
+
+	return (
+		<div className="">
+			{apiCallOk && (
+				<p>
+					Current location: {""}
+					{weatherData.weather.name !== undefined && weatherData.weather.name}
+				</p>
+			)}
+		</div>
 	);
 }
 
-const SuccessfulResult = ({
-	data,
-	currentTime,
-}: {
-	data: Object;
-	currentTime: any;
-}) => {
+function SuccessfulResult(data: Object, currentTime: number) {
 	// weather data
 	interface weatherData {
 		name: string;
@@ -131,13 +99,8 @@ const SuccessfulResult = ({
 	const sunriseDegrees = (sunPosition.azimuth * 180) / Math.PI;
 	const moonDegrees = (moonPosition.azimuth * 180) / Math.PI;
 
-	console.log(sunriseDegrees, moonDegrees);
-	return (
-		<div className="">
-			<p>{weather.name}</p>
-		</div>
-	);
-};
+	return { weather, sunriseDegrees, moonDegrees };
+}
 
 // const Canvas = () => {
 //   return (

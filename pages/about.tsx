@@ -4,27 +4,18 @@ import LetterSplitter from "./components/letterSplitter";
 import WordSplitter from "./components/workSplitter";
 import PageTransitionWrapper from "./components/pageTransition";
 import RoundedLinks from "./elements/roundedlinks";
-import {
-	AxiosProvider,
-	Request,
-	Get,
-	Delete,
-	Head,
-	Post,
-	Put,
-	Patch,
-	withAxios,
-} from "react-axios";
-import {
-	ReactElement,
-	JSXElementConstructor,
-	ReactFragment,
-	ReactPortal,
-} from "react";
+import { useState } from "react";
 import CurrentWeather from "./components/getCurrentWeather";
 
 const About = () => {
 	const text = "About me here";
+
+	const [apiDataRecieved, setApiDataRecieved] = useState({});
+
+	const passDataToParent = (data: Object) => {
+		setApiDataRecieved(data);
+	};
+
 	return (
 		<>
 			<NextSeo title="About" />
@@ -47,7 +38,7 @@ const About = () => {
 								wordClass=""
 							/>
 						</div>
-						<CurrentWeather />
+						<CurrentWeather passDataToParent={passDataToParent} />
 						<div className="mt-2 flex items-center justify-center gap-3">
 							<AnimateIn delay={2} duration={0.6}>
 								<RoundedLinks
