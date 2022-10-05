@@ -8,7 +8,7 @@ export default function CurrentWeather({
 }) {
 	const [apiData, setapiData] = useState({});
 	const [apiCallOk, setApiCallOk] = useState(false);
-	const [weatherData, setWeatherData] = useState({});
+	const [weatherData, setWeatherData] = useState<any>({});
 	const currentTime = new Date().getTime();
 
 	useEffect(() => {
@@ -51,7 +51,7 @@ export default function CurrentWeather({
 	);
 }
 
-function SuccessfulResult(data: Object, currentTime: number) {
+function SuccessfulResult(data: any, currentTime: number) {
 	// weather data
 	interface weatherData {
 		name: string;
