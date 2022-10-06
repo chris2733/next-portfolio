@@ -34,7 +34,7 @@ export default function CurrentWeather({
 		if (Object.keys(apiData).length !== 0) {
 			const apiDataConverted = SuccessfulResult(apiData, currentTime);
 			setWeatherData(apiDataConverted);
-			passDataToParent(apiData);
+			passDataToParent(apiDataConverted);
 			setApiCallOk(true);
 		}
 	}, [apiData]);
@@ -96,14 +96,8 @@ function SuccessfulResult(data: any, currentTime: number) {
 	const moonIllumination = SunCalc.getMoonIllumination(new Date());
 
 	// degrees calculated from like top of a circle i think
-	const sunriseDegrees = (sunPosition.azimuth * 180) / Math.PI;
+	const sunDegrees = (sunPosition.azimuth * 180) / Math.PI;
 	const moonDegrees = (moonPosition.azimuth * 180) / Math.PI;
 
-	return { weather, sunriseDegrees, moonDegrees };
+	return { weather, sunDegrees, moonDegrees };
 }
-
-// const Canvas = () => {
-//   return (
-
-//   )
-// }

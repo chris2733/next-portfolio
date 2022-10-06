@@ -4,23 +4,30 @@ import LetterSplitter from "./components/letterSplitter";
 import WordSplitter from "./components/workSplitter";
 import PageTransitionWrapper from "./components/pageTransition";
 import RoundedLinks from "./elements/roundedlinks";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import CurrentWeather from "./components/getCurrentWeather";
 
 const About = () => {
 	const text = "About me here";
 
 	const [apiDataRecieved, setApiDataRecieved] = useState({});
+	const [apiResponseOk, setApiResponseOk] = useState(false);
 
 	const passDataToParent = (data: Object) => {
 		setApiDataRecieved(data);
+		setApiResponseOk(true);
 	};
 
 	return (
 		<>
 			<NextSeo title="About" />
-			<PageTransitionWrapper classes="bg-gray-300 min-h-screen flex items-center justify-center">
-				<div className="container py-24 sm:py-32 text-center rounded-3xl bg-white !max-w-2xl p-8 shadow-[0px_0px_112px_-2px_rgba(255,255,255,0.75)]">
+			<PageTransitionWrapper classes="min-h-screen flex items-center justify-center relative overflow-hidden">
+				{Object.keys(apiDataRecieved).length !== 0 && apiResponseOk && (
+					<Canvas data={apiDataRecieved} />
+				)}
+				{/* canvas here to test without api call */}
+				{/* <Canvas /> */}
+				<div className="container py-24 sm:py-32 text-center rounded-3xl bg-white !max-w-2xl p-8 shadow-[0px_0px_112px_-2px_rgba(255,255,255,0.75)] z-20">
 					<h1 className="inline-block overflow-hidden leading-5 mb-4">
 						<LetterSplitter
 							text={"about"}
@@ -38,6 +45,7 @@ const About = () => {
 								wordClass=""
 							/>
 						</div>
+						{/* maybe comment this out when devving not to call is 2000 times a minute */}
 						<CurrentWeather passDataToParent={passDataToParent} />
 						<div className="mt-2 flex items-center justify-center gap-3">
 							<AnimateIn delay={2} duration={0.6}>
@@ -67,3 +75,171 @@ const About = () => {
 };
 
 export default About;
+
+const Canvas = ({ data }: { data: any }) => {
+	const [width, setWidth] = useState(0);
+	const [height, setHeight] = useState(0);
+	const canvasEl = useRef<HTMLCanvasElement>(null);
+
+	console.log(data);
+
+	// functions here for use later
+	// degrees to radian calc - although this can be fixed later in the api to recieve measurements in radians instead
+	function degToRadian(num: number) {
+		return num * (Math.PI / 180);
+	}
+	// adjustment of -90 degrees, since the start of an arc in canvas seems to start at the centre right of it (east)
+	let radianAdjust = degToRadian(90);
+	// get the end point of an arc as coords
+	function getPoint(c1: number, c2: number, radius: number, angle: number) {
+		return [c1 + Math.cos(angle) * radius, c2 + Math.sin(angle) * radius];
+	}
+	// set position of the sun/moon
+	function sunMoonPosition(
+		paintbrush: any,
+		radians: number,
+		centreX: number,
+		centreY: number,
+		orbitRadius: number,
+		circleRadius: number,
+		fillColour: string
+	) {
+		// start drawing the arc to set the position
+		paintbrush.beginPath();
+		paintbrush.arc(
+			centreX,
+			centreY,
+			orbitRadius,
+			0 - radianAdjust,
+			radians - radianAdjust,
+			0
+		);
+		paintbrush.strokeStyle = "transparent";
+		paintbrush.stroke();
+		// get the end of the arc in coords
+		let sunPosition = getPoint(
+			centreX,
+			centreY,
+			orbitRadius,
+			radians - radianAdjust
+		);
+		// draw circle on sunposition
+		paintbrush.beginPath();
+		paintbrush.arc(
+			sunPosition[0],
+			sunPosition[1],
+			circleRadius,
+			0,
+			Math.PI + (Math.PI * 2) / 2,
+			1
+		);
+		// fill itt
+		paintbrush.fillStyle = fillColour;
+		paintbrush.fill();
+	}
+
+	// draw on canvas here
+	const draw = (paintbrush: any, frameCount: any) => {
+		// horizon
+		paintbrush.beginPath();
+		paintbrush.moveTo(0, height / 2);
+		paintbrush.lineTo(width, height / 2);
+		paintbrush.strokeStyle = "red";
+		paintbrush.stroke();
+
+		// draw sun/moon rotation origin
+		paintbrush.beginPath();
+		paintbrush.arc(
+			width * 0.5,
+			height * 0.5,
+			10,
+			0,
+			Math.PI + (Math.PI * 2) / 2,
+			1
+		);
+		paintbrush.fillStyle = "green";
+		paintbrush.fill();
+		paintbrush.strokeStyle = "transparent";
+		paintbrush.stroke();
+
+		// sun/moon positioning
+		// position in radians from a point on a circle, converted from degrees to radians
+		const sunRadians = degToRadian(data.sunDegrees);
+		const moonRadians = degToRadian(data.moonDegrees);
+		const orbitCentreX: number = width * 0.5;
+		const orbitCentreY: number = height * 0.5;
+		let orbitRadius: number;
+		const sunRadius: number = 15;
+		const moonRadius: number = 15;
+		const sunColour: string = "yellow";
+		const moonColour: string = "grey";
+		// set orbit radius to width/2 of the screen, only if its smaller than the screen height (for super fucking wide screens), otherwise use height
+		orbitRadius = width < height ? width / 2 : height / 2;
+		// sun position
+		sunMoonPosition(
+			paintbrush,
+			sunRadians,
+			orbitCentreX,
+			orbitCentreY,
+			orbitRadius,
+			sunRadius,
+			sunColour
+		);
+		// moon position
+		sunMoonPosition(
+			paintbrush,
+			sunRadians,
+			orbitCentreX,
+			orbitCentreY,
+			orbitRadius,
+			sunRadius,
+			sunColour
+		);
+		sunMoonPosition(
+			paintbrush,
+			moonRadians,
+			orbitCentreX,
+			orbitCentreY,
+			orbitRadius,
+			moonRadius,
+			moonColour
+		);
+	};
+
+	useEffect(() => {
+		// set canvas to full screen size
+		setWidth(window.innerWidth);
+		setHeight(window.innerHeight);
+		// check it isnt null - thanks typescript
+		if (canvasEl.current) {
+			const canvas = canvasEl.current;
+			const paintbrush = canvas.getContext("2d");
+
+			let frameCount: number = 0;
+			let animationFrameId: any;
+
+			//Our draw came here
+			const render = () => {
+				frameCount++;
+				draw(paintbrush, frameCount);
+				animationFrameId = window.requestAnimationFrame(render);
+			};
+			render();
+
+			return () => {
+				window.cancelAnimationFrame(animationFrameId);
+			};
+		}
+		// call draw here, so its reloaded on each draw
+	}, [draw]);
+
+	return (
+		<div className="absolute top-0 left-0 w-full h-full z-30 bg-white bg-opacity-80">
+			<p>Canvas here</p>
+			<p>
+				{width}, {height}
+			</p>
+			<canvas ref={canvasEl} height={height} width={width}></canvas>
+		</div>
+	);
+};
