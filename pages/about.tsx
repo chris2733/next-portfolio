@@ -22,9 +22,9 @@ const About = () => {
 		<>
 			<NextSeo title="About" />
 			<PageTransitionWrapper classes="min-h-screen flex items-center justify-center relative overflow-hidden">
-				{Object.keys(apiDataRecieved).length !== 0 && apiResponseOk && (
+				{/* {Object.keys(apiDataRecieved).length !== 0 && apiResponseOk && (
 					<Canvas data={apiDataRecieved} />
-				)}
+				)} */}
 				{/* canvas here to test without api call */}
 				{/* <Canvas /> */}
 				<div className="container py-24 sm:py-32 text-center rounded-3xl bg-white !max-w-2xl p-8 shadow-[0px_0px_112px_-2px_rgba(255,255,255,0.75)] z-20">
@@ -46,7 +46,7 @@ const About = () => {
 							/>
 						</div>
 						{/* maybe comment this out when devving not to call is 2000 times a minute */}
-						<CurrentWeather passDataToParent={passDataToParent} />
+						{/* <CurrentWeather passDataToParent={passDataToParent} /> */}
 						<div className="mt-2 flex items-center justify-center gap-3">
 							<AnimateIn delay={2} duration={0.6}>
 								<RoundedLinks
