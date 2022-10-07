@@ -81,7 +81,7 @@ const Canvas = ({ data }: { data: any }) => {
 	const [height, setHeight] = useState(0);
 	const canvasEl = useRef<HTMLCanvasElement>(null);
 
-	console.log(data);
+	// console.log(data);
 
 	// functions here for use later
 	// degrees to radian calc - although this can be fixed later in the api to recieve measurements in radians instead
@@ -138,28 +138,62 @@ const Canvas = ({ data }: { data: any }) => {
 		paintbrush.fill();
 	}
 
+	// drawing buildings
+	function drawBuilding(
+		paintbrush: any,
+		startX: number,
+		startY: number,
+		width: number,
+		height: number,
+		fill: string
+	) {
+		paintbrush.beginPath();
+		paintbrush.fillStyle = fill;
+		paintbrush.fillRect(startX, startY, width, height);
+	}
+
+	// randomly draw buildings between nums
+	// set the starter points here, so its drawn correctly in draw, not randomly readded
+	const start: number = -100;
+	const end: number = width + 100;
+	// function for setting up a building buildingLayer, generating random buildings across the screen at a set height
+	function buildingLayer() {
+		let array = [];
+		for (let x: number = start; x < end; x++) {
+			const randomBuildingWidth = Math.floor(Math.random() * 70) + 60;
+			const randomBuildingHeight = Math.floor(Math.random() * 150) + 50;
+			array.push({
+				start: x,
+				width: randomBuildingWidth,
+				height: randomBuildingHeight,
+			});
+			// add random gap between buildings
+			x += Math.floor(Math.random() * 60) + 20 + randomBuildingWidth;
+		}
+		return [...array];
+	}
+	// setting each building layer in an array to be looped over when drawing
+	type BuildingLayerType = {
+		start: number;
+		width: number;
+		height: number;
+	};
+	let buildings: {
+		buildingsArray: BuildingLayerType[];
+		heightAdjust: number;
+	}[] = [];
+	// each building layer pushed here with a height adjusted up in y
+	buildings.push({ buildingsArray: [...buildingLayer()], heightAdjust: 0 });
+	buildings.push({ buildingsArray: [...buildingLayer()], heightAdjust: 100 });
+	buildings.push({ buildingsArray: [...buildingLayer()], heightAdjust: 200 });
+
 	// draw on canvas here
 	const draw = (paintbrush: any, frameCount: any) => {
 		// horizon
 		paintbrush.beginPath();
-		paintbrush.moveTo(0, height / 2);
-		paintbrush.lineTo(width, height / 2);
+		paintbrush.moveTo(0, height - 200);
+		paintbrush.lineTo(width, height - 200);
 		paintbrush.strokeStyle = "red";
-		paintbrush.stroke();
-
-		// draw sun/moon rotation origin
-		paintbrush.beginPath();
-		paintbrush.arc(
-			width * 0.5,
-			height * 0.5,
-			10,
-			0,
-			Math.PI + (Math.PI * 2) / 2,
-			1
-		);
-		paintbrush.fillStyle = "green";
-		paintbrush.fill();
-		paintbrush.strokeStyle = "transparent";
 		paintbrush.stroke();
 
 		// sun/moon positioning
@@ -167,16 +201,15 @@ const Canvas = ({ data }: { data: any }) => {
 		const sunRadians = degToRadian(data.sunDegrees);
 		const moonRadians = degToRadian(data.moonDegrees);
 		const orbitCentreX: number = width * 0.5;
-		const orbitCentreY: number = height * 0.5;
-		let orbitRadius: number;
+		const orbitCentreY: number = height - 200;
+		// set orbit radius to width of the screen, only if its smaller than the screen height (for super fucking wide screens), otherwise use height
+		const orbitRadius: number = width < height ? width * 0.48 : height * 0.48;
 		const sunRadius: number = 15;
 		const moonRadius: number = 15;
 		const sunColour: string = "yellow";
 		const moonColour: string = "grey";
-		// set orbit radius to width/2 of the screen, only if its smaller than the screen height (for super fucking wide screens), otherwise use height
-		orbitRadius = width < height ? width / 2 : height / 2;
 		// sun position
-		sunMoonPosition(
+		const sun = sunMoonPosition(
 			paintbrush,
 			sunRadians,
 			orbitCentreX,
@@ -186,16 +219,7 @@ const Canvas = ({ data }: { data: any }) => {
 			sunColour
 		);
 		// moon position
-		sunMoonPosition(
-			paintbrush,
-			sunRadians,
-			orbitCentreX,
-			orbitCentreY,
-			orbitRadius,
-			sunRadius,
-			sunColour
-		);
-		sunMoonPosition(
+		const moon = sunMoonPosition(
 			paintbrush,
 			moonRadians,
 			orbitCentreX,
@@ -204,6 +228,21 @@ const Canvas = ({ data }: { data: any }) => {
 			moonRadius,
 			moonColour
 		);
+
+		buildings.forEach(({ buildingsArray, heightAdjust }) => {
+			const heightFix = heightAdjust !== undefined ? heightAdjust : 0;
+			buildingsArray &&
+				buildingsArray.forEach((building: any) => {
+					drawBuilding(
+						paintbrush,
+						building.start,
+						height - building.height - heightFix,
+						building.width,
+						building.height,
+						"rgba(0,0,0,0.75)"
+					);
+				});
+		});
 	};
 
 	useEffect(() => {
@@ -235,10 +274,6 @@ const Canvas = ({ data }: { data: any }) => {
 
 	return (
 		<div className="absolute top-0 left-0 w-full h-full z-30 bg-white bg-opacity-80">
-			<p>Canvas here</p>
-			<p>
-				{width}, {height}
-			</p>
 			<canvas ref={canvasEl} height={height} width={width}></canvas>
 		</div>
 	);
