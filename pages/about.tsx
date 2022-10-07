@@ -22,9 +22,9 @@ const About = () => {
 		<>
 			<NextSeo title="About" />
 			<PageTransitionWrapper classes="min-h-screen flex items-center justify-center relative overflow-hidden">
-				{/* {Object.keys(apiDataRecieved).length !== 0 && apiResponseOk && (
+				{Object.keys(apiDataRecieved).length !== 0 && apiResponseOk && (
 					<Canvas data={apiDataRecieved} />
-				)} */}
+				)}
 				{/* canvas here to test without api call */}
 				{/* <Canvas /> */}
 				<div className="container py-24 sm:py-32 text-center rounded-3xl bg-white !max-w-2xl p-8 shadow-[0px_0px_112px_-2px_rgba(255,255,255,0.75)] z-20">
@@ -46,7 +46,7 @@ const About = () => {
 							/>
 						</div>
 						{/* maybe comment this out when devving not to call is 2000 times a minute */}
-						{/* <CurrentWeather passDataToParent={passDataToParent} /> */}
+						<CurrentWeather passDataToParent={passDataToParent} />
 						<div className="mt-2 flex items-center justify-center gap-3">
 							<AnimateIn delay={2} duration={0.6}>
 								<RoundedLinks
@@ -80,6 +80,9 @@ const Canvas = ({ data }: { data: any }) => {
 	const [width, setWidth] = useState(0);
 	const [height, setHeight] = useState(0);
 	const canvasEl = useRef<HTMLCanvasElement>(null);
+
+	// set the position of the horizon, and also the last layer of buildings in background
+	const horizon = 150;
 
 	// console.log(data);
 
@@ -181,27 +184,45 @@ const Canvas = ({ data }: { data: any }) => {
 	let buildings: {
 		buildingsArray: BuildingLayerType[];
 		heightAdjust: number;
+		colour: string;
 	}[] = [];
 	// each building layer pushed here with a height adjusted up in y
-	buildings.push({ buildingsArray: [...buildingLayer()], heightAdjust: 0 });
-	buildings.push({ buildingsArray: [...buildingLayer()], heightAdjust: 100 });
-	buildings.push({ buildingsArray: [...buildingLayer()], heightAdjust: 200 });
+	buildings.push({
+		buildingsArray: [...buildingLayer()],
+		heightAdjust: horizon,
+		colour: "rgba(0,0,0,0.5)",
+	});
+	buildings.push({
+		buildingsArray: [...buildingLayer()],
+		heightAdjust: horizon * 0.5,
+		colour: "rgba(0,0,0,0.75)",
+	});
+	buildings.push({
+		buildingsArray: [...buildingLayer()],
+		heightAdjust: 0,
+		colour: "rgba(0,0,0,1)",
+	});
 
 	// draw on canvas here
 	const draw = (paintbrush: any, frameCount: any) => {
 		// horizon
 		paintbrush.beginPath();
-		paintbrush.moveTo(0, height - 200);
-		paintbrush.lineTo(width, height - 200);
+		paintbrush.moveTo(0, height - horizon);
+		paintbrush.lineTo(width, height - horizon);
 		paintbrush.strokeStyle = "red";
 		paintbrush.stroke();
+
+		// whole background
+		paintbrush.beginPath();
+		paintbrush.fillStyle = "#2020f6";
+		paintbrush.fillRect(0, 0, width, height);
 
 		// sun/moon positioning
 		// position in radians from a point on a circle, converted from degrees to radians
 		const sunRadians = degToRadian(data.sunDegrees);
 		const moonRadians = degToRadian(data.moonDegrees);
 		const orbitCentreX: number = width * 0.5;
-		const orbitCentreY: number = height - 200;
+		const orbitCentreY: number = height - horizon;
 		// set orbit radius to width of the screen, only if its smaller than the screen height (for super fucking wide screens), otherwise use height
 		const orbitRadius: number = width < height ? width * 0.48 : height * 0.48;
 		const sunRadius: number = 15;
@@ -229,8 +250,16 @@ const Canvas = ({ data }: { data: any }) => {
 			moonColour
 		);
 
-		buildings.forEach(({ buildingsArray, heightAdjust }) => {
-			const heightFix = heightAdjust !== undefined ? heightAdjust : 0;
+		// draw each building layer here
+		buildings.forEach(({ buildingsArray, heightAdjust, colour }) => {
+			// if height heightAdjust, add bar of colour underneath to cover the background
+			let heightFix = 0;
+			if (heightAdjust !== undefined) {
+				heightFix = heightAdjust;
+				paintbrush.beginPath();
+				paintbrush.fillStyle = colour;
+				paintbrush.fillRect(0, height - heightAdjust, width, height);
+			}
 			buildingsArray &&
 				buildingsArray.forEach((building: any) => {
 					drawBuilding(
@@ -239,7 +268,7 @@ const Canvas = ({ data }: { data: any }) => {
 						height - building.height - heightFix,
 						building.width,
 						building.height,
-						"rgba(0,0,0,0.75)"
+						colour
 					);
 				});
 		});
