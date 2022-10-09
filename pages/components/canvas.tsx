@@ -1,6 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 
+// **********
+// todo
+// add lamposts
+// cars randomly coming accross
+
 export default function Canvas({ data }: { data: any }) {
+	// console.log(data);
+
 	// set height and width of window at states
 	const [width, setWidth] = useState(0);
 	const [height, setHeight] = useState(0);
@@ -216,9 +223,76 @@ function drawBuilding(
 	height: number,
 	fill: string
 ) {
+	// draw a rectangle with curved top edges only slightly
+	let radius = 5;
 	paintbrush.beginPath();
 	paintbrush.fillStyle = fill;
-	paintbrush.fillRect(startX, startY, width, height);
+	paintbrush.beginPath();
+	paintbrush.moveTo(startX + radius, startY);
+	paintbrush.lineTo(startX + width - radius, startY);
+	paintbrush.quadraticCurveTo(
+		startX + width,
+		startY,
+		startX + width,
+		startY + radius
+	);
+	paintbrush.lineTo(startX + width, startY + height);
+	paintbrush.lineTo(startX, startY + height);
+	paintbrush.quadraticCurveTo(
+		startX,
+		startY + height,
+		startX,
+		startY + height - radius
+	);
+	paintbrush.lineTo(startX, startY + radius);
+	paintbrush.quadraticCurveTo(startX, startY, startX + radius, startY);
+	paintbrush.closePath();
+	paintbrush.fill();
+
+	// draw windows Headers, randomly generated size, number, type
+	const windowWidth: number = 10;
+	const windowHeight: number = 5;
+	// gep between windows
+	const windowGapX: number = 8;
+	const windowGapY: number = 10;
+	// gap between window and building
+	let windowBuildingGapX: number = 10;
+	let windowBuildingGapY: number = 10;
+	const windowColour: string = "blue";
+	// space to put windows
+	const spaceForWindowsX: number = width - windowGapX * 2;
+	const spaceForWindowsY: number = height - windowGapY * 3; // more gap at bottom of building
+	// number of windows...
+	const windowNumX: number = Math.floor(
+		spaceForWindowsX / (windowWidth + windowGapX)
+	);
+	const windowNumY: number = Math.floor(
+		spaceForWindowsY / (windowHeight + windowGapY)
+	);
+	// ...get accurate pixel gap between now windows and edge of building, windowgapx added again to add space to other side - otherwise its only adding window+windowgap each time, missing one at end
+	windowBuildingGapX =
+		((width % ((windowWidth + windowGapX) * windowNumX)) + windowGapX) / 2;
+	windowBuildingGapY =
+		((height % ((windowHeight + windowGapY) * windowNumY)) + windowGapY) / 2;
+	const startWindowX: number = startX + windowBuildingGapX;
+	const startWindowY: number = startY + windowBuildingGapY;
+	// ...then loop through them to set the window
+	for (let xloop = 0; xloop < windowNumX; xloop++) {
+		const x = startWindowX + xloop * (windowWidth + windowGapX);
+		let y = startWindowY;
+		paintbrush.fillStyle = windowColour;
+		paintbrush.fillRect(x, y, windowWidth, windowHeight);
+		xloop === 5 && xloop++;
+		for (let yloop = 0; yloop < windowNumY; yloop++) {
+			y = startWindowY + yloop * (windowWidth + windowGapY);
+			paintbrush.fillStyle = windowColour;
+			paintbrush.fillRect(x, y, windowWidth, windowHeight);
+		}
+	}
+
+	// randomly draw railing on top
+
+	// maybe if skyscraper add tower top with antenna?
 }
 
 // function for setting up a building buildingLayer, generating random buildings across the screen at a set height
