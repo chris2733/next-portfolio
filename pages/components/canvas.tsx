@@ -14,7 +14,7 @@ export default function Canvas({ data }: { data: any }) {
 	// canvas element ref'd here
 	const canvasEl = useRef<HTMLCanvasElement>(null);
 	// set the position of the horizon, and also the last layer of buildings in background
-	const horizon = 150;
+	const horizon = 100;
 	// adjustment of -90 degrees, since the start of an arc in canvas seems to start at the centre right of it (east)
 	let radianAdjust = degToRadian(90);
 
@@ -31,17 +31,23 @@ export default function Canvas({ data }: { data: any }) {
 	}[] = [];
 	// each building layer pushed here with a height adjusted up in y
 	buildings.push({
-		buildingsArray: [...buildingLayer(width)],
+		buildingsArray: [
+			...buildingLayer(width, 0, 100, 0, 100, 60, 150, 50, 250, 20, 80),
+		],
 		heightAdjust: horizon,
 		colour: "rgba(0,0,0,0.5)",
 	});
 	buildings.push({
-		buildingsArray: [...buildingLayer(width)],
+		buildingsArray: [
+			...buildingLayer(width, 0, 100, 0, 100, 60, 150, 50, 250, 20, 80),
+		],
 		heightAdjust: horizon * 0.5,
 		colour: "rgba(0,0,0,0.75)",
 	});
 	buildings.push({
-		buildingsArray: [...buildingLayer(width)],
+		buildingsArray: [
+			...buildingLayer(width, 0, 100, 0, 100, 60, 150, 50, 250, 20, 80),
+		],
 		heightAdjust: 0,
 		colour: "rgba(0,0,0,1)",
 	});
@@ -113,7 +119,8 @@ export default function Canvas({ data }: { data: any }) {
 						height - building.height - heightFix,
 						building.width,
 						building.height,
-						colour
+						colour,
+						building.randomBuildingId
 					);
 				});
 		});
@@ -221,7 +228,8 @@ function drawBuilding(
 	startY: number,
 	width: number,
 	height: number,
-	fill: string
+	fill: string,
+	randomBuildingId: number
 ) {
 	// draw a rectangle with curved top edges only slightly
 	let radius = 5;
@@ -249,9 +257,17 @@ function drawBuilding(
 	paintbrush.closePath();
 	paintbrush.fill();
 
-	// draw windows Headers, randomly generated size, number, type
-	const windowWidth: number = 10;
-	const windowHeight: number = 5;
+	// draw windows
+	let windowWidth: number;
+	let windowHeight: number;
+	if (randomBuildingId > 0.9) {
+		// random chance to bay windows
+		windowWidth = 8;
+		windowHeight = 14;
+	} else {
+		windowWidth = 10;
+		windowHeight = 5;
+	}
 	// gep between windows
 	const windowGapX: number = 8;
 	const windowGapY: number = 10;
@@ -259,6 +275,75 @@ function drawBuilding(
 	let windowBuildingGapX: number = 10;
 	let windowBuildingGapY: number = 10;
 	const windowColour: string = "blue";
+
+	drawBuildingWindows(
+		paintbrush,
+		width,
+		height,
+		startX,
+		startY,
+		windowWidth,
+		windowHeight,
+		windowGapX,
+		windowGapY,
+		windowBuildingGapX,
+		windowBuildingGapY,
+		windowColour
+	);
+
+	// randomly draw railing on top
+
+	// maybe if skyscraper add tower top with antenna?
+}
+
+// function for setting up a building buildingLayer, generating random buildings across the screen at a set height
+function buildingLayer(
+	width: number,
+	startPointMin: number,
+	startPointMax: number,
+	endPointMin: number,
+	endPointMax: number,
+	widthMin: number,
+	widthMax: number,
+	heightMin: number,
+	heightMax: number,
+	gapMin: number,
+	gapMax: number
+) {
+	let array = [];
+	// set the starter points here, so its drawn correctly in draw, not randomly readded
+	// both are random numbers between 0-100 from the edge of canvas
+	const start: number = -randomIntFromInterval(startPointMin, startPointMax);
+	const end: number = width + randomIntFromInterval(endPointMin, endPointMax);
+	for (let x: number = start; x < end; x++) {
+		const randomBuildingWidth = randomIntFromInterval(widthMin, widthMax);
+		const randomBuildingHeight = randomIntFromInterval(heightMin, heightMax);
+		array.push({
+			start: x,
+			width: randomBuildingWidth,
+			height: randomBuildingHeight,
+			randomBuildingId: Math.random(),
+		});
+		// add random gap between buildings
+		x += randomIntFromInterval(gapMin, gapMax) + randomBuildingWidth;
+	}
+	return [...array];
+}
+
+function drawBuildingWindows(
+	paintbrush: any,
+	width: number,
+	height: number,
+	startX: number,
+	startY: number,
+	windowWidth: number,
+	windowHeight: number,
+	windowGapX: number,
+	windowGapY: number,
+	windowBuildingGapX: number,
+	windowBuildingGapY: number,
+	windowColour: string
+) {
 	// space to put windows
 	const spaceForWindowsX: number = width - windowGapX * 2;
 	const spaceForWindowsY: number = height - windowGapY * 3; // more gap at bottom of building
@@ -289,30 +374,4 @@ function drawBuilding(
 			paintbrush.fillRect(x, y, windowWidth, windowHeight);
 		}
 	}
-
-	// randomly draw railing on top
-
-	// maybe if skyscraper add tower top with antenna?
-}
-
-// function for setting up a building buildingLayer, generating random buildings across the screen at a set height
-// this needs to not have anything passed to it ideally, width should be there already somehow
-function buildingLayer(width: number) {
-	let array = [];
-	// set the starter points here, so its drawn correctly in draw, not randomly readded
-	// both are random numbers between 0-100 from the edge of canvas
-	const start: number = -randomIntFromInterval(0, 100);
-	const end: number = width + randomIntFromInterval(0, 100);
-	for (let x: number = start; x < end; x++) {
-		const randomBuildingWidth = randomIntFromInterval(60, 150);
-		const randomBuildingHeight = randomIntFromInterval(50, 250);
-		array.push({
-			start: x,
-			width: randomBuildingWidth,
-			height: randomBuildingHeight,
-		});
-		// add random gap between buildings
-		x += randomIntFromInterval(20, 80) + randomBuildingWidth;
-	}
-	return [...array];
 }
