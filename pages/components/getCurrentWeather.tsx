@@ -11,6 +11,22 @@ export default function CurrentWeather({
 	const [weatherData, setWeatherData] = useState<any>({});
 	const currentTime = new Date().getTime();
 
+	// test data to show night and day
+	const testDataNight: object = {
+		weather: {
+			name: "Cardiff",
+			lat: 51.48,
+			lon: -3.18,
+			time: 1665354121692,
+			sunrise: 1665296764,
+			sunset: 1665336821,
+			temperature: 13.36,
+			Visibility: 100,
+		},
+		sunDegrees: 147.03023859796963,
+		moonDegrees: -35.79019404291735,
+	};
+
 	useEffect(() => {
 		// this may look like it's calling twice in dev, but thats because of strictmode - if this is set to false in next.config.js it only happens once
 		const response = axios
@@ -25,7 +41,7 @@ export default function CurrentWeather({
 			})
 			.catch(function (error) {
 				// handle error
-				console.log("Openmap wather api " + error.message);
+				console.log("Openmap weather api " + error.message);
 				return;
 			});
 	}, []);
