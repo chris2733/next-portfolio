@@ -32,21 +32,21 @@ export default function Canvas({ data }: { data: any }) {
 	// each building layer pushed here with a height adjusted up in y
 	buildings.push({
 		buildingsArray: [
-			...buildingLayer(width, 0, 100, 0, 100, 60, 150, 50, 250, 20, 80),
+			...buildingLayer(width, 0, 100, 0, 100, 60, 150, 70, 250, 20, 80),
 		],
 		heightAdjust: horizon,
 		colour: "rgba(0,0,0,0.5)",
 	});
 	buildings.push({
 		buildingsArray: [
-			...buildingLayer(width, 0, 100, 0, 100, 60, 150, 50, 250, 20, 80),
+			...buildingLayer(width, 0, 100, 0, 100, 60, 150, 70, 250, 20, 80),
 		],
 		heightAdjust: horizon * 0.5,
 		colour: "rgba(0,0,0,0.75)",
 	});
 	buildings.push({
 		buildingsArray: [
-			...buildingLayer(width, 0, 100, 0, 100, 60, 150, 50, 250, 20, 80),
+			...buildingLayer(width, 0, 100, 0, 100, 60, 150, 70, 250, 20, 80),
 		],
 		heightAdjust: 0,
 		colour: "rgba(0,0,0,1)",
@@ -375,7 +375,7 @@ function drawBuildingWindows(
 ) {
 	// space to put windows
 	const spaceForWindowsX: number = width - windowGapX * 2;
-	const spaceForWindowsY: number = height - windowGapY * 3; // more gap at bottom of building
+	const spaceForWindowsY: number = height - windowGapY * 2; // more gap at bottom of building
 	// number of windows...
 	const windowNumX: number = Math.floor(
 		spaceForWindowsX / (windowWidth + windowGapX)
@@ -398,7 +398,7 @@ function drawBuildingWindows(
 		paintbrush.fillRect(x, y, windowWidth, windowHeight);
 		xloop === 5 && xloop++;
 		for (let yloop = 0; yloop < windowNumY; yloop++) {
-			y = startWindowY + yloop * (windowWidth + windowGapY);
+			y = startWindowY + yloop * (windowHeight + windowGapY);
 			paintbrush.fillStyle = windowColour;
 			paintbrush.fillRect(x, y, windowWidth, windowHeight);
 		}
