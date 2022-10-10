@@ -120,7 +120,8 @@ export default function Canvas({ data }: { data: any }) {
 						building.width,
 						building.height,
 						colour,
-						building.randomBuildingId
+						building.randomBuildingId,
+						building.randomBuildingId2
 					);
 				});
 		});
@@ -229,7 +230,8 @@ function drawBuilding(
 	width: number,
 	height: number,
 	fill: string,
-	randomBuildingId: number
+	randomBuildingId: number,
+	randomBuildingId2: number
 ) {
 	// draw a rectangle with curved top edges only slightly
 	let radius = 5;
@@ -260,17 +262,19 @@ function drawBuilding(
 	// draw windows
 	let windowWidth: number;
 	let windowHeight: number;
+	// random window sizes using randomBuildingId
+	// using randomBuildingId2 for any other randomness needed
 	if (randomBuildingId > 0.9) {
-		// random chance to bay windows
-		windowWidth = 8;
-		windowHeight = 14;
+		// random chance for bay windows
+		windowWidth = 7 + Math.floor(5 * randomBuildingId2);
+		windowHeight = 11 + Math.floor(7 * randomBuildingId2);
 	} else {
-		windowWidth = 10;
-		windowHeight = 5;
+		windowWidth = 7 + Math.floor(8 * randomBuildingId2);
+		windowHeight = 3 + Math.floor(5 * randomBuildingId2);
 	}
 	// gep between windows
-	const windowGapX: number = 8;
-	const windowGapY: number = 10;
+	const windowGapX: number = 4 + Math.floor(8 * randomBuildingId2);
+	const windowGapY: number = 4 + Math.floor(8 * randomBuildingId2);
 	// gap between window and building
 	let windowBuildingGapX: number = 10;
 	let windowBuildingGapY: number = 10;
@@ -352,6 +356,7 @@ function buildingLayer(
 			width: randomBuildingWidth,
 			height: randomBuildingHeight,
 			randomBuildingId: Math.random(),
+			randomBuildingId2: Math.random(),
 		});
 		// add random gap between buildings
 		x += randomIntFromInterval(gapMin, gapMax) + randomBuildingWidth;
