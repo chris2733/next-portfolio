@@ -55,6 +55,11 @@ export default function Canvas({ data }: { data: any }) {
 		colour: "rgba(0,0,0,1)",
 	});
 
+	// set lamppost data here
+	const lamppostStart = randomIntFromInterval(0, 30);
+	const lamppostEnd = randomIntFromInterval(0, 30);
+	const lamppostSpace = randomIntFromInterval(150, 180);
+
 	// draw on canvas here
 	const draw = (paintbrush: any, frameCount: any) => {
 		// horizon
@@ -128,6 +133,20 @@ export default function Canvas({ data }: { data: any }) {
 					);
 				});
 		});
+
+		// draw lampposts, similar setup to buildinglayer
+		drawLampposts(
+			paintbrush,
+			width,
+			height,
+			lamppostStart,
+			lamppostEnd,
+			lamppostSpace,
+			25,
+			2,
+			"black",
+			"white"
+		);
 	};
 
 	useEffect(() => {
@@ -525,4 +544,39 @@ function drawCrane(
 		6,
 		2
 	);
+}
+
+function drawLampposts(
+	paintbrush: any,
+	width: number,
+	height: number,
+	startPoint: number,
+	endPoint: number,
+	gap: number,
+	postHeight: number,
+	postWidth: number,
+	fill: string,
+	lightFill: string
+) {
+	// set the starter points here, so its drawn correctly in draw, not randomly readded
+	// both are random numbers between 0-100 from the edge of canvas
+	const start: number = -startPoint;
+	const end: number = width + endPoint;
+	for (let x: number = start; x < end; x += gap) {
+		paintbrush.beginPath();
+		paintbrush.fillStyle = fill;
+		paintbrush.fillRect(x, height, postWidth, -postHeight);
+		paintbrush.fillRect(x, height - postHeight, 8, 2);
+		// light at end
+		paintbrush.shadowColor = lightFill;
+		paintbrush.shadowOffsetX = 2;
+		paintbrush.shadowOffsetY = 4;
+		paintbrush.shadowBlur = 8;
+		paintbrush.fillStyle = lightFill;
+		paintbrush.fillRect(x + 3, height - postHeight - 2, 5, 2);
+		paintbrush.shadowColor = "transparent";
+		paintbrush.shadowOffsetX = 0;
+		paintbrush.shadowOffsetY = 0;
+		paintbrush.shadowBlur = 0;
+	}
 }
