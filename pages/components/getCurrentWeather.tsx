@@ -77,7 +77,7 @@ export default function CurrentWeather({
 
 		// set test data instead
 		const apiDataConverted = SuccessfulResult(testDataCardiff, 1665446403000); //night
-		// const apiDataConverted = SuccessfulResult(testDataCardiff, currentTime); //day
+		// const apiDataConverted = SuccessfulResult(testDataCardiff, 1665497241000); //day
 		setWeatherData(apiDataConverted);
 		passDataToParent(apiDataConverted);
 		setApiCallOk(true);
