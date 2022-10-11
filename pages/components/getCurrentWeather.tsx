@@ -13,37 +13,85 @@ export default function CurrentWeather({
 
 	// test data to show night and day
 	const testDataNight: object = {
-		weather: {
-			name: "Cardiff",
-			lat: 51.48,
+		coord: {
 			lon: -3.18,
-			time: 1665354121692,
-			sunrise: 1665296764,
-			sunset: 1665336821,
-			temperature: 13.36,
-			Visibility: 100,
+			lat: 51.48,
 		},
-		sunDegrees: 147.03023859796963,
-		moonDegrees: -35.79019404291735,
+		weather: [
+			{
+				id: 803,
+				main: "Clouds",
+				description: "broken clouds",
+				icon: "04n",
+			},
+		],
+		base: "stations",
+		main: {
+			temp: 7.04,
+			feels_like: 4.58,
+			temp_min: 5.57,
+			temp_max: 8.4,
+			pressure: 1022,
+			humidity: 82,
+		},
+		visibility: 10000,
+		wind: {
+			speed: 3.6,
+			deg: 360,
+		},
+		clouds: {
+			all: 63,
+		},
+		dt: 1665447422,
+		sys: {
+			type: 2,
+			id: 2045739,
+			country: "GB",
+			sunrise: 1665469764,
+			sunset: 1665509356,
+		},
+		timezone: 3600,
+		id: 2653822,
+		name: "Cardiff",
+		cod: 200,
 	};
+
+	// const testDataDay: object = {
+	// 	weather: {
+	// 		name: "Cardiff",
+	// 		lat: 51.48,
+	// 		lon: -3.18,
+	// 		time: 1665490448000,
+	// 		sunrise: 1665296764,
+	// 		sunset: 1665336821,
+	// 		temperature: 18,
+	// 		Visibility: 100,
+	// 	},
+	// 	sunDegrees: 30,
+	// 	moonDegrees: 120,
+	// };
 
 	useEffect(() => {
 		// this may look like it's calling twice in dev, but thats because of strictmode - if this is set to false in next.config.js it only happens once
-		const response = axios
-			.get(
-				`http://api.openweathermap.org/data/2.5/weather?id=2653822&appid=${process.env.NEXT_PUBLIC_OPENMAP_API}&units=metric`
-			)
-			.then(function (response) {
-				// handle success
-				console.log("Openmanp weather api GREAET SUCCESS");
-				setapiData(response.data);
-				return;
-			})
-			.catch(function (error) {
-				// handle error
-				console.log("Openmap weather api " + error.message);
-				return;
-			});
+		// const response = axios
+		// 	.get(
+		// 		`http://api.openweathermap.org/data/2.5/weather?id=2653822&appid=${process.env.NEXT_PUBLIC_OPENMAP_API}&units=metric`
+		// 	)
+		// 	.then(function (response) {
+		// 		// handle success
+		// 		console.log("Openmanp weather api GREAET SUCCESS");
+		// 		setapiData(response.data);
+		// 		console.log(response.data);
+		// 		return;
+		// 	})
+		// 	.catch(function (error) {
+		// 		// handle error
+		// 		console.log("Openmap weather api " + error.message);
+		// 		return;
+		// 	});
+
+		// set test data instead
+		setapiData(testDataNight);
 	}, []);
 
 	useEffect(() => {
