@@ -12,7 +12,7 @@ export default function CurrentWeather({
 	const currentTime = new Date().getTime();
 
 	// test data to show night and day
-	const testDataNight: object = {
+	const testDataCardiff: object = {
 		coord: {
 			lon: -3.18,
 			lat: 51.48,
@@ -56,21 +56,6 @@ export default function CurrentWeather({
 		cod: 200,
 	};
 
-	// const testDataDay: object = {
-	// 	weather: {
-	// 		name: "Cardiff",
-	// 		lat: 51.48,
-	// 		lon: -3.18,
-	// 		time: 1665490448000,
-	// 		sunrise: 1665296764,
-	// 		sunset: 1665336821,
-	// 		temperature: 18,
-	// 		Visibility: 100,
-	// 	},
-	// 	sunDegrees: 30,
-	// 	moonDegrees: 120,
-	// };
-
 	useEffect(() => {
 		// this may look like it's calling twice in dev, but thats because of strictmode - if this is set to false in next.config.js it only happens once
 		// const response = axios
@@ -91,7 +76,11 @@ export default function CurrentWeather({
 		// 	});
 
 		// set test data instead
-		setapiData(testDataNight);
+		const apiDataConverted = SuccessfulResult(testDataCardiff, 1665446403000); //night
+		// const apiDataConverted = SuccessfulResult(testDataCardiff, currentTime); //day
+		setWeatherData(apiDataConverted);
+		passDataToParent(apiDataConverted);
+		setApiCallOk(true);
 	}, []);
 
 	useEffect(() => {
@@ -145,11 +134,15 @@ function SuccessfulResult(data: any, currentTime: number) {
 	};
 	// getting sun position with suncalc
 	const SunCalc = require("suncalc");
-	const times = SunCalc.getTimes(new Date(), weather.lat, weather.lon);
-	const sunPosition = SunCalc.getPosition(new Date(), weather.lat, weather.lon);
+	const times = SunCalc.getTimes(weather.time, weather.lat, weather.lon);
+	const sunPosition = SunCalc.getPosition(
+		weather.time,
+		weather.lat,
+		weather.lon
+	);
 
 	const moonPosition = SunCalc.getMoonPosition(
-		new Date(),
+		weather.time,
 		weather.lat,
 		weather.lon
 	);
@@ -157,7 +150,7 @@ function SuccessfulResult(data: any, currentTime: number) {
 	// distance of moon from earth
 	const moonDistance = moonPosition.distance;
 	// moon illumination, phase and angle, see docs
-	const moonIllumination = SunCalc.getMoonIllumination(new Date());
+	const moonIllumination = SunCalc.getMoonIllumination(weather.time);
 
 	// degrees calculated from like top of a circle i think
 	const sunDegrees = (sunPosition.azimuth * 180) / Math.PI;
