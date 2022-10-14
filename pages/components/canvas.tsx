@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import { start } from "repl";
 
 // **********
 // todo
@@ -20,6 +19,67 @@ export default function Canvas({ data }: { data: any }) {
 	const horizon = 100;
 	// adjustment of -90 degrees, since the start of an arc in canvas seems to start at the centre right of it (east)
 	let radianAdjust = degToRadian(90);
+
+	// set the colour stops for different times, from suncalc
+	interface skyColourEach {
+		stop: number;
+		color: string;
+	}
+	interface skyColourTypes {
+		sunrise?: skyColourEach[]; // sunrise (top edge of the sun appears on the horizon)
+		sunriseEnd?: skyColourEach[]; // sunrise ends (bottom edge of the sun touches the horizon)
+		goldenHourEnd?: skyColourEach[]; // morning golden hour (soft light, best time for photography) ends
+		solarNoon?: skyColourEach[]; // solar noon (sun is in the highest position)
+		goldenHour?: skyColourEach[]; // evening golden hour starts
+		sunsetStart?: skyColourEach[]; // sunset starts (bottom edge of the sun touches the horizon)
+		sunset?: skyColourEach[]; // sunset (sun disappears below the horizon, evening civil twilight starts)
+		dusk?: skyColourEach[]; // dusk (evening nautical twilight starts)
+		nauticalDusk?: skyColourEach[]; // nautical dusk (evening astronomical twilight starts)
+		night?: skyColourEach[]; // night starts (dark enough for astronomical observations)
+		nadir?: skyColourEach[]; // nadir (darkest moment of the night, sun is in the lowest position)
+		nightEnd?: skyColourEach[]; // night ends (morning astronomical twilight starts)
+		nauticalDawn?: skyColourEach[]; // nautical dawn (morning nautical twilight starts)
+		dawn?: skyColourEach[]; // dawn (morning nautical twilight ends, morning civil twilight starts)
+	}
+	const skyColours: skyColourTypes = {
+		sunrise: [],
+		sunriseEnd: [],
+		goldenHourEnd: [],
+		solarNoon: [],
+		goldenHour: [],
+		sunsetStart: [],
+		sunset: [],
+		dusk: [],
+		nauticalDusk: [],
+		night: [],
+		nadir: [
+			{ stop: 0, color: "#000000" },
+			{ stop: 1, color: "#000000" },
+		],
+		nightEnd: [
+			{ stop: 0, color: "#5e4b41" },
+			{ stop: 0.2, color: "#5b5c70" },
+			{ stop: 0.5, color: "#253d65" },
+			{ stop: 0.8, color: "#0c1734" },
+			{ stop: 1, color: "#030a17" },
+		],
+		nauticalDawn: [
+			{ stop: 0, color: "#c67501" },
+			{ stop: 0.1, color: "#e49805" },
+			{ stop: 0.2, color: "#be9948" },
+			{ stop: 0.3, color: "#a38c62" },
+			{ stop: 0.5, color: "#807864" },
+			{ stop: 0.7, color: "#304149" },
+			{ stop: 0.8, color: "#142934" },
+			{ stop: 1, color: "#142934" },
+		],
+		dawn: [
+			{ stop: 0, color: "#d88c1f" },
+			{ stop: 0.2, color: "#d4b366" },
+			{ stop: 0.6, color: "#888b85" },
+			{ stop: 1, color: "#5e6f77" },
+		],
+	};
 
 	// setting each building layer in an array to be looped over when drawing
 	type BuildingLayerType = {
