@@ -432,7 +432,8 @@ function drawBuilding(
 	// gap between window and building
 	let windowBuildingGapX: number = 10;
 	let windowBuildingGapY: number = 10;
-	const windowColour: string = "blue";
+	const windowColour: string = "#6e92ff44";
+	const windowLitColour: string = "#fdd48a";
 
 	drawBuildingWindows(
 		paintbrush,
@@ -446,7 +447,8 @@ function drawBuilding(
 		windowGapY,
 		windowBuildingGapX,
 		windowBuildingGapY,
-		windowColour
+		windowColour,
+		windowLitColour
 	);
 
 	// add antenna randomly to buildings thinner than 200
@@ -512,7 +514,8 @@ function drawBuildingWindows(
 	windowGapY: number,
 	windowBuildingGapX: number,
 	windowBuildingGapY: number,
-	windowColour: string
+	windowColour: string,
+	windowLitColour: string
 ) {
 	// space to put windows
 	const spaceForWindowsX: number = width - windowGapX * 2;
@@ -541,7 +544,7 @@ function drawBuildingWindows(
 		for (let yloop = 0; yloop < windowNumY; yloop++) {
 			y = startWindowY + yloop * (windowHeight + windowGapY);
 			// window shadow also
-			paintbrush.shadowColor = "#fdd48a";
+			paintbrush.shadowColor = windowLitColour;
 			paintbrush.shadowOffsetX = 0;
 			paintbrush.shadowOffsetY = 0;
 			paintbrush.shadowBlur = 6;
