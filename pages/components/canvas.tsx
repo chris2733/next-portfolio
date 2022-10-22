@@ -448,7 +448,9 @@ function drawBuilding(
 		windowBuildingGapX,
 		windowBuildingGapY,
 		windowColour,
-		windowLitColour
+		windowLitColour,
+		randomBuildingId,
+		randomBuildingId2
 	);
 
 	// add antenna randomly to buildings thinner than 200
@@ -515,8 +517,12 @@ function drawBuildingWindows(
 	windowBuildingGapX: number,
 	windowBuildingGapY: number,
 	windowColour: string,
-	windowLitColour: string
+	windowLitColour: string,
+	randomBuildingId: number,
+	randomBuildingId2: number
 ) {
+	// boolean if window lit
+	let windowLit: boolean = false;
 	// space to put windows
 	const spaceForWindowsX: number = width - windowGapX * 2;
 	const spaceForWindowsY: number = height - windowGapY * 2; // more gap at bottom of building
@@ -538,12 +544,58 @@ function drawBuildingWindows(
 	for (let xloop = 0; xloop < windowNumX; xloop++) {
 		const x = startWindowX + xloop * (windowWidth + windowGapX);
 		let y = startWindowY;
-		paintbrush.fillStyle = windowColour;
-		paintbrush.fillRect(x, y, windowWidth, windowHeight);
-		xloop === 5 && xloop++;
-		for (let yloop = 0; yloop < windowNumY; yloop++) {
+		// style window and if lit add shadow
+		drawWindow(
+			paintbrush,
+			windowWidth,
+			windowHeight,
+			windowColour,
+			windowLitColour,
+			windowLit,
+			x,
+			y
+		);
+		// adding a random column gap here, by skipping a loop
+		// only if randomBuildingId is a multple of 4, then picking a random num from windowNumY
+		if ((randomBuildingId * 100) % 4) {
+			const randomWindow = Math.ceil(randomBuildingId2 * windowNumX);
+			xloop === randomWindow && xloop++;
+		}
+		for (let yloop = 1; yloop < windowNumY; yloop++) {
 			y = startWindowY + yloop * (windowHeight + windowGapY);
-			// window shadow also
+			// style window and if lit add shadow
+			drawWindow(
+				paintbrush,
+				windowWidth,
+				windowHeight,
+				windowColour,
+				windowLitColour,
+				windowLit,
+				x,
+				y
+			);
+		}
+	}
+	function drawWindow(
+		paintbrush: any,
+		windowWidth: number,
+		windowHeight: number,
+		windowColour: string,
+		windowLitColour: string,
+		windowLit: boolean,
+		x: number,
+		y: number
+	) {
+		// but random lit window.. havent figured it out exactly, but this seems to look pretty random
+		const dateDigits = parseInt(String(new Date().getSeconds()));
+		const randomLoopDigits = parseInt(
+			String((x + y) * randomBuildingId2).slice(-2)
+		);
+		// flip state of window lit randomly
+		if (dateDigits === randomLoopDigits) {
+			windowLit = !windowLit;
+		}
+		if (windowLit) {
 			paintbrush.shadowColor = windowLitColour;
 			paintbrush.shadowOffsetX = 0;
 			paintbrush.shadowOffsetY = 0;
@@ -554,6 +606,9 @@ function drawBuildingWindows(
 			paintbrush.shadowOffsetX = 0;
 			paintbrush.shadowOffsetY = 0;
 			paintbrush.shadowBlur = 0;
+		} else {
+			paintbrush.fillStyle = windowColour;
+			paintbrush.fillRect(x, y, windowWidth, windowHeight);
 		}
 	}
 }
