@@ -540,8 +540,17 @@ function drawBuildingWindows(
 		xloop === 5 && xloop++;
 		for (let yloop = 0; yloop < windowNumY; yloop++) {
 			y = startWindowY + yloop * (windowHeight + windowGapY);
+			// window shadow also
+			paintbrush.shadowColor = "#fdd48a";
+			paintbrush.shadowOffsetX = 0;
+			paintbrush.shadowOffsetY = 0;
+			paintbrush.shadowBlur = 6;
 			paintbrush.fillStyle = windowColour;
 			paintbrush.fillRect(x, y, windowWidth, windowHeight);
+			paintbrush.shadowColor = "transparent";
+			paintbrush.shadowOffsetX = 0;
+			paintbrush.shadowOffsetY = 0;
+			paintbrush.shadowBlur = 0;
 		}
 	}
 }
