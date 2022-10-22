@@ -147,18 +147,23 @@ function SuccessfulResult(data: any, currentTime: number) {
 	const timeNowHours = String(new Date().getHours());
 	const timeNowMins = String(new Date().getMinutes()).padStart(2, "0");
 	const timeNow = parseInt(`${timeNowHours}${timeNowMins}`);
-	// loop through each, get the closest time on the lower end
+	// loop through each from the mooncalc npm, get the closest time on the lower end
 	Object.entries(skyLightTypes).forEach((value: any[]) => {
 		const eachValueHours = String(value[1].getHours());
 		const eachValueMins = String(value[1].getMinutes()).padStart(2, "0");
 		const eachValue = parseInt(`${eachValueHours}${eachValueMins}`);
-		// console.log(timeNow, eachValue);
+		console.log(value);
 		if (timeNow > eachValue && eachValue > currentSkyLightLoop[1]) {
 			currentSkyLightLoop = value;
 		}
 	});
 	// set the finalised figure here
-	currentSkyLight = currentSkyLightLoop[0];
+	// if its basically just after midnight, need to select the first one
+	if (currentSkyLightLoop[0] === "emptyfornow") {
+		currentSkyLight = "night";
+	} else {
+		currentSkyLight = currentSkyLightLoop[0];
+	}
 
 	const sunPosition = SunCalc.getPosition(
 		weather.time,
