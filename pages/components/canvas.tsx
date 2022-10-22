@@ -144,7 +144,6 @@ export default function Canvas({ data }: { data: any }) {
 	// setting the string currentSkyLight as a definite type, in this case being a string that is equal to one of the keys in the object
 	type ObjectKey = keyof typeof skyColours;
 	const currentSkyLightGradients = skyColours[currentSkyLight as ObjectKey];
-	console.log(currentSkyLightGradients);
 
 	// setting each building layer in an array to be looped over when drawing
 	type BuildingLayerType = {

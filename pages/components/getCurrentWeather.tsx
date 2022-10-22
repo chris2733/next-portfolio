@@ -152,7 +152,6 @@ function SuccessfulResult(data: any, currentTime: number) {
 		const eachValueHours = String(value[1].getHours());
 		const eachValueMins = String(value[1].getMinutes()).padStart(2, "0");
 		const eachValue = parseInt(`${eachValueHours}${eachValueMins}`);
-		console.log(value);
 		if (timeNow > eachValue && eachValue > currentSkyLightLoop[1]) {
 			currentSkyLightLoop = value;
 		}
