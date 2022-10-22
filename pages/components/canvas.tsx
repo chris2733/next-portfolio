@@ -108,8 +108,8 @@ export default function Canvas({ data }: { data: any }) {
 		],
 		night: [
 			{ stop: 0, color: "#5b5c70" },
-			{ stop: 0.2, color: "#253d65" },
-			{ stop: 0.4, color: "#0c1734" },
+			{ stop: 0.1, color: "#253d65" },
+			{ stop: 0.3, color: "#0c1734" },
 			{ stop: 1, color: "#030a17" },
 		],
 		nadir: [
@@ -197,7 +197,7 @@ export default function Canvas({ data }: { data: any }) {
 		// draw sky
 		paintbrush.rect(0, 0, width, height);
 		// add linear gradient
-		var grd = paintbrush.createLinearGradient(0, 0, width, height);
+		var grd = paintbrush.createLinearGradient(width / 2, height, width / 2, 0);
 		currentSkyLightGradients?.forEach((element: any) => {
 			element.stop &&
 				element.color &&
