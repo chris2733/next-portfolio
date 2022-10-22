@@ -1,3 +1,4 @@
+import { type } from "os";
 import { useEffect, useRef, useState } from "react";
 
 // **********
@@ -21,6 +22,7 @@ export default function Canvas({ data }: { data: any }) {
 	let radianAdjust = degToRadian(90);
 
 	// set the colour stops for different times, from suncalc
+	const currentSkyLight: string = data.currentSkyLight;
 	interface skyColourEach {
 		stop: number;
 		color: string;
@@ -138,6 +140,11 @@ export default function Canvas({ data }: { data: any }) {
 			{ stop: 1, color: "#5e6f77" },
 		],
 	};
+	// get the right colour from skycolours, setup properly in typescript
+	// setting the string currentSkyLight as a definite type, in this case being a string that is equal to one of the keys in the object
+	type ObjectKey = keyof typeof skyColours;
+	const currentSkyLightGradients = skyColours[currentSkyLight as ObjectKey];
+	console.log(currentSkyLightGradients);
 
 	// setting each building layer in an array to be looped over when drawing
 	type BuildingLayerType = {
@@ -187,10 +194,17 @@ export default function Canvas({ data }: { data: any }) {
 		paintbrush.strokeStyle = "red";
 		paintbrush.stroke();
 
-		// whole background
-		paintbrush.beginPath();
-		paintbrush.fillStyle = "#2020f6";
-		paintbrush.fillRect(0, 0, width, height);
+		// draw sky
+		paintbrush.rect(0, 0, width, height);
+		// add linear gradient
+		var grd = paintbrush.createLinearGradient(0, 0, width, height);
+		currentSkyLightGradients?.forEach((element: any) => {
+			element.stop &&
+				element.color &&
+				grd.addColorStop(element.stop, element.color);
+		});
+		paintbrush.fillStyle = grd;
+		paintbrush.fill();
 
 		// sun/moon positioning
 		// position in radians from a point on a circle, converted from degrees to radians

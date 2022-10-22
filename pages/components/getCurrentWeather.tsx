@@ -134,7 +134,32 @@ function SuccessfulResult(data: any, currentTime: number) {
 	};
 	// getting sun position with suncalc
 	const SunCalc = require("suncalc");
-	const times = SunCalc.getTimes(weather.time, weather.lat, weather.lon);
+
+	// get sky light colours from mooncalc
+	const skyLightTypes = SunCalc.getTimes(
+		weather.time,
+		weather.lat,
+		weather.lon
+	);
+	// get current type of light in sky
+	let currentSkyLightLoop: any[] = ["emptyfornow", 0];
+	let currentSkyLight: string;
+	const timeNowHours = String(new Date().getHours());
+	const timeNowMins = String(new Date().getMinutes()).padStart(2, "0");
+	const timeNow = parseInt(`${timeNowHours}${timeNowMins}`);
+	// loop through each, get the closest time on the lower end
+	Object.entries(skyLightTypes).forEach((value: any[]) => {
+		const eachValueHours = String(value[1].getHours());
+		const eachValueMins = String(value[1].getMinutes()).padStart(2, "0");
+		const eachValue = parseInt(`${eachValueHours}${eachValueMins}`);
+		// console.log(timeNow, eachValue);
+		if (timeNow > eachValue && eachValue > currentSkyLightLoop[1]) {
+			currentSkyLightLoop = value;
+		}
+	});
+	// set the finalised figure here
+	currentSkyLight = currentSkyLightLoop[0];
+
 	const sunPosition = SunCalc.getPosition(
 		weather.time,
 		weather.lat,
@@ -156,5 +181,5 @@ function SuccessfulResult(data: any, currentTime: number) {
 	const sunDegrees = (sunPosition.azimuth * 180) / Math.PI;
 	const moonDegrees = (moonPosition.azimuth * 180) / Math.PI;
 
-	return { weather, sunDegrees, moonDegrees };
+	return { weather, sunDegrees, moonDegrees, currentSkyLight };
 }
