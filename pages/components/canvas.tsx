@@ -173,66 +173,7 @@ export default function Canvas({ data }: { data: any }) {
 		minG: 10,
 		maxG: 40,
 	};
-	buildings.push({
-		buildingsArray: [
-			...buildingLayer(
-				width,
-				0,
-				100,
-				0,
-				100,
-				building.minW * 1.1,
-				building.maxW * 1.1,
-				building.minH * 1.1,
-				building.maxH * 1.1,
-				building.minG * 0.5,
-				building.maxG * 0.5
-			),
-		],
-		heightAdjust: horizon,
-		scaleAdjust: 0.5,
-		colour: "rgba(0,0,0,0.5)",
-	});
-	buildings.push({
-		buildingsArray: [
-			...buildingLayer(
-				width,
-				0,
-				100,
-				0,
-				100,
-				building.minW * 1.05,
-				building.maxW * 1.05,
-				building.minH * 1.05,
-				building.maxH * 1.05,
-				building.minG * 0.7,
-				building.maxG * 0.7
-			),
-		],
-		heightAdjust: horizon * 0.5,
-		scaleAdjust: 0.8,
-		colour: "rgba(0,0,0,0.75)",
-	});
-	buildings.push({
-		buildingsArray: [
-			...buildingLayer(
-				width,
-				0,
-				100,
-				0,
-				100,
-				building.minW,
-				building.maxW,
-				building.minH,
-				building.maxH,
-				building.minG,
-				building.maxG
-			),
-		],
-		heightAdjust: 0,
-		scaleAdjust: 1,
-		colour: "rgba(0,0,0,1)",
-	});
+	buildingsSetup(building, buildings, horizon, width);
 
 	// set lamppost data here
 	const lamppostStart = randomIntFromInterval(0, 30);
@@ -370,6 +311,75 @@ export default function Canvas({ data }: { data: any }) {
 			<canvas ref={canvasEl} height={height} width={width}></canvas>
 		</div>
 	);
+}
+
+function buildingsSetup(
+	building: any,
+	buildings: any,
+	horizon: number,
+	width: number
+) {
+	// building constraints setup here
+	buildings.push({
+		buildingsArray: [
+			...buildingLayer(
+				width,
+				0,
+				100,
+				0,
+				100,
+				building.minW * 1.1,
+				building.maxW * 1.1,
+				building.minH * 1.1,
+				building.maxH * 1.1,
+				building.minG * 0.5,
+				building.maxG * 0.5
+			),
+		],
+		heightAdjust: horizon,
+		scaleAdjust: 0.5,
+		colour: "rgba(0,0,0,0.5)",
+	});
+	buildings.push({
+		buildingsArray: [
+			...buildingLayer(
+				width,
+				0,
+				100,
+				0,
+				100,
+				building.minW * 1.05,
+				building.maxW * 1.05,
+				building.minH * 1.05,
+				building.maxH * 1.05,
+				building.minG * 0.7,
+				building.maxG * 0.7
+			),
+		],
+		heightAdjust: horizon * 0.5,
+		scaleAdjust: 0.8,
+		colour: "rgba(0,0,0,0.75)",
+	});
+	buildings.push({
+		buildingsArray: [
+			...buildingLayer(
+				width,
+				0,
+				100,
+				0,
+				100,
+				building.minW,
+				building.maxW,
+				building.minH,
+				building.maxH,
+				building.minG,
+				building.maxG
+			),
+		],
+		heightAdjust: 0,
+		scaleAdjust: 1,
+		colour: "rgba(0,0,0,1)",
+	});
 }
 
 // degrees to radian calc - although this can be fixed later in the api to recieve measurements in radians instead
