@@ -109,6 +109,7 @@ const Favicons = () => [
 		href: "/fonts/geometria/Geometria-ExtraBoldItalic.woff",
 		as: "font",
 		type: "font/woff",
+		crossOrigin: "anonymous",
 	},
 
 	{
@@ -116,6 +117,7 @@ const Favicons = () => [
 		href: "/fonts/geometria/Geometria-ExtraBold.woff",
 		as: "font",
 		type: "font/woff",
+		crossOrigin: "anonymous",
 	},
 
 	{
@@ -123,6 +125,7 @@ const Favicons = () => [
 		href: "/fonts/geometria/Geometria.woff",
 		as: "font",
 		type: "font/woff",
+		crossOrigin: "anonymous",
 	},
 
 	{
@@ -130,6 +133,7 @@ const Favicons = () => [
 		href: "/fonts/geometria/Geometria-Bold.woff",
 		as: "font",
 		type: "font/woff",
+		crossOrigin: "anonymous",
 	},
 
 	{
@@ -137,6 +141,7 @@ const Favicons = () => [
 		href: "/fonts/geometria/Geometria-Heavy.woff",
 		as: "font",
 		type: "font/woff",
+		crossOrigin: "anonymous",
 	},
 
 	{
@@ -144,6 +149,7 @@ const Favicons = () => [
 		href: "/fonts/geometria/Geometria-BoldItalic.woff",
 		as: "font",
 		type: "font/woff",
+		crossOrigin: "anonymous",
 	},
 
 	{
@@ -151,6 +157,7 @@ const Favicons = () => [
 		href: "/fonts/geometria/Geometria-ExtraLight.woff",
 		as: "font",
 		type: "font/woff",
+		crossOrigin: "anonymous",
 	},
 
 	{
@@ -158,6 +165,7 @@ const Favicons = () => [
 		href: "/fonts/geometria/Geometria-ExtraLightItalic.woff",
 		as: "font",
 		type: "font/woff",
+		crossOrigin: "anonymous",
 	},
 
 	{
@@ -165,6 +173,7 @@ const Favicons = () => [
 		href: "/fonts/geometria/Geometria-HeavyItalic.woff",
 		as: "font",
 		type: "font/woff",
+		crossOrigin: "anonymous",
 	},
 
 	{
@@ -172,6 +181,7 @@ const Favicons = () => [
 		href: "/fonts/geometria/Geometria-Italic.woff",
 		as: "font",
 		type: "font/woff",
+		crossOrigin: "anonymous",
 	},
 
 	{
@@ -179,6 +189,7 @@ const Favicons = () => [
 		href: "/fonts/geometria/Geometria-MediumItalic.woff",
 		as: "font",
 		type: "font/woff",
+		crossOrigin: "anonymous",
 	},
 
 	{
@@ -186,6 +197,7 @@ const Favicons = () => [
 		href: "/fonts/geometria/Geometria-LightItalic.woff",
 		as: "font",
 		type: "font/woff",
+		crossOrigin: "anonymous",
 	},
 
 	{
@@ -193,6 +205,7 @@ const Favicons = () => [
 		href: "/fonts/geometria/Geometria-Light.woff",
 		as: "font",
 		type: "font/woff",
+		crossOrigin: "anonymous",
 	},
 
 	{
@@ -200,6 +213,7 @@ const Favicons = () => [
 		href: "/fonts/geometria/Geometria-Medium.woff",
 		as: "font",
 		type: "font/woff",
+		crossOrigin: "anonymous",
 	},
 
 	{
@@ -207,6 +221,7 @@ const Favicons = () => [
 		href: "/fonts/geometria/Geometria-Thin.woff",
 		as: "font",
 		type: "font/woff",
+		crossOrigin: "anonymous",
 	},
 
 	{
@@ -214,6 +229,7 @@ const Favicons = () => [
 		href: "/fonts/geometria/Geometria-ThinItalic.woff",
 		as: "font",
 		type: "font/woff",
+		crossOrigin: "anonymous",
 	},
 	// {
 	// 	rel: 'preload',
