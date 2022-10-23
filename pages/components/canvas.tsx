@@ -153,37 +153,84 @@ export default function Canvas({ data }: { data: any }) {
 	let buildings: {
 		buildingsArray: BuildingLayerType[];
 		heightAdjust: number;
+		scaleAdjust: number; //scaleadjust used to make windows smaller, giving illusion of distance away
 		colour: string;
 	}[] = [];
 	// each building layer pushed here with a height adjusted up in y
-	// building dimensions constraints set here
-	// this should be done betterrr
-	const buildingDimensions: [
-		number,
-		number,
-		number,
-		number,
-		number,
-		number,
-		number,
-		number,
-		number,
-		number,
-		number
-	] = [width, 0, 100, 0, 100, 60, 150, 70, 250, 20, 80];
+	// building constraints setup here
+	const building: {
+		minW: number;
+		maxW: number;
+		minH: number;
+		maxH: number;
+		minG: number;
+		maxG: number;
+	} = {
+		minW: 60,
+		maxW: 150,
+		minH: 70,
+		maxH: 250,
+		minG: 10,
+		maxG: 40,
+	};
 	buildings.push({
-		buildingsArray: [...buildingLayer(...buildingDimensions)],
+		buildingsArray: [
+			...buildingLayer(
+				width,
+				0,
+				100,
+				0,
+				100,
+				building.minW * 1.1,
+				building.maxW * 1.1,
+				building.minH * 1.1,
+				building.maxH * 1.1,
+				building.minG * 0.5,
+				building.maxG * 0.5
+			),
+		],
 		heightAdjust: horizon,
+		scaleAdjust: 0.5,
 		colour: "rgba(0,0,0,0.5)",
 	});
 	buildings.push({
-		buildingsArray: [...buildingLayer(...buildingDimensions)],
+		buildingsArray: [
+			...buildingLayer(
+				width,
+				0,
+				100,
+				0,
+				100,
+				building.minW * 1.05,
+				building.maxW * 1.05,
+				building.minH * 1.05,
+				building.maxH * 1.05,
+				building.minG * 0.7,
+				building.maxG * 0.7
+			),
+		],
 		heightAdjust: horizon * 0.5,
+		scaleAdjust: 0.8,
 		colour: "rgba(0,0,0,0.75)",
 	});
 	buildings.push({
-		buildingsArray: [...buildingLayer(...buildingDimensions)],
+		buildingsArray: [
+			...buildingLayer(
+				width,
+				0,
+				100,
+				0,
+				100,
+				building.minW,
+				building.maxW,
+				building.minH,
+				building.maxH,
+				building.minG,
+				building.maxG
+			),
+		],
 		heightAdjust: 0,
+		scaleAdjust: 1,
 		colour: "rgba(0,0,0,1)",
 	});
 
@@ -210,7 +257,7 @@ export default function Canvas({ data }: { data: any }) {
 				element.color &&
 				grd.addColorStop(element.stop, element.color);
 		});
-		paintbrush.fillStyle = grd;
+		paintbrush.fillStyle = "blue";
 		paintbrush.fill();
 
 		// sun/moon positioning
@@ -249,29 +296,32 @@ export default function Canvas({ data }: { data: any }) {
 		);
 
 		// draw each building layer here
-		buildings.forEach(({ buildingsArray, heightAdjust, colour }) => {
-			// if height heightAdjust, add bar of colour underneath to cover the background
-			let heightFix = 0;
-			if (heightAdjust !== undefined) {
-				heightFix = heightAdjust;
-				paintbrush.beginPath();
-				paintbrush.fillStyle = colour;
-				paintbrush.fillRect(0, height - heightAdjust, width, height);
+		buildings.forEach(
+			({ buildingsArray, heightAdjust, scaleAdjust, colour }) => {
+				// if height heightAdjust, add bar of colour underneath to cover the background
+				let heightFix = 0;
+				if (heightAdjust !== undefined) {
+					heightFix = heightAdjust;
+					paintbrush.beginPath();
+					paintbrush.fillStyle = colour;
+					paintbrush.fillRect(0, height - heightAdjust, width, height);
+				}
+				buildingsArray &&
+					buildingsArray.forEach((building: any) => {
+						drawBuilding(
+							paintbrush,
+							building.start,
+							height - building.height - heightFix,
+							building.width,
+							building.height,
+							colour,
+							building.randomBuildingId,
+							building.randomBuildingId2,
+							scaleAdjust
+						);
+					});
 			}
-			buildingsArray &&
-				buildingsArray.forEach((building: any) => {
-					drawBuilding(
-						paintbrush,
-						building.start,
-						height - building.height - heightFix,
-						building.width,
-						building.height,
-						colour,
-						building.randomBuildingId,
-						building.randomBuildingId2
-					);
-				});
-		});
+		);
 
 		// draw lampposts, similar setup to buildinglayer
 		drawLampposts(
@@ -392,7 +442,8 @@ function drawBuilding(
 	height: number,
 	fill: string,
 	randomBuildingId: number,
-	randomBuildingId2: number
+	randomBuildingId2: number,
+	scaleAdjust: number
 ) {
 	// draw a rectangle with curved top edges only slightly
 	let radius = 5;
@@ -448,12 +499,12 @@ function drawBuilding(
 		height,
 		startX,
 		startY,
-		windowWidth,
-		windowHeight,
-		windowGapX,
-		windowGapY,
-		windowBuildingGapX,
-		windowBuildingGapY,
+		windowWidth * scaleAdjust,
+		windowHeight * scaleAdjust,
+		windowGapX * scaleAdjust,
+		windowGapY * scaleAdjust,
+		windowBuildingGapX * scaleAdjust,
+		windowBuildingGapY * scaleAdjust,
 		windowColour,
 		windowLitColour,
 		randomBuildingId,
