@@ -1,4 +1,4 @@
-import "../styles/globals.scss";
+import "../public/globals.scss";
 import type { AppProps } from "next/app";
 import { AnimatePresence, motion } from "framer-motion";
 import { DefaultSeo } from "next-seo";
@@ -103,6 +103,117 @@ const Favicons = () => [
 		rel: "icon",
 		href: "/favicomatic/favicon-128.png",
 		sizes: "128x128",
+	},
+	{
+		rel: "preload",
+		href: "/fonts/geometria/Geometria-ExtraBoldItalic.woff",
+		as: "font",
+		type: "font/woff",
+	},
+
+	{
+		rel: "preload",
+		href: "/fonts/geometria/Geometria-ExtraBold.woff",
+		as: "font",
+		type: "font/woff",
+	},
+
+	{
+		rel: "preload",
+		href: "/fonts/geometria/Geometria.woff",
+		as: "font",
+		type: "font/woff",
+	},
+
+	{
+		rel: "preload",
+		href: "/fonts/geometria/Geometria-Bold.woff",
+		as: "font",
+		type: "font/woff",
+	},
+
+	{
+		rel: "preload",
+		href: "/fonts/geometria/Geometria-Heavy.woff",
+		as: "font",
+		type: "font/woff",
+	},
+
+	{
+		rel: "preload",
+		href: "/fonts/geometria/Geometria-BoldItalic.woff",
+		as: "font",
+		type: "font/woff",
+	},
+
+	{
+		rel: "preload",
+		href: "/fonts/geometria/Geometria-ExtraLight.woff",
+		as: "font",
+		type: "font/woff",
+	},
+
+	{
+		rel: "preload",
+		href: "/fonts/geometria/Geometria-ExtraLightItalic.woff",
+		as: "font",
+		type: "font/woff",
+	},
+
+	{
+		rel: "preload",
+		href: "/fonts/geometria/Geometria-HeavyItalic.woff",
+		as: "font",
+		type: "font/woff",
+	},
+
+	{
+		rel: "preload",
+		href: "/fonts/geometria/Geometria-Italic.woff",
+		as: "font",
+		type: "font/woff",
+	},
+
+	{
+		rel: "preload",
+		href: "/fonts/geometria/Geometria-MediumItalic.woff",
+		as: "font",
+		type: "font/woff",
+	},
+
+	{
+		rel: "preload",
+		href: "/fonts/geometria/Geometria-LightItalic.woff",
+		as: "font",
+		type: "font/woff",
+	},
+
+	{
+		rel: "preload",
+		href: "/fonts/geometria/Geometria-Light.woff",
+		as: "font",
+		type: "font/woff",
+	},
+
+	{
+		rel: "preload",
+		href: "/fonts/geometria/Geometria-Medium.woff",
+		as: "font",
+		type: "font/woff",
+	},
+
+	{
+		rel: "preload",
+		href: "/fonts/geometria/Geometria-Thin.woff",
+		as: "font",
+		type: "font/woff",
+	},
+
+	{
+		rel: "preload",
+		href: "/fonts/geometria/Geometria-ThinItalic.woff",
+		as: "font",
+		type: "font/woff",
 	},
 	// {
 	// 	rel: 'preload',
