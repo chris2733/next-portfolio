@@ -3,7 +3,6 @@ import { useEffect, useRef, useState } from "react";
 
 // **********
 // todo
-// add lamposts
 // cars randomly coming accross
 // make canvas render with less frames per second
 // maybe make sun/moon/sky/change with time, on a really slow cycle
@@ -157,24 +156,33 @@ export default function Canvas({ data }: { data: any }) {
 		colour: string;
 	}[] = [];
 	// each building layer pushed here with a height adjusted up in y
+	// building dimensions constraints set here
+	// this should be done betterrr
+	const buildingDimensions: [
+		number,
+		number,
+		number,
+		number,
+		number,
+		number,
+		number,
+		number,
+		number,
+		number,
+		number
+	] = [width, 0, 100, 0, 100, 60, 150, 70, 250, 20, 80];
 	buildings.push({
-		buildingsArray: [
-			...buildingLayer(width, 0, 100, 0, 100, 60, 150, 70, 250, 20, 80),
-		],
+		buildingsArray: [...buildingLayer(...buildingDimensions)],
 		heightAdjust: horizon,
 		colour: "rgba(0,0,0,0.5)",
 	});
 	buildings.push({
-		buildingsArray: [
-			...buildingLayer(width, 0, 100, 0, 100, 60, 150, 70, 250, 20, 80),
-		],
+		buildingsArray: [...buildingLayer(...buildingDimensions)],
 		heightAdjust: horizon * 0.5,
 		colour: "rgba(0,0,0,0.75)",
 	});
 	buildings.push({
-		buildingsArray: [
-			...buildingLayer(width, 0, 100, 0, 100, 60, 150, 70, 250, 20, 80),
-		],
+		buildingsArray: [...buildingLayer(...buildingDimensions)],
 		heightAdjust: 0,
 		colour: "rgba(0,0,0,1)",
 	});
