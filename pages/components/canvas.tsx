@@ -198,7 +198,7 @@ export default function Canvas({ data }: { data: any }) {
 				element.color &&
 				grd.addColorStop(element.stop, element.color);
 		});
-		paintbrush.fillStyle = "blue";
+		paintbrush.fillStyle = grd;
 		paintbrush.fill();
 
 		// sun/moon positioning
