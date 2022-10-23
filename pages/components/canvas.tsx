@@ -822,6 +822,10 @@ function drawLampposts(
 	for (let x: number = start; x < end; x += gap) {
 		paintbrush.beginPath();
 		paintbrush.fillStyle = fill;
+		paintbrush.shadowColor = lightFill;
+		paintbrush.shadowOffsetX = 2;
+		paintbrush.shadowOffsetY = 2;
+		paintbrush.shadowBlur = 21;
 		paintbrush.fillRect(x, height, postWidth, -postHeight);
 		paintbrush.fillRect(x, height - postHeight, 8, 2);
 		// light at end
