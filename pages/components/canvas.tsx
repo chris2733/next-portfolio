@@ -313,9 +313,9 @@ function drawSunMoon(
 	const orbitCentreY: number = height - horizon;
 	// set orbit radius to width of the screen, only if its smaller than the screen height (for super fucking wide screens), otherwise use height
 	const orbitRadius: number = width < height ? width * 0.48 : height * 0.48;
-	const sunRadius: number = 15;
+	const sunRadius: number = 25;
 	const moonRadius: number = 15;
-	const sunColour: string = "yellow";
+	const sunColour: string = "#eabc2c99";
 	const moonColour: string = "grey";
 	// sun position
 	const sun = sunMoonPosition(
@@ -329,7 +329,8 @@ function drawSunMoon(
 		radianAdjust,
 		width,
 		height,
-		horizon
+		horizon,
+		true
 	);
 	// moon position
 	const moon = sunMoonPosition(
@@ -465,7 +466,8 @@ function sunMoonPosition(
 	radianAdjust: number,
 	width: number,
 	height: number,
-	horizon: number
+	horizon: number,
+	isSun?: boolean
 ) {
 	// start drawing the arc to set the position
 	paintbrush.beginPath();
@@ -507,8 +509,18 @@ function sunMoonPosition(
 		1
 	);
 	// fill itt
-	paintbrush.fillStyle = fillColour;
-	paintbrush.fill();
+	// if isSun...
+	if (isSun) {
+		paintbrush.shadowColor = fillColour;
+		paintbrush.shadowBlur = 15;
+		paintbrush.fillStyle = fillColour;
+		paintbrush.fill();
+		paintbrush.shadowColor = "transparent";
+		paintbrush.shadowBlur = 0;
+	} else {
+		paintbrush.fillStyle = fillColour;
+		paintbrush.fill();
+	}
 }
 
 // get a random number
@@ -918,7 +930,7 @@ function drawLampposts(
 		paintbrush.shadowOffsetY = 4;
 		paintbrush.shadowBlur = 8;
 		paintbrush.fillStyle = lightFill;
-		paintbrush.fillRect(x + 3, height - postHeight - 2, 5, 2);
+		paintbrush.fillRect(x + 3, height - postHeight + 2, 5, 2);
 		paintbrush.shadowColor = "transparent";
 		paintbrush.shadowOffsetX = 0;
 		paintbrush.shadowOffsetY = 0;
