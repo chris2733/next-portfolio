@@ -168,10 +168,10 @@ export default function Canvas({ data }: { data: any }) {
 	} = {
 		minW: 50,
 		maxW: 130,
-		minH: 40,
+		minH: 70,
 		maxH: 200,
-		minG: 3,
-		maxG: 35,
+		minG: 2,
+		maxG: 10,
 	};
 	buildingsSetup(
 		building,
@@ -428,12 +428,13 @@ function buildingsSetup(
 		// check the current sky colour isnt just black for night, otherwise it needs to be lightened
 		const blackSky = buildingColour === "#000000";
 		// getting correct -1 starting point for light colours, it shouldnt go past -1
-		const hexChange = blackSky ? 0.02 : -1 + layerNum / 10;
+		const hexAdjust = 20; //amount to adjust, lower num for more contrast between layers
+		const hexChange = blackSky ? 0.02 : -1 + layerNum / hexAdjust;
 		buildingLayers.forEach((layer, index) => {
 			// if night then multiply the change, otherwise take it away - looks better visually
 			const shadeChange = blackSky
 				? hexChange * (layerNum - index)
-				: hexChange - index / 10;
+				: hexChange - index / hexAdjust;
 			layer.colour = shadeHexColor(buildingColour, shadeChange);
 		});
 	}
@@ -995,8 +996,26 @@ function shadeHexColor(color: string, percent: number) {
 	);
 }
 
+// from here
 // lighten colour, colour to and from, c0 and c1 respectively
-// function blendHexColors(c0: string, c1: string, p:number) {
-// 	var f=parseInt(c0.slice(1),16),t=parseInt(c1.slice(1),16),R1=f>>16,G1=f>>8&0x00FF,B1=f&0x0000FF,R2=t>>16,G2=t>>8&0x00FF,B2=t&0x0000FF;
-// 	return "#"+(0x1000000+(Math.round((R2-R1)*p)+R1)*0x10000+(Math.round((G2-G1)*p)+G1)*0x100+(Math.round((B2-B1)*p)+B1)).toString(16).slice(1);
+// function blendHexColors(c0: string, c1: string, p: number) {
+// 	var f = parseInt(c0.slice(1), 16),
+// 		t = parseInt(c1.slice(1), 16),
+// 		R1 = f >> 16,
+// 		G1 = (f >> 8) & 0x00ff,
+// 		B1 = f & 0x0000ff,
+// 		R2 = t >> 16,
+// 		G2 = (t >> 8) & 0x00ff,
+// 		B2 = t & 0x0000ff;
+// 	return (
+// 		"#" +
+// 		(
+// 			0x1000000 +
+// 			(Math.round((R2 - R1) * p) + R1) * 0x10000 +
+// 			(Math.round((G2 - G1) * p) + G1) * 0x100 +
+// 			(Math.round((B2 - B1) * p) + B1)
+// 		)
+// 			.toString(16)
+// 			.slice(1)
+// 	);
 // }
