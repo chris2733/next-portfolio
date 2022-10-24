@@ -377,12 +377,16 @@ function buildingsSetup(
 	if (buildingColour) {
 		// then see if its night, it will be lightened
 		const layerNum = buildingLayers.length;
-		const hexChange = buildingColour === "#000000" ? 0.02 : -0.02;
+		// getting correct -1 starting point for light colours, it shouldnt go past -1
+		const hexChange = buildingColour === "#000000" ? 0.02 : -1 + layerNum / 10;
 		buildingLayers.forEach((layer, index) => {
-			layer.colour = shadeHexColor(
-				buildingColour,
-				hexChange * (layerNum - index)
-			);
+			// if night then multiply the change, otherwise take it away - looks better visually
+			const shadeChange =
+				buildingColour === "#000000"
+					? hexChange * (layerNum - index)
+					: hexChange - index / 10;
+			console.log(hexChange, hexChange + index / 10, shadeChange);
+			layer.colour = shadeHexColor(buildingColour, shadeChange);
 		});
 	}
 
