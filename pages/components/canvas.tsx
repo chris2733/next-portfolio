@@ -173,7 +173,13 @@ export default function Canvas({ data }: { data: any }) {
 		minG: 10,
 		maxG: 40,
 	};
-	buildingsSetup(building, buildings, horizon, width);
+	buildingsSetup(
+		building,
+		buildings,
+		horizon,
+		width,
+		currentSkyLightGradients && currentSkyLightGradients[0].color
+	);
 
 	// set lamppost data here
 	const lamppostStart = randomIntFromInterval(0, 30);
@@ -317,68 +323,77 @@ function buildingsSetup(
 	building: any,
 	buildings: any,
 	horizon: number,
-	width: number
+	width: number,
+	buildingColour?: string
 ) {
-	// building constraints setup here
-	buildings.push({
-		buildingsArray: [
-			...buildingLayer(
-				width,
-				0,
-				100,
-				0,
-				100,
-				building.minW * 1.1,
-				building.maxW * 1.1,
-				building.minH * 1.1,
-				building.maxH * 1.1,
-				building.minG * 0.5,
-				building.maxG * 0.5
-			),
-		],
-		heightAdjust: horizon,
-		scaleAdjust: 0.5,
-		colour: "rgba(0,0,0,0.5)",
-	});
-	buildings.push({
-		buildingsArray: [
-			...buildingLayer(
-				width,
-				0,
-				100,
-				0,
-				100,
-				building.minW * 1.05,
-				building.maxW * 1.05,
-				building.minH * 1.05,
-				building.maxH * 1.05,
-				building.minG * 0.7,
-				building.maxG * 0.7
-			),
-		],
-		heightAdjust: horizon * 0.5,
-		scaleAdjust: 0.8,
-		colour: "rgba(0,0,0,0.75)",
-	});
-	buildings.push({
-		buildingsArray: [
-			...buildingLayer(
-				width,
-				0,
-				100,
-				0,
-				100,
-				building.minW,
-				building.maxW,
-				building.minH,
-				building.maxH,
-				building.minG,
-				building.maxG
-			),
-		],
-		heightAdjust: 0,
-		scaleAdjust: 1,
-		colour: "rgba(0,0,0,1)",
+	// building layers set here
+	const buildingLayers: {
+		minWMod: number;
+		maxWMod: number;
+		minHMod: number;
+		maxHMod: number;
+		minGMod: number;
+		maxGMod: number;
+		heightAdjust: number;
+		scaleAdjust: number;
+		colour: string;
+	}[] = [
+		{
+			minWMod: 1.1,
+			maxWMod: 1.1,
+			minHMod: 1.1,
+			maxHMod: 1.1,
+			minGMod: 0.5,
+			maxGMod: 0.5,
+			heightAdjust: horizon,
+			scaleAdjust: 0.5,
+			colour: "black",
+		},
+		{
+			minWMod: 1.05,
+			maxWMod: 1.05,
+			minHMod: 1.05,
+			maxHMod: 1.05,
+			minGMod: 0.7,
+			maxGMod: 0.7,
+			heightAdjust: horizon * 0.5,
+			scaleAdjust: 0.8,
+			colour: "rgba(0,0,0,0.75)",
+		},
+		{
+			minWMod: 1,
+			maxWMod: 1,
+			minHMod: 1,
+			maxHMod: 1,
+			minGMod: 1,
+			maxGMod: 1,
+			heightAdjust: 0,
+			scaleAdjust: 1,
+			colour: "rgba(0,0,0,1)",
+		},
+	];
+
+	buildingLayers.forEach((layer) => {
+		buildings.push({
+			buildingsArray: [
+				...buildingLayer(
+					width,
+					0,
+					100,
+					0,
+					100,
+					building.minW * layer.minWMod,
+					building.maxW * layer.maxWMod,
+					building.minH * layer.minHMod,
+					building.maxH * layer.maxHMod,
+					building.minG * layer.minGMod,
+					building.maxG * layer.maxGMod
+				),
+			],
+			heightAdjust: layer.heightAdjust,
+			scaleAdjust: layer.scaleAdjust,
+			colour: layer.colour,
+		});
 	});
 }
 
@@ -850,4 +865,22 @@ function drawLampposts(
 		paintbrush.shadowOffsetY = 0;
 		paintbrush.shadowBlur = 0;
 	}
+}
+
+function hexToRgb(hex: string) {
+	if (!hex.includes("#")) {
+		return null;
+	}
+	hex = hex.replaceAll("#", "");
+	if (hex.length != 6) {
+		return null;
+	}
+
+	const aRgbHex: any = hex.match(/.{1,2}/g);
+	const aRgb = [
+		parseInt(aRgbHex[0], 16),
+		parseInt(aRgbHex[1], 16),
+		parseInt(aRgbHex[2], 16),
+	];
+	return aRgb;
 }
