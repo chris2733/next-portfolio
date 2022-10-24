@@ -1,3 +1,4 @@
+import { loadComponents } from "next/dist/server/load-components";
 import { useEffect, useRef, useState } from "react";
 
 // **********
@@ -5,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 // cars randomly coming accross
 // make canvas render with less frames per second
 // maybe make sun/moon/sky/change with time, on a really slow cycle
+// can use paintbrush.filter = "blur(5px)"; to blur gradient background but it almost destroyed chrome.. so only do it on page loadComponents, not on each draw()
 
 export default function Canvas({ data }: { data: any }) {
 	// console.log(data);
@@ -188,23 +190,14 @@ export default function Canvas({ data }: { data: any }) {
 	// draw on canvas here
 	const draw = (paintbrush: any, frameCount: any) => {
 		// horizon
-		paintbrush.beginPath();
-		paintbrush.moveTo(0, height - horizon);
-		paintbrush.lineTo(width, height - horizon);
-		paintbrush.strokeStyle = "red";
-		paintbrush.stroke();
+		// paintbrush.beginPath();
+		// paintbrush.moveTo(0, height - horizon);
+		// paintbrush.lineTo(width, height - horizon);
+		// paintbrush.strokeStyle = "red";
+		// paintbrush.stroke();
 
 		// draw sky
-		paintbrush.rect(0, 0, width, height);
-		// add linear gradient
-		var grd = paintbrush.createLinearGradient(width / 2, height, width / 2, 0);
-		currentSkyLightGradients?.forEach((element: any) => {
-			element.stop &&
-				element.color &&
-				grd.addColorStop(element.stop, element.color);
-		});
-		paintbrush.fillStyle = grd;
-		paintbrush.fill();
+		drawSky(paintbrush, width, height, currentSkyLightGradients);
 
 		// sun/moon positioning
 		// position in radians from a point on a circle, converted from degrees to radians
@@ -318,6 +311,24 @@ export default function Canvas({ data }: { data: any }) {
 	);
 }
 
+function drawSky(
+	paintbrush: any,
+	width: number,
+	height: number,
+	currentSkyLightGradients: { stop: number; color: string }[]
+) {
+	paintbrush.rect(0, 0, width, height);
+	// add linear gradient
+	var grd = paintbrush.createLinearGradient(width / 2, height, width / 2, 0);
+	currentSkyLightGradients?.forEach((element: any) => {
+		element.stop &&
+			element.color &&
+			grd.addColorStop(element.stop, element.color);
+	});
+	paintbrush.fillStyle = grd;
+	paintbrush.fill();
+}
+
 function buildingsSetup(
 	building: any,
 	buildings: any,
@@ -377,14 +388,15 @@ function buildingsSetup(
 	if (buildingColour) {
 		// then see if its night, it will be lightened
 		const layerNum = buildingLayers.length;
+		// check the current sky colour isnt just black for night, otherwise it needs to be lightened
+		const blackSky = buildingColour === "#000000";
 		// getting correct -1 starting point for light colours, it shouldnt go past -1
-		const hexChange = buildingColour === "#000000" ? 0.02 : -1 + layerNum / 10;
+		const hexChange = blackSky ? 0.02 : -1 + layerNum / 10;
 		buildingLayers.forEach((layer, index) => {
 			// if night then multiply the change, otherwise take it away - looks better visually
-			const shadeChange =
-				buildingColour === "#000000"
-					? hexChange * (layerNum - index)
-					: hexChange - index / 10;
+			const shadeChange = blackSky
+				? hexChange * (layerNum - index)
+				: hexChange - index / 10;
 			layer.colour = shadeHexColor(buildingColour, shadeChange);
 		});
 	}
