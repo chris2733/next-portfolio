@@ -1,4 +1,3 @@
-import { type } from "os";
 import { useEffect, useRef, useState } from "react";
 
 // **********
@@ -347,7 +346,7 @@ function buildingsSetup(
 			maxGMod: 0.5,
 			heightAdjust: horizon,
 			scaleAdjust: 0.5,
-			colour: "black",
+			colour: "rgba(0,0,0,0.5)",
 		},
 		{
 			minWMod: 1.05,
@@ -372,6 +371,20 @@ function buildingsSetup(
 			colour: "rgba(0,0,0,1)",
 		},
 	];
+
+	// if buildingColour supplied, go through layers and amend colour for each building
+	// if not, all blackkk
+	if (buildingColour) {
+		// then see if its night, it will be lightened
+		const layerNum = buildingLayers.length;
+		const hexChange = buildingColour === "#000000" ? 0.02 : -0.02;
+		buildingLayers.forEach((layer, index) => {
+			layer.colour = shadeHexColor(
+				buildingColour,
+				hexChange * (layerNum - index)
+			);
+		});
+	}
 
 	buildingLayers.forEach((layer) => {
 		buildings.push({
@@ -867,20 +880,47 @@ function drawLampposts(
 	}
 }
 
-function hexToRgb(hex: string) {
-	if (!hex.includes("#")) {
-		return null;
-	}
-	hex = hex.replaceAll("#", "");
-	if (hex.length != 6) {
-		return null;
-	}
+// function hexToRgb(hex: string) {
+// 	if (!hex.includes("#")) {
+// 		return null;
+// 	}
+// 	hex = hex.replaceAll("#", "");
+// 	if (hex.length != 6) {
+// 		return null;
+// 	}
 
-	const aRgbHex: any = hex.match(/.{1,2}/g);
-	const aRgb = [
-		parseInt(aRgbHex[0], 16),
-		parseInt(aRgbHex[1], 16),
-		parseInt(aRgbHex[2], 16),
-	];
-	return aRgb;
+// 	const aRgbHex: any = hex.match(/.{1,2}/g);
+// 	const aRgb = [
+// 		parseInt(aRgbHex[0], 16),
+// 		parseInt(aRgbHex[1], 16),
+// 		parseInt(aRgbHex[2], 16),
+// 	];
+// 	return aRgb;
+// }
+
+// shade colour light or dark, from 1.0 to -1.0 respectively
+function shadeHexColor(color: string, percent: number) {
+	var f = parseInt(color.slice(1), 16),
+		t = percent < 0 ? 0 : 255,
+		p = percent < 0 ? percent * -1 : percent,
+		R = f >> 16,
+		G = (f >> 8) & 0x00ff,
+		B = f & 0x0000ff;
+	return (
+		"#" +
+		(
+			0x1000000 +
+			(Math.round((t - R) * p) + R) * 0x10000 +
+			(Math.round((t - G) * p) + G) * 0x100 +
+			(Math.round((t - B) * p) + B)
+		)
+			.toString(16)
+			.slice(1)
+	);
 }
+
+// lighten colour, colour to and from, c0 and c1 respectively
+// function blendHexColors(c0: string, c1: string, p:number) {
+// 	var f=parseInt(c0.slice(1),16),t=parseInt(c1.slice(1),16),R1=f>>16,G1=f>>8&0x00FF,B1=f&0x0000FF,R2=t>>16,G2=t>>8&0x00FF,B2=t&0x0000FF;
+// 	return "#"+(0x1000000+(Math.round((R2-R1)*p)+R1)*0x10000+(Math.round((G2-G1)*p)+G1)*0x100+(Math.round((B2-B1)*p)+B1)).toString(16).slice(1);
+// }
