@@ -166,12 +166,12 @@ export default function Canvas({ data }: { data: any }) {
 		minG: number;
 		maxG: number;
 	} = {
-		minW: 60,
-		maxW: 150,
-		minH: 70,
-		maxH: 250,
-		minG: 10,
-		maxG: 40,
+		minW: 50,
+		maxW: 130,
+		minH: 40,
+		maxH: 200,
+		minG: 3,
+		maxG: 35,
 	};
 	buildingsSetup(
 		building,
@@ -379,14 +379,25 @@ function buildingsSetup(
 			colour: "rgba(0,0,0,0.5)",
 		},
 		{
-			minWMod: 1.05,
-			maxWMod: 1.05,
-			minHMod: 1.05,
-			maxHMod: 1.05,
-			minGMod: 0.7,
-			maxGMod: 0.7,
-			heightAdjust: horizon * 0.5,
-			scaleAdjust: 0.8,
+			minWMod: 1.066,
+			maxWMod: 1.066,
+			minHMod: 1.066,
+			maxHMod: 1.066,
+			minGMod: 0.65,
+			maxGMod: 0.65,
+			heightAdjust: horizon * 0.33,
+			scaleAdjust: 0.65,
+			colour: "rgba(0,0,0,0.75)",
+		},
+		{
+			minWMod: 1.033,
+			maxWMod: 1.033,
+			minHMod: 1.033,
+			maxHMod: 1.033,
+			minGMod: 0.85,
+			maxGMod: 0.85,
+			heightAdjust: horizon * 0.66,
+			scaleAdjust: 0.85,
 			colour: "rgba(0,0,0,0.75)",
 		},
 		{
@@ -572,17 +583,17 @@ function drawBuilding(
 	let windowHeight: number;
 	// random window sizes using randomBuildingId
 	// using randomBuildingId2 for any other randomness needed
-	if (randomBuildingId > 0.9) {
+	if (randomBuildingId > 0.95) {
 		// random chance for bay windows
-		windowWidth = 7 + Math.floor(5 * randomBuildingId2);
-		windowHeight = 11 + Math.floor(7 * randomBuildingId2);
+		windowWidth = 6 + Math.floor(5 * randomBuildingId2);
+		windowHeight = 9 + Math.floor(7 * randomBuildingId2);
 	} else {
-		windowWidth = 7 + Math.floor(8 * randomBuildingId2);
-		windowHeight = 3 + Math.floor(5 * randomBuildingId2);
+		windowWidth = 5 + Math.floor(8 * randomBuildingId2);
+		windowHeight = 2 + Math.floor(5 * randomBuildingId2);
 	}
 	// gep between windows
-	const windowGapX: number = 4 + Math.floor(8 * randomBuildingId2);
-	const windowGapY: number = 4 + Math.floor(8 * randomBuildingId2);
+	const windowGapX: number = 6 + Math.floor(6 * randomBuildingId2);
+	const windowGapY: number = 4 + Math.floor(6 * randomBuildingId2);
 	// gap between window and building
 	let windowBuildingGapX: number = 10;
 	let windowBuildingGapY: number = 10;
@@ -616,7 +627,7 @@ function drawBuilding(
 		drawRailing(paintbrush, startX, startY, fill, width, radius);
 	}
 	// randomly draw crane on top
-	else if (randomBuildingId < 0.15) {
+	else if (randomBuildingId < 0.1) {
 		drawCrane(paintbrush, startX, startY, fill, width, randomBuildingId2);
 	}
 
