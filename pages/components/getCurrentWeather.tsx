@@ -153,7 +153,6 @@ function SuccessfulResult(data: any, currentTime: number) {
 		const eachValueHours = String(value[1].getHours());
 		const eachValueMins = String(value[1].getMinutes()).padStart(2, "0");
 		const eachValue = parseInt(`${eachValueHours}${eachValueMins}`);
-		console.log(eachValue);
 		// getting the current sky value to compare in each lookup, getting the most recent
 		if (currentSkyLightLoop[1] !== 0) {
 			const currentSkyHours = String(currentSkyLightLoop[1].getHours());

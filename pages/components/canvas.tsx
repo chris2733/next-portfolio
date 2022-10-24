@@ -1,4 +1,3 @@
-import { loadComponents } from "next/dist/server/load-components";
 import { useEffect, useRef, useState } from "react";
 
 // **********
@@ -6,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 // cars randomly coming accross
 // make canvas render with less frames per second
 // maybe make sun/moon/sky/change with time, on a really slow cycle
-// can use paintbrush.filter = "blur(5px)"; to blur gradient background but it almost destroyed chrome.. so only do it on page loadComponents, not on each draw()
+// can use paintbrush.filter = "blur(5px)"; to blur gradient background but it almost destroyed chrome.. so only do it on page loadComponents, not on each draw() ** DOESNT WORK IN SAFARI
 
 export default function Canvas({ data }: { data: any }) {
 	// console.log(data);
@@ -187,6 +186,13 @@ export default function Canvas({ data }: { data: any }) {
 	const lamppostEnd = randomIntFromInterval(0, 30);
 	const lamppostSpace = randomIntFromInterval(150, 180);
 
+	const drawOnce = (paintbrush: any) => {
+		// draw sky
+		drawSky(paintbrush, width, height, currentSkyLightGradients);
+		// sun/moon positioning
+		drawSunMoon(paintbrush, data, width, height, horizon, radianAdjust);
+	};
+
 	// draw on canvas here
 	const draw = (paintbrush: any, frameCount: any) => {
 		// horizon
@@ -195,44 +201,6 @@ export default function Canvas({ data }: { data: any }) {
 		// paintbrush.lineTo(width, height - horizon);
 		// paintbrush.strokeStyle = "red";
 		// paintbrush.stroke();
-
-		// draw sky
-		drawSky(paintbrush, width, height, currentSkyLightGradients);
-
-		// sun/moon positioning
-		// position in radians from a point on a circle, converted from degrees to radians
-		const sunRadians = degToRadian(data.sunDegrees);
-		const moonRadians = degToRadian(data.moonDegrees);
-		const orbitCentreX: number = width * 0.5;
-		const orbitCentreY: number = height - horizon;
-		// set orbit radius to width of the screen, only if its smaller than the screen height (for super fucking wide screens), otherwise use height
-		const orbitRadius: number = width < height ? width * 0.48 : height * 0.48;
-		const sunRadius: number = 15;
-		const moonRadius: number = 15;
-		const sunColour: string = "yellow";
-		const moonColour: string = "grey";
-		// sun position
-		const sun = sunMoonPosition(
-			paintbrush,
-			sunRadians,
-			orbitCentreX,
-			orbitCentreY,
-			orbitRadius,
-			sunRadius,
-			sunColour,
-			radianAdjust
-		);
-		// moon position
-		const moon = sunMoonPosition(
-			paintbrush,
-			moonRadians,
-			orbitCentreX,
-			orbitCentreY,
-			orbitRadius,
-			moonRadius,
-			moonColour,
-			radianAdjust
-		);
 
 		// draw each building layer here
 		buildings.forEach(
@@ -296,6 +264,7 @@ export default function Canvas({ data }: { data: any }) {
 				animationFrameId = window.requestAnimationFrame(render);
 			};
 			render();
+			drawOnce(paintbrush);
 
 			return () => {
 				window.cancelAnimationFrame(animationFrameId);
@@ -315,7 +284,7 @@ function drawSky(
 	paintbrush: any,
 	width: number,
 	height: number,
-	currentSkyLightGradients: { stop: number; color: string }[]
+	currentSkyLightGradients?: { stop: number; color: string }[]
 ) {
 	paintbrush.rect(0, 0, width, height);
 	// add linear gradient
@@ -327,6 +296,49 @@ function drawSky(
 	});
 	paintbrush.fillStyle = grd;
 	paintbrush.fill();
+}
+
+function drawSunMoon(
+	paintbrush: any,
+	data: any,
+	width: number,
+	height: number,
+	horizon: number,
+	radianAdjust: number
+) {
+	// position in radians from a point on a circle, converted from degrees to radians
+	const sunRadians = degToRadian(data.sunDegrees);
+	const moonRadians = degToRadian(data.moonDegrees);
+	const orbitCentreX: number = width * 0.5;
+	const orbitCentreY: number = height - horizon;
+	// set orbit radius to width of the screen, only if its smaller than the screen height (for super fucking wide screens), otherwise use height
+	const orbitRadius: number = width < height ? width * 0.48 : height * 0.48;
+	const sunRadius: number = 15;
+	const moonRadius: number = 15;
+	const sunColour: string = "yellow";
+	const moonColour: string = "grey";
+	// sun position
+	const sun = sunMoonPosition(
+		paintbrush,
+		sunRadians,
+		orbitCentreX,
+		orbitCentreY,
+		orbitRadius,
+		sunRadius,
+		sunColour,
+		radianAdjust
+	);
+	// moon position
+	const moon = sunMoonPosition(
+		paintbrush,
+		moonRadians,
+		orbitCentreX,
+		orbitCentreY,
+		orbitRadius,
+		moonRadius,
+		moonColour,
+		radianAdjust
+	);
 }
 
 function buildingsSetup(
