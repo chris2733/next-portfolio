@@ -66,7 +66,7 @@ export default function CurrentWeather({
 				// handle success
 				console.log("Openmanp weather api GREAET SUCCESS");
 				setapiData(response.data);
-				console.log(response.data);
+				// console.log(response.data);
 				return;
 			})
 			.catch(function (error) {
@@ -153,17 +153,7 @@ function SuccessfulResult(data: any, currentTime: number) {
 		const eachValueMins = String(value[1].getMinutes()).padStart(2, "0");
 		const eachValue = parseInt(`${eachValueHours}${eachValueMins}`);
 		// getting the current sky value to compare in each lookup, getting the most recent
-		if (currentSkyLightLoop[1] !== 0) {
-			const currentSkyHours = String(currentSkyLightLoop[1].getHours());
-			const currentSkyMins = String(
-				currentSkyLightLoop[1].getMinutes()
-			).padStart(2, "0");
-			let currentSky = parseInt(`${eachValueHours}${eachValueMins}`);
-			// console.log(timeNow, eachValue, currentSky);
-			if (timeNow > eachValue) {
-				currentSkyLightLoop = value;
-			}
-		} else {
+		if (currentSkyLightLoop[1] !== 0 && timeNow > eachValue) {
 			currentSkyLightLoop = value;
 		}
 	});
