@@ -385,7 +385,6 @@ function buildingsSetup(
 				buildingColour === "#000000"
 					? hexChange * (layerNum - index)
 					: hexChange - index / 10;
-			console.log(hexChange, hexChange + index / 10, shadeChange);
 			layer.colour = shadeHexColor(buildingColour, shadeChange);
 		});
 	}

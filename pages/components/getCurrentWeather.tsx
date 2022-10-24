@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { lookup } from "dns";
 
 export default function CurrentWeather({
 	passDataToParent,
@@ -58,29 +59,29 @@ export default function CurrentWeather({
 
 	useEffect(() => {
 		// this may look like it's calling twice in dev, but thats because of strictmode - if this is set to false in next.config.js it only happens once
-		// const response = axios
-		// 	.get(
-		// 		`http://api.openweathermap.org/data/2.5/weather?id=2653822&appid=${process.env.NEXT_PUBLIC_OPENMAP_API}&units=metric`
-		// 	)
-		// 	.then(function (response) {
-		// 		// handle success
-		// 		console.log("Openmanp weather api GREAET SUCCESS");
-		// 		setapiData(response.data);
-		// 		console.log(response.data);
-		// 		return;
-		// 	})
-		// 	.catch(function (error) {
-		// 		// handle error
-		// 		console.log("Openmap weather api " + error.message);
-		// 		return;
-		// 	});
+		const response = axios
+			.get(
+				`http://api.openweathermap.org/data/2.5/weather?id=2653822&appid=${process.env.NEXT_PUBLIC_OPENMAP_API}&units=metric`
+			)
+			.then(function (response) {
+				// handle success
+				console.log("Openmanp weather api GREAET SUCCESS");
+				setapiData(response.data);
+				console.log(response.data);
+				return;
+			})
+			.catch(function (error) {
+				// handle error
+				console.log("Openmap weather api " + error.message);
+				return;
+			});
 
 		// set test data instead
-		const apiDataConverted = SuccessfulResult(testDataCardiff, 1665446403000); //night
+		// const apiDataConverted = SuccessfulResult(testDataCardiff, 1665446403000); //night
 		// const apiDataConverted = SuccessfulResult(testDataCardiff, 1665497241000); //day
-		setWeatherData(apiDataConverted);
-		passDataToParent(apiDataConverted);
-		setApiCallOk(true);
+		// setWeatherData(apiDataConverted);
+		// passDataToParent(apiDataConverted);
+		// setApiCallOk(true);
 	}, []);
 
 	useEffect(() => {
@@ -152,10 +153,23 @@ function SuccessfulResult(data: any, currentTime: number) {
 		const eachValueHours = String(value[1].getHours());
 		const eachValueMins = String(value[1].getMinutes()).padStart(2, "0");
 		const eachValue = parseInt(`${eachValueHours}${eachValueMins}`);
-		if (timeNow > eachValue && eachValue > currentSkyLightLoop[1]) {
+		console.log(eachValue);
+		// getting the current sky value to compare in each lookup, getting the most recent
+		if (currentSkyLightLoop[1] !== 0) {
+			const currentSkyHours = String(currentSkyLightLoop[1].getHours());
+			const currentSkyMins = String(
+				currentSkyLightLoop[1].getMinutes()
+			).padStart(2, "0");
+			let currentSky = parseInt(`${eachValueHours}${eachValueMins}`);
+			// console.log(timeNow, eachValue, currentSky);
+			if (timeNow > eachValue) {
+				currentSkyLightLoop = value;
+			}
+		} else {
 			currentSkyLightLoop = value;
 		}
 	});
+
 	// set the finalised figure here
 	// if its basically just after midnight, need to select the first one
 	if (currentSkyLightLoop[0] === "emptyfornow") {
