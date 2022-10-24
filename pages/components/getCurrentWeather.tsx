@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { lookup } from "dns";
 
 export default function CurrentWeather({
 	passDataToParent,

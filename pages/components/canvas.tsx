@@ -195,6 +195,7 @@ export default function Canvas({ data }: { data: any }) {
 
 	// draw on canvas here
 	const draw = (paintbrush: any, frameCount: any) => {
+		console.log("draw frame");
 		// horizon
 		// paintbrush.beginPath();
 		// paintbrush.moveTo(0, height - horizon);
@@ -261,7 +262,14 @@ export default function Canvas({ data }: { data: any }) {
 			const render = () => {
 				frameCount++;
 				draw(paintbrush, frameCount);
-				animationFrameId = window.requestAnimationFrame(render);
+				// old
+				// animationFrameId = window.requestAnimationFrame(render);
+
+				var fps = 3;
+				setTimeout(function () {
+					//throttle requestAnimationFrame
+					window.requestAnimationFrame(render);
+				}, 1000 / fps);
 			};
 			render();
 			drawOnce(paintbrush);
