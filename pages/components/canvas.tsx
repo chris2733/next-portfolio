@@ -326,7 +326,10 @@ function drawSunMoon(
 		orbitRadius,
 		sunRadius,
 		sunColour,
-		radianAdjust
+		radianAdjust,
+		width,
+		height,
+		horizon
 	);
 	// moon position
 	const moon = sunMoonPosition(
@@ -337,7 +340,10 @@ function drawSunMoon(
 		orbitRadius,
 		moonRadius,
 		moonColour,
-		radianAdjust
+		radianAdjust,
+		width,
+		height,
+		horizon
 	);
 }
 
@@ -456,7 +462,10 @@ function sunMoonPosition(
 	orbitRadius: number,
 	circleRadius: number,
 	fillColour: string,
-	radianAdjust: number
+	radianAdjust: number,
+	width: number,
+	height: number,
+	horizon: number
 ) {
 	// start drawing the arc to set the position
 	paintbrush.beginPath();
@@ -471,17 +480,27 @@ function sunMoonPosition(
 	paintbrush.strokeStyle = "transparent";
 	paintbrush.stroke();
 	// get the end of the arc in coords
-	let sunPosition = getPoint(
+	let sunMoonPosition = getPoint(
 		centreX,
 		centreY,
 		orbitRadius,
 		radians - radianAdjust
 	);
-	// draw circle on sunposition
+	// work out how high the sun/moon is by using width of screen/2 (its height in the sky)
+	// then if this is a less than the height of the whole canvas, so if its too low, get the ratio of the difference and bump it up a tad
+	if (width / 2 / (height - horizon) < 1) {
+		const ratio = width / 2 / (height - horizon);
+		// since its drawn from top screenLeft, get the differnce between sunMoonPosition y pos and horizon, multiply that by the ratio and minus it from sunMoonPosition y pos, so it will still sit on the horizon later
+		// ...or should
+		const yAdjust = (height - horizon - sunMoonPosition[1]) * ratio;
+		sunMoonPosition[1] -= yAdjust;
+	}
+
+	// draw circle on sunMoonposition
 	paintbrush.beginPath();
 	paintbrush.arc(
-		sunPosition[0],
-		sunPosition[1],
+		sunMoonPosition[0],
+		sunMoonPosition[1],
 		circleRadius,
 		0,
 		Math.PI + (Math.PI * 2) / 2,
