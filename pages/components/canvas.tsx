@@ -17,6 +17,9 @@ export default function Canvas({ data }: { data: any }) {
 	// adjustment of -90 degrees, since the start of an arc in canvas seems to start at the centre right of it (east)
 	let radianAdjust = degToRadian(90);
 
+	// colours
+	const sunColour: string = "#eabc2c99";
+	const moonColour: string = "grey";
 	// set the colour stops for different times, from suncalc
 	const currentSkyLight: string = data.currentSkyLight;
 	interface skyColourEach {
@@ -182,12 +185,22 @@ export default function Canvas({ data }: { data: any }) {
 	const lamppostStart = randomIntFromInterval(0, 30);
 	const lamppostEnd = randomIntFromInterval(0, 30);
 	const lamppostSpace = randomIntFromInterval(150, 180);
+	const lampostLightColour: string = "#f0dfa899";
 
 	const drawOnce = (paintbrush: any) => {
 		// draw sky
 		drawSky(paintbrush, width, height, currentSkyLightGradients);
 		// sun/moon positioning
-		drawSunMoon(paintbrush, data, width, height, horizon, radianAdjust);
+		drawSunMoon(
+			paintbrush,
+			data,
+			width,
+			height,
+			horizon,
+			radianAdjust,
+			sunColour,
+			moonColour
+		);
 	};
 
 	// draw on canvas here
@@ -238,7 +251,7 @@ export default function Canvas({ data }: { data: any }) {
 			25,
 			2,
 			"black",
-			"white"
+			lampostLightColour
 		);
 	};
 
@@ -308,7 +321,9 @@ function drawSunMoon(
 	width: number,
 	height: number,
 	horizon: number,
-	radianAdjust: number
+	radianAdjust: number,
+	sunColour: string,
+	moonColour: string
 ) {
 	// position in radians from a point on a circle, converted from degrees to radians
 	const sunRadians = degToRadian(data.sunDegrees);
@@ -319,8 +334,6 @@ function drawSunMoon(
 	const orbitRadius: number = width < height ? width * 0.48 : height * 0.48;
 	const sunRadius: number = 25;
 	const moonRadius: number = 15;
-	const sunColour: string = "#eabc2c99";
-	const moonColour: string = "grey";
 	// sun position
 	const sun = sunMoonPosition(
 		paintbrush,
@@ -929,18 +942,13 @@ function drawLampposts(
 	const end: number = width + endPoint;
 	for (let x: number = start; x < end; x += gap) {
 		paintbrush.beginPath();
-		paintbrush.fillStyle = fill;
-		paintbrush.shadowColor = "yellow";
-		paintbrush.shadowOffsetX = 2;
-		paintbrush.shadowOffsetY = 2;
-		paintbrush.shadowBlur = 21;
-		paintbrush.fillRect(x, height, postWidth, -postHeight);
 		resetShadows(paintbrush);
-		paintbrush.beginPath();
+		paintbrush.fillStyle = fill;
+		paintbrush.fillRect(x, height, postWidth, -postHeight);
 		paintbrush.shadowColor = lightFill;
 		paintbrush.shadowOffsetX = 2;
 		paintbrush.shadowOffsetY = 2;
-		paintbrush.shadowBlur = 21;
+		paintbrush.shadowBlur = 15;
 		paintbrush.fillRect(x, height - postHeight, 8, 2);
 		resetShadows(paintbrush);
 		// light at end
