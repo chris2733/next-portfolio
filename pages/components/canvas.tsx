@@ -3,9 +3,6 @@ import { useEffect, useRef, useState } from "react";
 // **********
 // todo
 // cars randomly coming accross
-// make canvas render with less frames per second
-// maybe make sun/moon/sky/change with time, on a really slow cycle
-// can use paintbrush.filter = "blur(5px)"; to blur gradient background but it almost destroyed chrome.. so only do it on page loadComponents, not on each draw() ** DOESNT WORK IN SAFARI
 
 export default function Canvas({ data }: { data: any }) {
 	// console.log(data);
@@ -534,8 +531,7 @@ function sunMoonPosition(
 		paintbrush.shadowBlur = 15;
 		paintbrush.fillStyle = fillColour;
 		paintbrush.fill();
-		paintbrush.shadowColor = "transparent";
-		paintbrush.shadowBlur = 0;
+		resetShadows(paintbrush);
 	} else {
 		paintbrush.fillStyle = fillColour;
 		paintbrush.fill();
@@ -775,10 +771,7 @@ function drawBuildingWindows(
 			paintbrush.shadowBlur = 6;
 			paintbrush.fillStyle = windowColour;
 			paintbrush.fillRect(x, y, windowWidth, windowHeight);
-			paintbrush.shadowColor = "transparent";
-			paintbrush.shadowOffsetX = 0;
-			paintbrush.shadowOffsetY = 0;
-			paintbrush.shadowBlur = 0;
+			resetShadows(paintbrush);
 		} else {
 			paintbrush.fillStyle = windowColour;
 			paintbrush.fillRect(x, y, windowWidth, windowHeight);
@@ -937,12 +930,19 @@ function drawLampposts(
 	for (let x: number = start; x < end; x += gap) {
 		paintbrush.beginPath();
 		paintbrush.fillStyle = fill;
-		paintbrush.shadowColor = lightFill;
+		paintbrush.shadowColor = "yellow";
 		paintbrush.shadowOffsetX = 2;
 		paintbrush.shadowOffsetY = 2;
 		paintbrush.shadowBlur = 21;
 		paintbrush.fillRect(x, height, postWidth, -postHeight);
+		resetShadows(paintbrush);
+		paintbrush.beginPath();
+		paintbrush.shadowColor = lightFill;
+		paintbrush.shadowOffsetX = 2;
+		paintbrush.shadowOffsetY = 2;
+		paintbrush.shadowBlur = 21;
 		paintbrush.fillRect(x, height - postHeight, 8, 2);
+		resetShadows(paintbrush);
 		// light at end
 		paintbrush.shadowColor = lightFill;
 		paintbrush.shadowOffsetX = 2;
@@ -950,10 +950,7 @@ function drawLampposts(
 		paintbrush.shadowBlur = 8;
 		paintbrush.fillStyle = lightFill;
 		paintbrush.fillRect(x + 3, height - postHeight + 2, 5, 2);
-		paintbrush.shadowColor = "transparent";
-		paintbrush.shadowOffsetX = 0;
-		paintbrush.shadowOffsetY = 0;
-		paintbrush.shadowBlur = 0;
+		resetShadows(paintbrush);
 	}
 }
 
@@ -1019,3 +1016,11 @@ function shadeHexColor(color: string, percent: number) {
 // 			.slice(1)
 // 	);
 // }
+
+function resetShadows(paintbrush: any) {
+	// used to reset the shadows, you have to after each time
+	paintbrush.shadowColor = "transparent";
+	paintbrush.shadowOffsetX = 0;
+	paintbrush.shadowOffsetY = 0;
+	paintbrush.shadowBlur = 0;
+}
