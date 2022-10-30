@@ -153,8 +153,21 @@ function SuccessfulResult(data: any, currentTime: number) {
 		const eachValueMins = String(value[1].getMinutes()).padStart(2, "0");
 		const eachValue = parseInt(`${eachValueHours}${eachValueMins}`);
 		// getting the current sky value to compare in each lookup, getting the most recent
-		if (timeNow > eachValue) {
-			currentSkyLightLoop = value;
+		if (currentSkyLightLoop[1] !== 0) {
+			const currentSkyTimeHours = String(currentSkyLightLoop[1].getHours());
+			const currentSkyTimeMins = String(
+				currentSkyLightLoop[1].getMinutes()
+			).padStart(2, "0");
+			const currentSkyTime = parseInt(
+				`${currentSkyTimeHours}${currentSkyTimeMins}`
+			);
+			if (timeNow > eachValue && eachValue > currentSkyTime) {
+				currentSkyLightLoop = value;
+			}
+		} else {
+			if (timeNow > eachValue) {
+				currentSkyLightLoop = value;
+			}
 		}
 	});
 
@@ -165,6 +178,8 @@ function SuccessfulResult(data: any, currentTime: number) {
 	} else {
 		currentSkyLight = currentSkyLightLoop[0];
 	}
+
+	console.log(currentSkyLight);
 
 	const sunPosition = SunCalc.getPosition(
 		weather.time,
