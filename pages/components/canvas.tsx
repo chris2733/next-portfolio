@@ -44,99 +44,99 @@ export default function Canvas({ data }: { data: any }) {
 	}
 	const skyColours: skyColourTypes = {
 		sunrise: [
-			{ stop: 0, color: "#f7a607" },
-			{ stop: 0.2, color: "#f4b514" },
-			{ stop: 0.35, color: "#f3c167" },
-			{ stop: 0.5, color: "#b3ae90" },
-			{ stop: 0.75, color: "#6c7277" },
+			{ stop: 0, color: "rgb(247, 166, 7)" },
+			{ stop: 0.2, color: "rgb(244, 181, 20)" },
+			{ stop: 0.35, color: "rgb(243, 193, 103)" },
+			{ stop: 0.5, color: "rgb(179, 174, 144)" },
+			{ stop: 0.75, color: "rgb(108, 114, 119)" },
 		],
 		sunriseEnd: [
-			{ stop: 0, color: "#f7a607" },
-			{ stop: 0.1, color: "#f4b514" },
-			{ stop: 0.15, color: "#f3c167" },
-			{ stop: 0.2, color: "#b3ae90" },
-			{ stop: 0.4, color: "#6c7277" },
+			{ stop: 0, color: "rgb(247, 166, 7)" },
+			{ stop: 0.1, color: "rgb(244, 181, 20)" },
+			{ stop: 0.15, color: "rgb(243, 193, 103)" },
+			{ stop: 0.2, color: "rgb(179, 174, 144)" },
+			{ stop: 0.4, color: "rgb(108, 114, 119)" },
 		],
 		goldenHourEnd: [
-			{ stop: 0, color: "#e2daaf" },
-			{ stop: 0.3, color: "#d0d9cf" },
-			{ stop: 0.5, color: "#8fa9b0" },
-			{ stop: 0.65, color: "#506c85" },
+			{ stop: 0, color: "rgb(226, 218, 175)" },
+			{ stop: 0.3, color: "rgb(208, 217, 207)" },
+			{ stop: 0.5, color: "rgb(143, 169, 176)" },
+			{ stop: 0.65, color: "rgb(80, 108, 133)" },
 		],
 		solarNoon: [
-			{ stop: 0, color: "#84aec4" },
-			{ stop: 0.2, color: "#549dc4" },
-			{ stop: 0.4, color: "#0f7baf" },
+			{ stop: 0, color: "rgb(132, 174, 196)" },
+			{ stop: 0.2, color: "rgb(84, 157, 196)" },
+			{ stop: 0.4, color: "rgb(15, 123, 175)" },
 		],
 		goldenHour: [
-			{ stop: 0, color: "#e2daaf" },
-			{ stop: 0.3, color: "#d0d9cf" },
-			{ stop: 0.5, color: "#8fa9b0" },
-			{ stop: 0.65, color: "#506c85" },
+			{ stop: 0, color: "rgb(226, 218, 175)" },
+			{ stop: 0.3, color: "rgb(208, 217, 207)" },
+			{ stop: 0.5, color: "rgb(143, 169, 176)" },
+			{ stop: 0.65, color: "rgb(80, 108, 133)" },
 		],
 		sunsetStart: [
-			{ stop: 0, color: "#f7a607" },
-			{ stop: 0.1, color: "#f4b514" },
-			{ stop: 0.15, color: "#f3c167" },
-			{ stop: 0.2, color: "#b3ae90" },
-			{ stop: 0.4, color: "#6c7277" },
+			{ stop: 0, color: "rgb(247, 166, 7)" },
+			{ stop: 0.1, color: "rgb(244, 181, 20)" },
+			{ stop: 0.15, color: "rgb(243, 193, 103)" },
+			{ stop: 0.2, color: "rgb(179, 174, 144)" },
+			{ stop: 0.4, color: "rgb(108, 114, 119)" },
 		],
 		sunset: [
-			{ stop: 0, color: "#f7a607" },
-			{ stop: 0.2, color: "#f4b514" },
-			{ stop: 0.35, color: "#f3c167" },
-			{ stop: 0.5, color: "#b3ae90" },
-			{ stop: 0.75, color: "#6c7277" },
+			{ stop: 0, color: "rgb(247, 166, 7)" },
+			{ stop: 0.2, color: "rgb(244, 181, 20)" },
+			{ stop: 0.35, color: "rgb(243, 193, 103)" },
+			{ stop: 0.5, color: "rgb(179, 174, 144)" },
+			{ stop: 0.75, color: "rgb(108, 114, 119)" },
 		],
 		dusk: [
-			{ stop: 0, color: "#c67501" },
-			{ stop: 0.1, color: "#e49805" },
-			{ stop: 0.2, color: "#be9948" },
-			{ stop: 0.3, color: "#a38c62" },
-			{ stop: 0.5, color: "#807864" },
-			{ stop: 0.7, color: "#304149" },
-			{ stop: 0.8, color: "#142934" },
-			{ stop: 1, color: "#142934" },
+			{ stop: 0, color: "rgb(198, 117, 1)" },
+			{ stop: 0.1, color: "rgb(228, 152, 5)" },
+			{ stop: 0.2, color: "rgb(190, 153, 72)" },
+			{ stop: 0.3, color: "rgb(163, 140, 98)" },
+			{ stop: 0.5, color: "rgb(128, 120, 100)" },
+			{ stop: 0.7, color: "rgb(48, 65, 73)" },
+			{ stop: 0.8, color: "rgb(20, 41, 52)" },
+			{ stop: 1, color: "rgb(20, 41, 52)" },
 		],
 		nauticalDusk: [
-			{ stop: 0, color: "#5e4b41" },
-			{ stop: 0.2, color: "#5b5c70" },
-			{ stop: 0.5, color: "#253d65" },
-			{ stop: 0.8, color: "#0c1734" },
-			{ stop: 1, color: "#030a17" },
+			{ stop: 0, color: "rgb(94, 75, 65)" },
+			{ stop: 0.2, color: "rgb(91, 92, 112)" },
+			{ stop: 0.5, color: "rgb(37, 61, 101)" },
+			{ stop: 0.8, color: "rgb(12, 23, 52)" },
+			{ stop: 1, color: "rgb(3, 10, 23)" },
 		],
 		night: [
-			{ stop: 0, color: "#5b5c70" },
-			{ stop: 0.1, color: "#253d65" },
-			{ stop: 0.3, color: "#0c1734" },
-			{ stop: 1, color: "#030a17" },
+			{ stop: 0, color: "rgb(91, 92, 112)" },
+			{ stop: 0.1, color: "rgb(37, 61, 101)" },
+			{ stop: 0.3, color: "rgb(12, 23, 52)" },
+			{ stop: 1, color: "rgb(3, 10, 23)" },
 		],
 		nadir: [
-			{ stop: 0, color: "#000000" },
-			{ stop: 1, color: "#000000" },
+			{ stop: 0, color: "rgb(0, 0, 0)" },
+			{ stop: 1, color: "rgb(0, 0, 0)" },
 		],
 		nightEnd: [
-			{ stop: 0, color: "#5e4b41" },
-			{ stop: 0.2, color: "#5b5c70" },
-			{ stop: 0.5, color: "#253d65" },
-			{ stop: 0.8, color: "#0c1734" },
-			{ stop: 1, color: "#030a17" },
+			{ stop: 0, color: "rgb(94, 75, 65)" },
+			{ stop: 0.2, color: "rgb(91, 92, 112)" },
+			{ stop: 0.5, color: "rgb(37, 61, 101)" },
+			{ stop: 0.8, color: "rgb(12, 23, 52)" },
+			{ stop: 1, color: "rgb(3, 10, 23)" },
 		],
 		nauticalDawn: [
-			{ stop: 0, color: "#c67501" },
-			{ stop: 0.1, color: "#e49805" },
-			{ stop: 0.2, color: "#be9948" },
-			{ stop: 0.3, color: "#a38c62" },
-			{ stop: 0.5, color: "#807864" },
-			{ stop: 0.7, color: "#304149" },
-			{ stop: 0.8, color: "#142934" },
-			{ stop: 1, color: "#142934" },
+			{ stop: 0, color: "rgb(198, 117, 1)" },
+			{ stop: 0.1, color: "rgb(228, 152, 5)" },
+			{ stop: 0.2, color: "rgb(190, 153, 72)" },
+			{ stop: 0.3, color: "rgb(163, 140, 98)" },
+			{ stop: 0.5, color: "rgb(128, 120, 100)" },
+			{ stop: 0.7, color: "rgb(48, 65, 73)" },
+			{ stop: 0.8, color: "rgb(20, 41, 52)" },
+			{ stop: 1, color: "rgb(20, 41, 52)" },
 		],
 		dawn: [
-			{ stop: 0, color: "#d88c1f" },
-			{ stop: 0.2, color: "#d4b366" },
-			{ stop: 0.6, color: "#888b85" },
-			{ stop: 1, color: "#5e6f77" },
+			{ stop: 0, color: "rgb(216, 140, 31)" },
+			{ stop: 0.2, color: "rgb(212, 179, 102)" },
+			{ stop: 0.6, color: "rgb(136, 139, 133)" },
+			{ stop: 1, color: "rgb(94, 111, 119)" },
 		],
 	};
 	// get the right colour from skycolours, setup properly in typescript
@@ -436,16 +436,28 @@ function buildingsSetup(
 		// then see if its night, it will be lightened
 		const layerNum = buildingLayers.length;
 		// check the current sky colour isnt just black for night, otherwise it needs to be lightened
-		const blackSky = buildingColour === "#000000";
+		const blackSky = buildingColour === "rgb(0, 0, 0)";
 		// getting correct -1 starting point for light colours, it shouldnt go past -1
 		const hexAdjust = 20; //amount to adjust, lower num for more contrast between layers
 		const hexChange = blackSky ? 0.02 : -1 + layerNum / hexAdjust;
 		buildingLayers.forEach((layer, index) => {
 			// if night then multiply the change, otherwise take it away - looks better visually
+			// also convert to hex to use hexchange (i could use rgb change or something but thats for later)
+			// so filter the rgb, brackets and space out, then map to convert the strings to numbers for the rgb function
+			const buildingColourRGBArray: number[] = buildingColour
+				.replace(/[()'rgb']/g, " ")
+				.replaceAll(" ", "")
+				.split(",")
+				.map((x) => parseInt(x));
+			const buildingColourToHex = rgbToHex(
+				buildingColourRGBArray[0],
+				buildingColourRGBArray[1],
+				buildingColourRGBArray[2]
+			);
 			const shadeChange = blackSky
 				? hexChange * (layerNum - index)
 				: hexChange - index / hexAdjust;
-			layer.colour = shadeHexColor(buildingColour, shadeChange);
+			layer.colour = shadeHexColor(buildingColourToHex, shadeChange);
 		});
 	}
 
@@ -979,6 +991,10 @@ function drawLampposts(
 // 	];
 // 	return aRgb;
 // }
+
+function rgbToHex(r: number, g: number, b: number) {
+	return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+}
 
 // shade colour light or dark, from 1.0 to -1.0 respectively
 function shadeHexColor(color: string, percent: number) {
