@@ -5,8 +5,7 @@ import { SliceZone } from "@prismicio/react";
 import { createClient } from "./prismicio";
 
 const Home: NextPage = (page: any) => {
-	console.log(page);
-	return <Landing />;
+	return <Landing pageData={page} />;
 };
 
 export default Home;
