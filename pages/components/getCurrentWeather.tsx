@@ -9,7 +9,7 @@ export default function CurrentWeather({
 	const [apiData, setapiData] = useState({});
 	const [apiCallOk, setApiCallOk] = useState(false);
 	const [weatherData, setWeatherData] = useState<any>({});
-	const currentTime = new Date().getTime();
+	const currentUnix = new Date().getTime();
 
 	// test data to show night and day
 	const testDataCardiff: object = {
@@ -85,7 +85,7 @@ export default function CurrentWeather({
 
 	useEffect(() => {
 		if (Object.keys(apiData).length !== 0) {
-			const apiDataConverted = SuccessfulResult(apiData, currentTime);
+			const apiDataConverted = SuccessfulResult(apiData, currentUnix);
 			setWeatherData(apiDataConverted);
 			passDataToParent(apiDataConverted);
 			setApiCallOk(true);
@@ -104,7 +104,7 @@ export default function CurrentWeather({
 	);
 }
 
-function SuccessfulResult(data: any, currentTime: number) {
+function SuccessfulResult(data: any, currentUnix: number) {
 	// weather data
 	interface weatherData {
 		name: string;
@@ -121,7 +121,7 @@ function SuccessfulResult(data: any, currentTime: number) {
 		name: data.name,
 		lat: data.coord.lat,
 		lon: data.coord.lon,
-		time: currentTime,
+		time: currentUnix,
 		sunrise: data.sys.sunrise,
 		sunset: data.sys.sunset,
 		temperature: data.main.temp,
@@ -142,51 +142,40 @@ function SuccessfulResult(data: any, currentTime: number) {
 		weather.lon
 	);
 	// get current type of light in sky
-	let currentSkyLightLoop: any[] = ["emptyfornow", 0];
-	let currentSkyLight: string;
-	const timeNowHours = String(new Date().getHours());
-	const timeNowMins = String(new Date().getMinutes()).padStart(2, "0");
-	const timeNow = parseInt(`${timeNowHours}${timeNowMins}`);
-	// loop through each from the mooncalc npm, get the closest time on the lower end
-	Object.entries(skyLightTypes).forEach((value: any[]) => {
-		const eachValueHours = String(value[1].getHours());
-		const eachValueMins = String(value[1].getMinutes()).padStart(2, "0");
-		const eachValue = parseInt(`${eachValueHours}${eachValueMins}`);
-		// getting the current sky value to compare in each lookup, getting the most recent
-		if (currentSkyLightLoop[1] !== 0) {
-			const currentSkyTimeHours = String(currentSkyLightLoop[1].getHours());
-			const currentSkyTimeMins = String(
-				currentSkyLightLoop[1].getMinutes()
-			).padStart(2, "0");
-			const currentSkyTime = parseInt(
-				`${currentSkyTimeHours}${currentSkyTimeMins}`
-			);
-			if (timeNow > eachValue && eachValue > currentSkyTime) {
-				currentSkyLightLoop = value;
-			}
-		} else {
-			if (timeNow > eachValue) {
-				currentSkyLightLoop = value;
-			}
+	// sort sky times into an ordered array of arrays
+	const skyLightTypesSort = Object.entries(skyLightTypes).sort(
+		(a: [string, any], b: [string, any]) => {
+			return a[1] - b[1];
+		}
+	);
+	// converting time to unix here since i cant figure out map without typescript being alittle bitch
+	let skyLightTypesSortUnix = new Array();
+	skyLightTypesSort.forEach((el: [string, any]) => {
+		skyLightTypesSortUnix.push([el[0], el[1].getTime()]);
+	});
+	// set the index of the current and next light here, 0 for now
+	let skyLightCurrentIndex: number = 0;
+	skyLightTypesSortUnix.forEach((each: [string, any], index) => {
+		if (weather.time > each[1]) {
+			skyLightCurrentIndex = index;
 		}
 	});
-
-	// set the finalised figure here
-	// if its basically just after midnight, need to select the first one
-	if (currentSkyLightLoop[0] === "emptyfornow") {
-		currentSkyLight = "night";
-	} else {
-		currentSkyLight = currentSkyLightLoop[0];
-	}
-
-	console.log(currentSkyLight);
+	const currentSkyLight: string =
+		skyLightTypesSortUnix[skyLightCurrentIndex][0];
+	// set the next skylight to the next index, if its at the end, its 0
+	const skyLightNextIndex: number =
+		skyLightCurrentIndex === skyLightTypesSortUnix.length - 1
+			? 0
+			: skyLightCurrentIndex + 1;
+	const nextSkyLight: string = skyLightTypesSortUnix[skyLightNextIndex][0];
+	// set the current progression of the current skylight here, how far through that section it is
+	console.log(currentSkyLight, nextSkyLight);
 
 	const sunPosition = SunCalc.getPosition(
 		weather.time,
 		weather.lat,
 		weather.lon
 	);
-
 	const moonPosition = SunCalc.getMoonPosition(
 		weather.time,
 		weather.lat,
@@ -202,5 +191,5 @@ function SuccessfulResult(data: any, currentTime: number) {
 	const sunDegrees = (sunPosition.azimuth * 180) / Math.PI;
 	const moonDegrees = (moonPosition.azimuth * 180) / Math.PI;
 
-	return { weather, sunDegrees, moonDegrees, currentSkyLight };
+	return { weather, sunDegrees, moonDegrees, currentSkyLight, nextSkyLight };
 }
