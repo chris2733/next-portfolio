@@ -1,0 +1,30 @@
+{
+  "_cts": {
+    "banner_title": {},
+    "homepage": {}
+  },
+  "slices": {
+    "LandingPage": {
+      "default": {
+        "primary": {}
+      }
+    },
+    "Titles": {
+      "default": {
+        "primary": {},
+        "items": {}
+      }
+    },
+    "Links": {
+      "default": {
+        "primary": {},
+        "items": {}
+      }
+    },
+    "TextRepeater": {
+      "default": {
+        "primary": {}
+      }
+    }
+  }
+}

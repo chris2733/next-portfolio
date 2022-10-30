@@ -1,0 +1,156 @@
+{
+  "slices": {
+    "components": {
+      "links": {
+        "library": "slices",
+        "id": "links",
+        "name": "Links",
+        "description": "Links",
+        "model": {
+          "id": "links",
+          "type": "SharedSlice",
+          "name": "Links",
+          "description": "Links",
+          "variations": [
+            {
+              "id": "default",
+              "name": "Default",
+              "docURL": "...",
+              "version": "sktwi1xtmkfgx8626",
+              "description": "Links",
+              "primary": {},
+              "items": {
+                "link": {
+                  "type": "Text",
+                  "config": {
+                    "label": "Link",
+                    "placeholder": ""
+                  }
+                }
+              },
+              "imageUrl": "https://images.prismic.io/slice-machine/621a5ec4-0387-4bc5-9860-2dd46cbc07cd_default_ss.png?auto=compress,format"
+            }
+          ]
+        },
+        "mocks": {
+          "default": {
+            "variation": "default",
+            "version": "sktwi1xtmkfgx8626",
+            "items": [
+              {
+                "link": "brain"
+              }
+            ],
+            "primary": {},
+            "slice_type": "links"
+          }
+        },
+        "meta": {
+          "fileName": "index",
+          "extension": "js"
+        },
+        "screenshotPaths": {}
+      },
+      "text_repeater": {
+        "library": "slices",
+        "id": "text_repeater",
+        "name": "TextRepeater",
+        "description": "TextRepeater",
+        "model": {
+          "id": "text_repeater",
+          "type": "SharedSlice",
+          "name": "TextRepeater",
+          "description": "TextRepeater",
+          "variations": [
+            {
+              "id": "default",
+              "name": "Default",
+              "docURL": "...",
+              "version": "sktwi1xtmkfgx8626",
+              "description": "TextRepeater",
+              "primary": {},
+              "items": {
+                "text": {
+                  "type": "Text",
+                  "config": {
+                    "label": "Text",
+                    "placeholder": ""
+                  }
+                }
+              },
+              "imageUrl": "https://images.prismic.io/slice-machine/621a5ec4-0387-4bc5-9860-2dd46cbc07cd_default_ss.png?auto=compress,format"
+            }
+          ]
+        },
+        "mocks": {
+          "default": {
+            "variation": "default",
+            "version": "sktwi1xtmkfgx8626",
+            "items": [
+              {
+                "text": "split"
+              }
+            ],
+            "primary": {},
+            "slice_type": "text_repeater"
+          }
+        },
+        "meta": {
+          "fileName": "index",
+          "extension": "js"
+        },
+        "screenshotPaths": {}
+      },
+      "landing_page": {
+        "library": "slices",
+        "id": "landing_page",
+        "name": "Titleseeeee",
+        "description": "LandingPage",
+        "model": {
+          "id": "landing_page",
+          "type": "SharedSlice",
+          "name": "Titleseeeee",
+          "description": "LandingPage",
+          "variations": [
+            {
+              "id": "default",
+              "name": "Default",
+              "docURL": "...",
+              "version": "sktwi1xtmkfgx8626",
+              "description": "LandingPage",
+              "primary": {},
+              "items": {
+                "title": {
+                  "type": "Text",
+                  "config": {
+                    "label": "Title",
+                    "placeholder": ""
+                  }
+                }
+              },
+              "imageUrl": "https://images.prismic.io/slice-machine/621a5ec4-0387-4bc5-9860-2dd46cbc07cd_default_ss.png?auto=compress,format"
+            }
+          ]
+        },
+        "mocks": {
+          "default": {
+            "variation": "default",
+            "version": "sktwi1xtmkfgx8626",
+            "items": [
+              {
+                "title": "fish"
+              }
+            ],
+            "primary": {},
+            "slice_type": "landing_page"
+          }
+        },
+        "meta": {
+          "fileName": "index",
+          "extension": "js"
+        },
+        "screenshotPaths": {}
+      }
+    }
+  }
+}
