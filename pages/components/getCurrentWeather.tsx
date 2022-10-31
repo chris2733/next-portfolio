@@ -169,8 +169,28 @@ function SuccessfulResult(data: any, currentUnix: number) {
 			: skyLightCurrentIndex + 1;
 	const nextSkyLight: string = skyLightTypesSortUnix[skyLightNextIndex][0];
 	// set the current progression of the current skylight here, how far through that section it is
-	console.log(currentSkyLight, nextSkyLight);
+	const currentSkyLightStartDate = new Date(
+		skyLightTypesSortUnix[skyLightCurrentIndex][1]
+	);
+	const currentSkyLightEndDate = new Date(
+		skyLightTypesSortUnix[skyLightNextIndex][1]
+	);
+	const currentSkyLightStart = `${currentSkyLightStartDate.getHours()}${String(
+		currentSkyLightStartDate.getMinutes()
+	).padStart(2, "0")}`;
+	const currentSkyLightEnd = `${currentSkyLightEndDate.getHours()}${String(
+		currentSkyLightEndDate.getMinutes()
+	).padStart(2, "0")}`;
+	const timeNow = `${new Date(weather.time).getHours()}${String(
+		new Date(weather.time).getMinutes()
+	).padStart(2, "0")}`;
+	// progress here - time since the start of current sky light segment, as a percentage of the size of current sky light segment
+	const skyProgress =
+		((parseInt(timeNow) - parseInt(currentSkyLightStart)) /
+			Math.abs(parseInt(currentSkyLightEnd) - parseInt(currentSkyLightStart))) *
+		100;
 
+	// sun and moon position got here
 	const sunPosition = SunCalc.getPosition(
 		weather.time,
 		weather.lat,
@@ -191,5 +211,12 @@ function SuccessfulResult(data: any, currentUnix: number) {
 	const sunDegrees = (sunPosition.azimuth * 180) / Math.PI;
 	const moonDegrees = (moonPosition.azimuth * 180) / Math.PI;
 
-	return { weather, sunDegrees, moonDegrees, currentSkyLight, nextSkyLight };
+	return {
+		weather,
+		sunDegrees,
+		moonDegrees,
+		currentSkyLight,
+		nextSkyLight,
+		skyProgress,
+	};
 }
