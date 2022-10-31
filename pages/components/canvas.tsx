@@ -216,6 +216,7 @@ export default function Canvas({ data }: { data: any }) {
 		buildings,
 		horizon,
 		width,
+		currentSkyLight,
 		currentSkyLightGradients && currentSkyLightGradients[0].color
 	);
 
@@ -408,6 +409,7 @@ function buildingsSetup(
 	buildings: any,
 	horizon: number,
 	width: number,
+	currentSkyLight: string,
 	buildingColour?: string
 ) {
 	// building layers set here
@@ -473,11 +475,11 @@ function buildingsSetup(
 	if (buildingColour) {
 		// then see if its night, it will be lightened
 		const layerNum = buildingLayers.length;
-		// check the current sky colour isnt just black for night, otherwise it needs to be lightened
-		const blackSky = buildingColour === "rgb(0, 0, 0)";
+		// check the current sky colour isnt night, nadir or nightend, otherwise it needs to be lightened
+		const blackSky = currentSkyLight === "night" || "nadir" || "nightend";
 		// getting correct -1 starting point for light colours, it shouldnt go past -1
 		const hexAdjust = 20; //amount to adjust, lower num for more contrast between layers
-		const hexChange = blackSky ? 0.02 : -1 + layerNum / hexAdjust;
+		const hexChange = blackSky ? 0.01 : -1 + layerNum / hexAdjust;
 		buildingLayers.forEach((layer, index) => {
 			// if night then multiply the change, otherwise take it away - looks better visually
 			// also convert to hex to use hexchange (i could use rgb change or something but thats for later)
