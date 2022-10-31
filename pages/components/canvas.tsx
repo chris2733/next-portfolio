@@ -22,6 +22,9 @@ export default function Canvas({ data }: { data: any }) {
 	const moonColour: string = "grey";
 	// set the colour stops for different times, from suncalc
 	const currentSkyLight: string = data.currentSkyLight;
+	const nextSkyLight: string = data.nextSkyLight;
+	const skyProgress: number = data.skyProgress;
+
 	interface skyColourEach {
 		stop: number;
 		color: string;
@@ -62,17 +65,21 @@ export default function Canvas({ data }: { data: any }) {
 			{ stop: 0.3, color: "rgb(208, 217, 207)" },
 			{ stop: 0.5, color: "rgb(143, 169, 176)" },
 			{ stop: 0.65, color: "rgb(80, 108, 133)" },
+			{ stop: 1, color: "rgb(80, 108, 133)" },
 		],
 		solarNoon: [
 			{ stop: 0, color: "rgb(132, 174, 196)" },
 			{ stop: 0.2, color: "rgb(84, 157, 196)" },
 			{ stop: 0.4, color: "rgb(15, 123, 175)" },
+			{ stop: 0.7, color: "rgb(15, 123, 175)" },
+			{ stop: 1, color: "rgb(15, 123, 175)" },
 		],
 		goldenHour: [
 			{ stop: 0, color: "rgb(226, 218, 175)" },
 			{ stop: 0.3, color: "rgb(208, 217, 207)" },
 			{ stop: 0.5, color: "rgb(143, 169, 176)" },
 			{ stop: 0.65, color: "rgb(80, 108, 133)" },
+			{ stop: 1, color: "rgb(80, 108, 133)" },
 		],
 		sunsetStart: [
 			{ stop: 0, color: "rgb(247, 166, 7)" },
@@ -87,15 +94,13 @@ export default function Canvas({ data }: { data: any }) {
 			{ stop: 0.35, color: "rgb(243, 193, 103)" },
 			{ stop: 0.5, color: "rgb(179, 174, 144)" },
 			{ stop: 0.75, color: "rgb(108, 114, 119)" },
+			{ stop: 1, color: "rgb(108, 114, 119)" },
 		],
 		dusk: [
 			{ stop: 0, color: "rgb(198, 117, 1)" },
 			{ stop: 0.1, color: "rgb(228, 152, 5)" },
 			{ stop: 0.2, color: "rgb(190, 153, 72)" },
-			{ stop: 0.3, color: "rgb(163, 140, 98)" },
 			{ stop: 0.5, color: "rgb(128, 120, 100)" },
-			{ stop: 0.7, color: "rgb(48, 65, 73)" },
-			{ stop: 0.8, color: "rgb(20, 41, 52)" },
 			{ stop: 1, color: "rgb(20, 41, 52)" },
 		],
 		nauticalDusk: [
@@ -109,10 +114,14 @@ export default function Canvas({ data }: { data: any }) {
 			{ stop: 0, color: "rgb(91, 92, 112)" },
 			{ stop: 0.1, color: "rgb(37, 61, 101)" },
 			{ stop: 0.3, color: "rgb(12, 23, 52)" },
+			{ stop: 0.8, color: "rgb(3, 10, 23)" },
 			{ stop: 1, color: "rgb(3, 10, 23)" },
 		],
 		nadir: [
 			{ stop: 0, color: "rgb(0, 0, 0)" },
+			{ stop: 0.25, color: "rgb(0, 0, 0)" },
+			{ stop: 0.5, color: "rgb(0, 0, 0)" },
+			{ stop: 0.75, color: "rgb(0, 0, 0)" },
 			{ stop: 1, color: "rgb(0, 0, 0)" },
 		],
 		nightEnd: [
@@ -126,16 +135,14 @@ export default function Canvas({ data }: { data: any }) {
 			{ stop: 0, color: "rgb(198, 117, 1)" },
 			{ stop: 0.1, color: "rgb(228, 152, 5)" },
 			{ stop: 0.2, color: "rgb(190, 153, 72)" },
-			{ stop: 0.3, color: "rgb(163, 140, 98)" },
 			{ stop: 0.5, color: "rgb(128, 120, 100)" },
-			{ stop: 0.7, color: "rgb(48, 65, 73)" },
-			{ stop: 0.8, color: "rgb(20, 41, 52)" },
 			{ stop: 1, color: "rgb(20, 41, 52)" },
 		],
 		dawn: [
 			{ stop: 0, color: "rgb(216, 140, 31)" },
 			{ stop: 0.2, color: "rgb(212, 179, 102)" },
 			{ stop: 0.6, color: "rgb(136, 139, 133)" },
+			{ stop: 0.8, color: "rgb(94, 111, 119)" },
 			{ stop: 1, color: "rgb(94, 111, 119)" },
 		],
 	};
