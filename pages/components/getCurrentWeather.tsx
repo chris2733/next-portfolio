@@ -186,9 +186,8 @@ function SuccessfulResult(data: any, currentUnix: number) {
 	).padStart(2, "0")}`;
 	// progress here - time since the start of current sky light segment, as a percentage of the size of current sky light segment
 	const skyProgress =
-		((parseInt(timeNow) - parseInt(currentSkyLightStart)) /
-			Math.abs(parseInt(currentSkyLightEnd) - parseInt(currentSkyLightStart))) *
-		100;
+		(parseInt(timeNow) - parseInt(currentSkyLightStart)) /
+		Math.abs(parseInt(currentSkyLightEnd) - parseInt(currentSkyLightStart));
 
 	// sun and moon position got here
 	const sunPosition = SunCalc.getPosition(

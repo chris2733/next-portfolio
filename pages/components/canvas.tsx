@@ -1,3 +1,4 @@
+import next from "next";
 import { useEffect, useRef, useState } from "react";
 
 // **********
@@ -149,7 +150,37 @@ export default function Canvas({ data }: { data: any }) {
 	// get the right colour from skycolours, setup properly in typescript
 	// setting the string currentSkyLight as a definite type, in this case being a string that is equal to one of the keys in the object
 	type ObjectKey = keyof typeof skyColours;
-	const currentSkyLightGradients = skyColours[currentSkyLight as ObjectKey];
+	let currentSkyLightGradients = skyColours[currentSkyLight as ObjectKey];
+	const nextSkyLightGradients = skyColours[nextSkyLight as ObjectKey];
+	// re-set the sky gradients according to skyProgress, between currentSkyLight and nextSkyLight
+	let newSky: { stop: number; color: string }[] = [];
+	currentSkyLightGradients &&
+		nextSkyLightGradients &&
+		currentSkyLightGradients.forEach((gradient, index) => {
+			// get stop difference
+			let stopDifference = nextSkyLightGradients[index].stop - gradient.stop;
+			let stop = parseFloat(
+				((gradient.stop + stopDifference) * skyProgress).toFixed(2)
+			);
+			// get rgb difference
+			let rgbCurrent: number[] = gradient.color
+				.replace(/[()'rgb']/g, " ")
+				.replaceAll(" ", "")
+				.split(",")
+				.map((x) => parseInt(x));
+			let rgbNext: number[] = nextSkyLightGradients[index].color
+				.replace(/[()'rgb']/g, " ")
+				.replaceAll(" ", "")
+				.split(",")
+				.map((x) => parseInt(x));
+			let rgbNew: number[] = [];
+			rgbCurrent.forEach((rgb, index) => {
+				let rgbChange = rgbNext[index] - rgb;
+				rgbNew.push(Number((rgb + rgbChange * skyProgress).toFixed()));
+			});
+			newSky.push({ stop: stop, color: `rgb(${rgbNew})` });
+		});
+	currentSkyLightGradients = newSky;
 
 	// setting each building layer in an array to be looped over when drawing
 	type BuildingLayerType = {
