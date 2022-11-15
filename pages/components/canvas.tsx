@@ -227,6 +227,7 @@ export default function Canvas({ data }: { data: any }) {
 	const lampostLightColour: string = "#f0dfa899";
 
 	const drawOnce = (paintbrush: any) => {
+		paintbrush.clearRect(0, 0, width, height);
 		// draw sky
 		drawSky(
 			paintbrush,
