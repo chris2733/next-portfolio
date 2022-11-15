@@ -502,8 +502,8 @@ function buildingsSetup(
 		// check the current sky colour isnt night, nadir or nightend, otherwise it needs to be lightened
 		const blackSky = currentSkyLight === "night" || "nadir" || "nightend";
 		// getting correct -1 starting point for light colours, it shouldnt go past -1
-		const hexAdjust = 20; //amount to adjust, lower num for more contrast between layers
-		const hexChange = blackSky ? 0.01 : -1 + layerNum / hexAdjust;
+		const hexAdjust = 17; //amount to adjust, lower num for more contrast between layers
+		const hexChange = blackSky ? -0.2 : -1 + layerNum / hexAdjust;
 		buildingLayers.forEach((layer, index) => {
 			// if night then multiply the change, otherwise take it away - looks better visually
 			// also convert to hex to use hexchange (i could use rgb change or something but thats for later)
@@ -521,7 +521,10 @@ function buildingsSetup(
 			const shadeChange = blackSky
 				? hexChange * (layerNum - index)
 				: hexChange - index / hexAdjust;
-			layer.colour = shadeHexColor(buildingColourToHex, shadeChange);
+			layer.colour = shadeHexColor(
+				buildingColourToHex,
+				Number(shadeChange.toFixed(1))
+			);
 		});
 	}
 
