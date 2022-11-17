@@ -366,7 +366,8 @@ function drawSky(
 	let starSpaceMin: number = 7;
 	let starSpaceMax: number = 15;
 	let starColour: string = "#ffffff99";
-	if (currentSkyLight === "nauticalDusk" || "night" || "nadir" || "nightEnd") {
+	let checkNight: string[] = ["nauticalDusk", "night", "nadir", "nightEnd"];
+	if (checkNight.includes(currentSkyLight)) {
 		for (
 			let xPos = startX;
 			xPos < width;
@@ -469,7 +470,7 @@ function buildingsSetup(
 			maxGMod: 0.65,
 			heightAdjust: horizon * 0.33,
 			scaleAdjust: 0.65,
-			colour: "rgba(0,0,0,0.75)",
+			colour: "rgba(0,0,0,0.65)",
 		},
 		{
 			minWMod: 1.033,
@@ -480,7 +481,7 @@ function buildingsSetup(
 			maxGMod: 0.85,
 			heightAdjust: horizon * 0.66,
 			scaleAdjust: 0.85,
-			colour: "rgba(0,0,0,0.75)",
+			colour: "rgba(0,0,0,0.85)",
 		},
 		{
 			minWMod: 1,
@@ -501,7 +502,8 @@ function buildingsSetup(
 		// then see if its night, it will be lightened
 		const layerNum = buildingLayers.length;
 		// check the current sky colour isnt night, nadir or nightend, otherwise it needs to be lightened
-		const blackSky = currentSkyLight === "night" || "nadir" || "nightend";
+		let checkNight: string[] = ["nauticalDusk", "night", "nadir", "nightEnd"];
+		const blackSky = checkNight.includes(currentSkyLight);
 		// getting correct -1 starting point for light colours, it shouldnt go past -1
 		const hexAdjust = 17; //amount to adjust, lower num for more contrast between layers
 		const hexChange = blackSky ? -0.2 : -1 + layerNum / hexAdjust;
