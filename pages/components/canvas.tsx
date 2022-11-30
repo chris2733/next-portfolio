@@ -505,10 +505,9 @@ function buildingsSetup(
     const blackSky = checkNight.includes(currentSkyLight);
     // getting correct -1 starting point for light colours, it shouldnt go past -1
     const hexAdjust = 17; //amount to adjust, lower num for more contrast between layers
-    const hexChange = blackSky ? -0.2 : -1 + layerNum / hexAdjust;
+    const hexChange = -1 + layerNum / hexAdjust;
     buildingLayers.forEach((layer, index) => {
-      // if night then multiply the change, otherwise take it away - looks better visually
-      // also convert to hex to use hexchange (i could use rgb change or something but thats for later)
+      // convert to hex to use hexchange (i could use rgb change or something but thats for later)
       // so filter the rgb, brackets and space out, then map to convert the strings to numbers for the rgb function
       const buildingColourRGBArray: number[] = buildingColour
         .replace(/[()'rgb']/g, " ")
@@ -520,12 +519,13 @@ function buildingsSetup(
         buildingColourRGBArray[1],
         buildingColourRGBArray[2]
       );
+      // if black sky, want the number to go from -0.6 up to -1, -1 being darkest, but anymore it goes wierd
       const shadeChange = blackSky
-        ? hexChange * (layerNum - index)
+        ? -0.6 - (layerNum - index) / 10
         : hexChange - index / hexAdjust;
       layer.colour = shadeHexColor(
         buildingColourToHex,
-        Number(shadeChange.toFixed(1))
+        Number(shadeChange.toFixed(2))
       );
     });
   }
