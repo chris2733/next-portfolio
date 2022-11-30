@@ -225,7 +225,7 @@ export default function Canvas({ data }: { data: any }) {
   const lamppostSpace = randomIntFromInterval(150, 180);
   const lampostLightColour: string = "#f0dfa899";
 
-  const drawOnce = (paintbrush: any) => {
+  const drawOnce = (paintbrush: CanvasRenderingContext2D) => {
     paintbrush.clearRect(0, 0, width, height);
     // draw sky
     drawSky(
@@ -249,7 +249,7 @@ export default function Canvas({ data }: { data: any }) {
   };
 
   // draw on canvas here
-  const draw = (paintbrush: any, frameCount: any) => {
+  const draw = (paintbrush: CanvasRenderingContext2D, frameCount: any) => {
     // horizon
     // paintbrush.beginPath();
     // paintbrush.moveTo(0, height - horizon);
@@ -306,8 +306,14 @@ export default function Canvas({ data }: { data: any }) {
     setHeight(window.innerHeight);
     // check it isnt null - thanks typescript
     if (canvasEl.current) {
+      // check if canvas context isnt null.. then add it to paintbrush
+      // seems to be the only way to make ts happy without using any
       const canvas = canvasEl.current;
-      const paintbrush = canvas.getContext("2d");
+      const ctx = canvas.getContext("2d");
+      if (!ctx || !(ctx instanceof CanvasRenderingContext2D) || ctx === null) {
+        return;
+      }
+      const paintbrush: CanvasRenderingContext2D = ctx;
 
       let frameCount: number = 0;
       let animationFrameId: any;
@@ -343,7 +349,7 @@ export default function Canvas({ data }: { data: any }) {
 }
 
 function drawSky(
-  paintbrush: any,
+  paintbrush: CanvasRenderingContext2D,
   width: number,
   height: number,
   currentSkyLight: string,
@@ -380,7 +386,7 @@ function drawSky(
 }
 
 function drawSunMoon(
-  paintbrush: any,
+  paintbrush: CanvasRenderingContext2D,
   data: any,
   width: number,
   height: number,
@@ -566,7 +572,7 @@ function getPoint(c1: number, c2: number, radius: number, angle: number) {
 
 // set position of the sun/moon
 function sunMoonPosition(
-  paintbrush: any,
+  paintbrush: CanvasRenderingContext2D,
   radians: number,
   centreX: number,
   centreY: number,
@@ -586,8 +592,7 @@ function sunMoonPosition(
     centreY,
     orbitRadius,
     0 - radianAdjust,
-    radians - radianAdjust,
-    0
+    radians - radianAdjust
   );
   paintbrush.strokeStyle = "transparent";
   paintbrush.stroke();
@@ -615,8 +620,7 @@ function sunMoonPosition(
     sunMoonPosition[1],
     circleRadius,
     0,
-    Math.PI + (Math.PI * 2) / 2,
-    1
+    Math.PI + (Math.PI * 2) / 2
   );
   // fill itt
   // if isSun...
@@ -640,7 +644,7 @@ function randomIntFromInterval(min: number, max: number) {
 
 // drawing buildings
 function drawBuilding(
-  paintbrush: any,
+  paintbrush: CanvasRenderingContext2D,
   startX: number,
   startY: number,
   width: number,
@@ -768,7 +772,7 @@ function buildingLayer(
 }
 
 function drawBuildingWindows(
-  paintbrush: any,
+  paintbrush: CanvasRenderingContext2D,
   width: number,
   height: number,
   startX: number,
@@ -840,7 +844,7 @@ function drawBuildingWindows(
     }
   }
   function drawWindow(
-    paintbrush: any,
+    paintbrush: CanvasRenderingContext2D,
     windowWidth: number,
     windowHeight: number,
     windowColour: string,
@@ -874,7 +878,7 @@ function drawBuildingWindows(
 }
 
 function drawRailing(
-  paintbrush: any,
+  paintbrush: CanvasRenderingContext2D,
   startX: number,
   startY: number,
   fill: string,
@@ -911,7 +915,7 @@ function drawRailing(
 }
 
 function drawAntenna(
-  paintbrush: any,
+  paintbrush: CanvasRenderingContext2D,
   startX: number,
   startY: number,
   fill: string,
@@ -946,7 +950,7 @@ function drawAntenna(
 }
 
 function drawCrane(
-  paintbrush: any,
+  paintbrush: CanvasRenderingContext2D,
   startX: number,
   startY: number,
   fill: string,
@@ -1006,7 +1010,7 @@ function drawCrane(
 }
 
 function drawLampposts(
-  paintbrush: any,
+  paintbrush: CanvasRenderingContext2D,
   width: number,
   height: number,
   startPoint: number,
@@ -1110,7 +1114,7 @@ function shadeHexColor(color: string, percent: number) {
 // 	);
 // }
 
-function resetShadows(paintbrush: any) {
+function resetShadows(paintbrush: CanvasRenderingContext2D) {
   // used to reset the shadows, you have to after each time
   paintbrush.shadowColor = "transparent";
   paintbrush.shadowOffsetX = 0;
