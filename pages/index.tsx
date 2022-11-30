@@ -5,19 +5,19 @@ import { SliceZone } from "@prismicio/react";
 import { createClient } from "./prismicio";
 
 const Home: NextPage = (page: any) => {
-	return <Landing pageData={page} />;
+  return <Landing pageData={page} />;
 };
 
 export default Home;
 
 export async function getStaticProps() {
-	const client = createClient();
+  const client = createClient();
 
-	const page = await client.getSingle("homepage");
+  const page = await client.getSingle("homepage");
 
-	return {
-		props: {
-			page,
-		},
-	};
+  return {
+    props: {
+      page,
+    },
+  };
 }

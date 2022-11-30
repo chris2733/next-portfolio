@@ -1,45 +1,45 @@
 import { motion } from "framer-motion";
 
 export default function LetterSplitter({
-	text,
-	initialDelay,
-	letterDelay,
-	letterClass,
+  text,
+  initialDelay,
+  letterDelay,
+  letterClass,
 }: {
-	text?: string;
-	initialDelay?: number;
-	letterDelay?: number;
-	letterClass?: string;
+  text?: string;
+  initialDelay?: number;
+  letterDelay?: number;
+  letterClass?: string;
 }) {
-	// check over this, needed to check if text was undefined so it didnt throw a non iterable error
-	const splittext: string[] = text !== undefined ? Array.from(text) : [""];
+  // check over this, needed to check if text was undefined so it didnt throw a non iterable error
+  const splittext: string[] = text !== undefined ? Array.from(text) : [""];
 
-	return (
-		<>
-			{splittext !== undefined &&
-				splittext.map((el, i) => (
-					<motion.span
-						key={`lettersplitter${i}`}
-						initial="hidden"
-						animate="visible"
-						variants={{
-							hidden: {
-								y: "100%",
-							},
-							visible: {
-								y: "0",
-								transition: {
-									delay:
-										i * (letterDelay ? letterDelay : 0.2) +
-										(initialDelay ? initialDelay : 0),
-								},
-							},
-						}}
-						className={letterClass ? letterClass : "duration-200"}
-					>
-						<span dangerouslySetInnerHTML={{ __html: el }}></span>
-					</motion.span>
-				))}
-		</>
-	);
+  return (
+    <>
+      {splittext !== undefined &&
+        splittext.map((el, i) => (
+          <motion.span
+            key={`lettersplitter${i}`}
+            initial="hidden"
+            animate="visible"
+            variants={{
+              hidden: {
+                y: "100%",
+              },
+              visible: {
+                y: "0",
+                transition: {
+                  delay:
+                    i * (letterDelay ? letterDelay : 0.2) +
+                    (initialDelay ? initialDelay : 0),
+                },
+              },
+            }}
+            className={letterClass ? letterClass : "duration-200"}
+          >
+            <span dangerouslySetInnerHTML={{ __html: el }}></span>
+          </motion.span>
+        ))}
+    </>
+  );
 }
