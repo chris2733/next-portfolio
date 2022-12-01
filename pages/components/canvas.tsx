@@ -529,9 +529,14 @@ function buildingsSetup(
       const shadeChange = blackSky
         ? -0.6 - (layerNum - index) / 10
         : hexChange - index / hexAdjust;
+      // maybe -0.05 for nadir? check if nadir, then do -0.05, becuase its just too damn black
+      const shadeChangeNadir = 0.01 * (layerNum - index);
+      console.log(currentSkyLight === "nadir");
       layer.colour = shadeHexColor(
         buildingColourToHex,
-        Number(shadeChange.toFixed(2))
+        currentSkyLight === "nadir"
+          ? shadeChangeNadir
+          : Number(shadeChange.toFixed(2))
       );
     });
   }
