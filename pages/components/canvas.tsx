@@ -1,5 +1,4 @@
-import next from "next";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 // **********
 // todo
@@ -187,12 +186,12 @@ export default function Canvas({ data }: { data: any }) {
     width: number;
     height: number;
   };
-  let buildings: {
+  const buildings: {
     buildingsArray: BuildingLayerType[];
     heightAdjust: number;
     scaleAdjust: number; //scaleadjust used to make windows smaller, giving illusion of distance away
     colour: string;
-  }[] = [];
+  }[] = useMemo(() => [], []);
   // each building layer pushed here with a height adjusted up in y
   // building constraints setup here
   const building: {
@@ -225,80 +224,93 @@ export default function Canvas({ data }: { data: any }) {
   const lamppostSpace = randomIntFromInterval(150, 180);
   const lampostLightColour: string = "#f0dfa899";
 
-  const drawOnce = (paintbrush: CanvasRenderingContext2D) => {
-    paintbrush.clearRect(0, 0, width, height);
-    // draw sky
-    drawSky(
-      paintbrush,
-      width,
-      height,
+  const drawOnce = useCallback(
+    (paintbrush: CanvasRenderingContext2D) => {
+      paintbrush.clearRect(0, 0, width, height);
+      // draw sky
+      drawSky(
+        paintbrush,
+        width,
+        height,
+        currentSkyLight,
+        currentSkyLightGradients
+      );
+      // sun/moon positioning
+      drawSunMoon(
+        paintbrush,
+        data,
+        width,
+        height,
+        horizon,
+        radianAdjust,
+        sunColour,
+        moonColour
+      );
+    },
+    [
       currentSkyLight,
-      currentSkyLightGradients
-    );
-    // sun/moon positioning
-    drawSunMoon(
-      paintbrush,
+      currentSkyLightGradients,
       data,
-      width,
       height,
-      horizon,
       radianAdjust,
-      sunColour,
-      moonColour
-    );
-  };
+      width,
+    ]
+  );
 
   // draw on canvas here
-  const draw = (paintbrush: CanvasRenderingContext2D, frameCount: any) => {
-    // horizon
-    // paintbrush.beginPath();
-    // paintbrush.moveTo(0, height - horizon);
-    // paintbrush.lineTo(width, height - horizon);
-    // paintbrush.strokeStyle = "red";
-    // paintbrush.stroke();
+  const draw = useCallback(
+    (paintbrush: CanvasRenderingContext2D, frameCount: any) => {
+      // horizon
+      // paintbrush.beginPath();
+      // paintbrush.moveTo(0, height - horizon);
+      // paintbrush.lineTo(width, height - horizon);
+      // paintbrush.strokeStyle = "red";
+      // paintbrush.stroke();
 
-    // draw each building layer here
-    buildings.forEach(
-      ({ buildingsArray, heightAdjust, scaleAdjust, colour }) => {
-        // if height heightAdjust, add bar of colour underneath to cover the background
-        let heightFix = 0;
-        if (heightAdjust !== undefined) {
-          heightFix = heightAdjust;
-          paintbrush.beginPath();
-          paintbrush.fillStyle = colour;
-          paintbrush.fillRect(0, height - heightAdjust, width, height);
+      // draw each building layer here
+      buildings.forEach(
+        ({ buildingsArray, heightAdjust, scaleAdjust, colour }) => {
+          // if height heightAdjust, add bar of colour underneath to cover the background
+          let heightFix = 0;
+          if (heightAdjust !== undefined) {
+            heightFix = heightAdjust;
+            paintbrush.beginPath();
+            paintbrush.fillStyle = colour;
+            paintbrush.fillRect(0, height - heightAdjust, width, height);
+          }
+          buildingsArray &&
+            buildingsArray.forEach((building: any) => {
+              drawBuilding(
+                paintbrush,
+                building.start,
+                height - building.height - heightFix,
+                building.width,
+                building.height,
+                colour,
+                building.randomBuildingId,
+                building.randomBuildingId2,
+                scaleAdjust
+              );
+            });
         }
-        buildingsArray &&
-          buildingsArray.forEach((building: any) => {
-            drawBuilding(
-              paintbrush,
-              building.start,
-              height - building.height - heightFix,
-              building.width,
-              building.height,
-              colour,
-              building.randomBuildingId,
-              building.randomBuildingId2,
-              scaleAdjust
-            );
-          });
-      }
-    );
+      );
 
-    // draw lampposts, similar setup to buildinglayer
-    drawLampposts(
-      paintbrush,
-      width,
-      height,
-      lamppostStart,
-      lamppostEnd,
-      lamppostSpace,
-      25,
-      2,
-      "black",
-      lampostLightColour
-    );
-  };
+      // draw lampposts, similar setup to buildinglayer
+      drawLampposts(
+        paintbrush,
+        width,
+        height,
+        lamppostStart,
+        lamppostEnd,
+        lamppostSpace,
+        25,
+        2,
+        "black",
+        lampostLightColour
+      );
+    },
+    [buildings, height, lamppostEnd, lamppostSpace, lamppostStart, width]
+  );
 
   useEffect(() => {
     // set canvas to full screen size
@@ -322,13 +334,11 @@ export default function Canvas({ data }: { data: any }) {
       const render = () => {
         frameCount++;
         draw(paintbrush, frameCount);
-        // old
-        // animationFrameId = window.requestAnimationFrame(render);
 
         var fps = 3;
         const frameTimeout = setTimeout(function () {
           //throttle requestAnimationFrame
-          window.requestAnimationFrame(render);
+          animationFrameId = window.requestAnimationFrame(render);
         }, 1000 / fps);
       };
       render();
@@ -339,7 +349,7 @@ export default function Canvas({ data }: { data: any }) {
       };
     }
     // call draw here, so its reloaded on each draw
-  }, [draw]);
+  }, [drawOnce, draw]);
 
   return (
     <div className="absolute top-0 left-0 w-full h-full z-30 bg-white bg-opacity-80">
@@ -531,7 +541,7 @@ function buildingsSetup(
         : hexChange - index / hexAdjust;
       // maybe -0.05 for nadir? check if nadir, then do -0.05, becuase its just too damn black
       const shadeChangeNadir = 0.01 * (layerNum - index);
-      console.log(currentSkyLight === "nadir");
+      // console.log(currentSkyLight === "nadir");
       layer.colour = shadeHexColor(
         buildingColourToHex,
         currentSkyLight === "nadir"
