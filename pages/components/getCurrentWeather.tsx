@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { format, fromUnixTime, getHours, getUnixTime } from "date-fns";
+import { formatInTimeZone, zonedTimeToUtc } from "date-fns-tz";
 
 export default function CurrentWeather({
   passDataToParent,
@@ -58,29 +60,29 @@ export default function CurrentWeather({
 
   useEffect(() => {
     // this may look like it's calling twice in dev, but thats because of strictmode - if this is set to false in next.config.js it only happens once
-    const response = axios
-      .get(
-        `http://api.openweathermap.org/data/2.5/weather?id=2653822&appid=${process.env.NEXT_PUBLIC_OPENMAP_API}&units=metric`
-      )
-      .then(function (response) {
-        // handle success
-        console.log("Openmanp weather api GREAET SUCCESS");
-        setapiData(response.data);
-        // console.log(response.data);
-        return;
-      })
-      .catch(function (error) {
-        // handle error
-        console.log("Openmap weather api " + error.message);
-        return;
-      });
+    // const response = axios
+    //   .get(
+    //     `http://api.openweathermap.org/data/2.5/weather?id=2653822&appid=${process.env.NEXT_PUBLIC_OPENMAP_API}&units=metric`
+    //   )
+    //   .then(function (response) {
+    //     // handle success
+    //     console.log("Openmanp weather api GREAET SUCCESS");
+    //     setapiData(response.data);
+    //     // console.log(response.data);
+    //     return;
+    //   })
+    //   .catch(function (error) {
+    //     // handle error
+    //     console.log("Openmap weather api " + error.message);
+    //     return;
+    //   });
 
     // set test data instead
-    // const apiDataConverted = SuccessfulResult(testDataCardiff, 1665446403000); //night
+    const apiDataConverted = SuccessfulResult(testDataCardiff, 1665442803000); //night
     // const apiDataConverted = SuccessfulResult(testDataCardiff, 1665497241000); //day
-    // setWeatherData(apiDataConverted);
-    // passDataToParent(apiDataConverted);
-    // setApiCallOk(true);
+    setWeatherData(apiDataConverted);
+    passDataToParent(apiDataConverted);
+    setApiCallOk(true);
   }, []);
 
   useEffect(() => {
@@ -178,13 +180,17 @@ function SuccessfulResult(data: any, currentUnix: number) {
   const currentSkyLightStart = `${currentSkyLightStartDate.getHours()}${String(
     currentSkyLightStartDate.getMinutes()
   ).padStart(2, "0")}`;
-  const currentSkyLightEnd = `${currentSkyLightEndDate.getHours()}${String(
+  let currentSkyLightEnd = `${currentSkyLightEndDate.getHours()}${String(
     currentSkyLightEndDate.getMinutes()
   ).padStart(2, "0")}`;
-  const timeNow = `${new Date(weather.time).getHours()}${String(
-    new Date(weather.time).getMinutes()
-  ).padStart(2, "0")}`;
+  // need to make sure date is set to gmt - that was a wierd fucking bug
+  let timeNow = formatInTimeZone(weather.time, "Europe/Dublin", "HHmm");
   // progress here - time since the start of current sky light segment, as a percentage of the size of current sky light segment
+  // now... if the start sky light is less than the current, say if its rolling over from midnight it fucks everything up - have to convert something like 2am to a 24hr clock so my maths works out
+  if (Number(timeNow) < Number(currentSkyLightStart)) {
+    currentSkyLightEnd = String(Number(currentSkyLightEnd) + 2400);
+    timeNow = String(Number(timeNow) + 2400);
+  }
   const skyProgress =
     (parseInt(timeNow) - parseInt(currentSkyLightStart)) /
     Math.abs(parseInt(currentSkyLightEnd) - parseInt(currentSkyLightStart));
