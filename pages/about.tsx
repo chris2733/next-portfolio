@@ -46,7 +46,6 @@ const About = () => {
                 wordClass=""
               />
             </div>
-            {/* maybe comment this out when devving not to call is 2000 times a minute */}
             <CurrentWeather passDataToParent={passDataToParent} />
             <div className="mt-2 flex items-center justify-center gap-3">
               <AnimateIn delay={2} duration={0.6}>

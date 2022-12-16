@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { format, fromUnixTime, getHours, getUnixTime } from "date-fns";
-import { formatInTimeZone, zonedTimeToUtc } from "date-fns-tz";
+import { formatInTimeZone } from "date-fns-tz";
 
 export default function CurrentWeather({
   passDataToParent,
@@ -60,29 +59,60 @@ export default function CurrentWeather({
 
   useEffect(() => {
     // this may look like it's calling twice in dev, but thats because of strictmode - if this is set to false in next.config.js it only happens once
-    // const response = axios
-    //   .get(
-    //     `http://api.openweathermap.org/data/2.5/weather?id=2653822&appid=${process.env.NEXT_PUBLIC_OPENMAP_API}&units=metric`
-    //   )
-    //   .then(function (response) {
-    //     // handle success
-    //     console.log("Openmanp weather api GREAET SUCCESS");
-    //     setapiData(response.data);
-    //     // console.log(response.data);
-    //     return;
-    //   })
-    //   .catch(function (error) {
-    //     // handle error
-    //     console.log("Openmap weather api " + error.message);
-    //     return;
-    //   });
+    if (localStorage.getItem("apiData") === null) {
+      console.log("Getting api data first time");
+      getData();
+    } else if (
+      localStorage.getItem("apiData") !== null &&
+      typeof localStorage.getItem("apiData") === "string"
+    ) {
+      // check if the expiry time has gone by, if not, use the existing data stored in localstorage
+      if (
+        localStorage.getItem("expiry") !== null &&
+        new Date().getTime() > Number(localStorage.getItem("expiry"))
+      ) {
+        console.log("expiry date gone by, getting new data");
+        getData();
+      } else {
+        console.log("api on cooldown");
+        const dataGrabbed: string = localStorage.getItem("apiData")!;
+        setapiData(JSON.parse(dataGrabbed).data);
+      }
+    } else {
+      console.log("Error getting data");
+    }
 
     // set test data instead
-    const apiDataConverted = SuccessfulResult(testDataCardiff, 1665442803000); //night
+    // const apiDataConverted = SuccessfulResult(testDataCardiff, 1665442803000); //night
     // const apiDataConverted = SuccessfulResult(testDataCardiff, 1665497241000); //day
-    setWeatherData(apiDataConverted);
-    passDataToParent(apiDataConverted);
-    setApiCallOk(true);
+    // setWeatherData(apiDataConverted);
+    // passDataToParent(apiDataConverted);
+    // setApiCallOk(true);
+
+    function getData() {
+      const response = axios
+        .get(
+          `http://api.openweathermap.org/data/2.5/weather?id=2653822&appid=${process.env.NEXT_PUBLIC_OPENMAP_API}&units=metric`
+        )
+        .then(function (response) {
+          // handle success
+          console.log("Openmap weather api GREAET SUCCESS");
+          setapiData(response.data);
+          // console.log(response.data);
+          // set local storage to contain response and cooldown
+          localStorage.setItem("apiData", JSON.stringify(response));
+          // set expiry on localStorage, with new Date().getTime();
+          // set minutes by mins * 60000, to get away from milliseconds
+          const expiry = String(new Date().getTime() + 5 * 60000);
+          localStorage.setItem("expiry", expiry);
+          return;
+        })
+        .catch(function (error) {
+          // handle error
+          console.log("Openmap weather api " + error.message);
+          return;
+        });
+    }
   }, []);
 
   useEffect(() => {
