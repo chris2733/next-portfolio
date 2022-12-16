@@ -869,9 +869,11 @@ function drawBuildingWindows(
     y: number
   ) {
     // but random lit window.. havent figured it out exactly, but this seems to look pretty random
-    const dateDigits = parseInt(String(new Date().getSeconds()));
-    const randomLoopDigits = parseInt(
-      String((x + y) * randomBuildingId2).slice(-2)
+    const dateDigits = String(
+      parseInt(String(new Date().getSeconds())) * randomBuildingId
+    ).slice(-3);
+    const randomLoopDigits = String((x + y) * randomBuildingId2 * 100).slice(
+      -3
     );
     // flip state of window lit randomly
     if (dateDigits === randomLoopDigits) {
