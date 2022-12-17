@@ -4,8 +4,9 @@ import PageTransitionWrapper from "./components/pageTransition";
 import { NextSeo } from "next-seo";
 import RoundedLinks from "./elements/roundedlinks";
 import AnimateIn from "./components/animateIn";
+import { createClient } from "@prismicio/client";
 
-const About = () => {
+const Work = (page: any) => {
   const WorkSites: { title: string; description: string; link: string }[] = [
     {
       title: "Cadw",
@@ -38,6 +39,8 @@ const About = () => {
       link: "https://repool.com/",
     },
   ];
+
+  console.log(page);
 
   return (
     <>
@@ -97,4 +100,16 @@ const About = () => {
   );
 };
 
-export default About;
+export default Work;
+
+export async function getStaticProps({ previewData }: { previewData: any }) {
+  const client = createClient(previewData);
+
+  const page = await client.getSingle("work");
+
+  return {
+    props: {
+      page,
+    },
+  };
+}

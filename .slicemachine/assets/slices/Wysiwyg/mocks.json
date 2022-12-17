@@ -1,0 +1,19 @@
+[
+  {
+    "variation": "default",
+    "version": "sktwi1xtmkfgx8626",
+    "items": [
+      {}
+    ],
+    "primary": {
+      "wysiwyg": [
+        {
+          "type": "paragraph",
+          "text": "Esse officia magna ad eu. Lorem ea et nisi est ex enim aliqua ex nisi.",
+          "spans": []
+        }
+      ]
+    },
+    "slice_type": "wysiwyg"
+  }
+]

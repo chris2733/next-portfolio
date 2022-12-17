@@ -1,7 +1,8 @@
 {
   "_cts": {
     "banner_title": {},
-    "homepage": {}
+    "homepage": {},
+    "work": {}
   },
   "slices": {
     "LandingPage": {
@@ -22,6 +23,23 @@
       }
     },
     "TextRepeater": {
+      "default": {
+        "primary": {}
+      }
+    },
+    "Wysiwyg": {
+      "default": {
+        "primary": {
+          "wysiwyg": {
+            "config": {
+              "patternType": "PARAGRAPH",
+              "blocks": 1
+            }
+          }
+        }
+      }
+    },
+    "WorkLink": {
       "default": {
         "primary": {}
       }

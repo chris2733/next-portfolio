@@ -5,6 +5,14 @@ Setup:
 
 Because yarn seems to run with prismic, where npm doesn't.
 
+For prismic:
+
+Run `npm run slicemachine`
+Go to `http://localhost:9999/`
+Make changes, change stuff
+Go to 'changes' (don't forget to login here to github) and push changes
+Login to prismic.io to go to my dashboard, set up the actual pages and content here
+
 ---
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).

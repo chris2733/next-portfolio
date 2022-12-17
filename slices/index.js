@@ -3,15 +3,18 @@
 import Links from './Links';
 import TextRepeater from './TextRepeater';
 import Titleseeeee from './Titleseeeee';
+import WorkLink from './WorkLink';
 
 export {
 	Links,
 	TextRepeater,
 	Titleseeeee,
+	WorkLink,
 };
 
 export const components = {
 	links: Links,
 	text_repeater: TextRepeater,
 	landing_page: Titleseeeee,
+	work_link: WorkLink,
 };
