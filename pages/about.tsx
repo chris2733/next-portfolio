@@ -24,12 +24,15 @@ const About = () => {
   };
 
   useEffect(() => {
+    showHideCanvas();
+  }, [useTestData, testDataTime]);
+
+  function showHideCanvas() {
     setShowCanvas(false);
-    console.log("hidecanvas");
     setTimeout(() => {
       setShowCanvas(true);
-    }, 1000);
-  }, [useTestData, testDataTime]);
+    }, 500);
+  }
 
   const dataTimeOptions: { name: string; time: number }[] = [
     {
@@ -152,19 +155,21 @@ const About = () => {
           >
             Use live api data
           </button>
-          <select
-            name="time"
-            id=""
-            onChange={(el) => {
-              setTestDataTime(Number(el.target.value));
-            }}
-          >
-            {dataTimeOptions.map((el, id) => (
-              <option value={el.time} key={`timeoption${id}`}>
-                {el.name}
-              </option>
-            ))}
-          </select>
+          {useTestData === true && (
+            <select
+              name="time"
+              id=""
+              onChange={(el) => {
+                setTestDataTime(Number(el.target.value));
+              }}
+            >
+              {dataTimeOptions.map((el, id) => (
+                <option value={el.time} key={`timeoption${id}`}>
+                  {el.name}
+                </option>
+              ))}
+            </select>
+          )}
         </div>
         {Object.keys(apiDataRecieved).length !== 0 && apiResponseOk && (
           <AnimatePresence>
