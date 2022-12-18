@@ -4,8 +4,10 @@ import { formatInTimeZone } from "date-fns-tz";
 
 export default function CurrentWeather({
   passDataToParent,
+  useTestData,
 }: {
   passDataToParent: Function;
+  useTestData: boolean;
 }) {
   const [apiData, setapiData] = useState({});
   const [apiCallOk, setApiCallOk] = useState(false);
@@ -58,36 +60,39 @@ export default function CurrentWeather({
   };
 
   useEffect(() => {
-    // this may look like it's calling twice in dev, but thats because of strictmode - if this is set to false in next.config.js it only happens once
-    if (localStorage.getItem("apiData") === null) {
-      console.log("Getting api data first time");
-      getData();
-    } else if (
-      localStorage.getItem("apiData") !== null &&
-      typeof localStorage.getItem("apiData") === "string"
-    ) {
-      // check if the expiry time has gone by, if not, use the existing data stored in localstorage
-      if (
-        localStorage.getItem("expiry") !== null &&
-        new Date().getTime() > Number(localStorage.getItem("expiry"))
-      ) {
-        console.log("expiry date gone by, getting new data");
-        getData();
-      } else {
-        console.log("api on cooldown");
-        const dataGrabbed: string = localStorage.getItem("apiData")!;
-        setapiData(JSON.parse(dataGrabbed).data);
-      }
+    if (useTestData === true) {
+      console.log("use test data");
+      // set test data instead
+      // const apiDataConverted = SuccessfulResult(testDataCardiff, 1665442803000); //night
+      const apiDataConverted = SuccessfulResult(testDataCardiff, 1665497241000); //day
+      setWeatherData(apiDataConverted);
+      passDataToParent(apiDataConverted);
+      setApiCallOk(true);
     } else {
-      console.log("Error getting data");
+      // this may look like it's calling twice in dev, but thats because of strictmode - if this is set to false in next.config.js it only happens once
+      if (localStorage.getItem("apiData") === null) {
+        console.log("Getting api data first time");
+        getData();
+      } else if (
+        localStorage.getItem("apiData") !== null &&
+        typeof localStorage.getItem("apiData") === "string"
+      ) {
+        // check if the expiry time has gone by, if not, use the existing data stored in localstorage
+        if (
+          localStorage.getItem("expiry") !== null &&
+          new Date().getTime() > Number(localStorage.getItem("expiry"))
+        ) {
+          console.log("expiry date gone by, getting new data");
+          getData();
+        } else {
+          console.log("api on cooldown");
+          const dataGrabbed: string = localStorage.getItem("apiData")!;
+          setapiData(JSON.parse(dataGrabbed).data);
+        }
+      } else {
+        console.log("Error getting data");
+      }
     }
-
-    // set test data instead
-    // const apiDataConverted = SuccessfulResult(testDataCardiff, 1665442803000); //night
-    // const apiDataConverted = SuccessfulResult(testDataCardiff, 1665497241000); //day
-    // setWeatherData(apiDataConverted);
-    // passDataToParent(apiDataConverted);
-    // setApiCallOk(true);
 
     function getData() {
       const response = axios
@@ -105,7 +110,6 @@ export default function CurrentWeather({
           // set minutes by mins * 60000, to get away from milliseconds
           const expiry = String(new Date().getTime() + 5 * 60000);
           localStorage.setItem("expiry", expiry);
-          return;
         })
         .catch(function (error) {
           // handle error
@@ -113,7 +117,7 @@ export default function CurrentWeather({
           return;
         });
     }
-  }, []);
+  }, [useTestData]);
 
   useEffect(() => {
     if (Object.keys(apiData).length !== 0) {

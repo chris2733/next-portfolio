@@ -13,19 +13,42 @@ const About = () => {
 
   const [apiDataRecieved, setApiDataRecieved] = useState({});
   const [apiResponseOk, setApiResponseOk] = useState(false);
+  const [useTestData, setUseTestData] = useState(false);
+  const [showCanvas, setShowCanvas] = useState(true);
 
   const passDataToParent = (data: Object) => {
     setApiDataRecieved(data);
     setApiResponseOk(true);
   };
 
+  useEffect(() => {
+    setShowCanvas(false);
+    setTimeout(() => {
+      setShowCanvas(true);
+    }, 1000);
+  }, [useTestData]);
+
   return (
     <>
       <NextSeo title="About" />
       <PageTransitionWrapper classes="min-h-screen flex items-center justify-center relative overflow-hidden">
-        {Object.keys(apiDataRecieved).length !== 0 && apiResponseOk && (
-          <Canvas data={apiDataRecieved} />
-        )}
+        <div className="fixed w-full top-0 left-0 z-40 flex gap-2">
+          <button
+            className="bg-white opacity-50"
+            onClick={() => setUseTestData(true)}
+          >
+            use Test data
+          </button>
+          <button
+            className="bg-white opacity-50"
+            onClick={() => setUseTestData(false)}
+          >
+            Use live api data
+          </button>
+        </div>
+        {Object.keys(apiDataRecieved).length !== 0 &&
+          apiResponseOk &&
+          showCanvas === true && <Canvas data={apiDataRecieved} />}
         {/* canvas here to test without api call */}
         {/* <Canvas /> */}
         <div className="container py-24 sm:py-32 text-center rounded-3xl bg-white !max-w-2xl p-8 shadow-[0px_0px_112px_-2px_rgba(255,255,255,0.75)] z-20">
@@ -46,7 +69,10 @@ const About = () => {
                 wordClass=""
               />
             </div>
-            <CurrentWeather passDataToParent={passDataToParent} />
+            <CurrentWeather
+              passDataToParent={passDataToParent}
+              useTestData={useTestData}
+            />
             <div className="mt-2 flex items-center justify-center gap-3">
               <AnimateIn delay={2} duration={0.6}>
                 <RoundedLinks
