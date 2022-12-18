@@ -4,9 +4,10 @@ import LetterSplitter from "./components/letterSplitter";
 import WordSplitter from "./components/workSplitter";
 import PageTransitionWrapper from "./components/pageTransition";
 import RoundedLinks from "./elements/roundedlinks";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import CurrentWeather from "./components/getCurrentWeather";
 import Canvas from "./components/canvas";
+import { AnimatePresence, motion } from "framer-motion";
 
 const About = () => {
   const text = "About me here";
@@ -46,9 +47,24 @@ const About = () => {
             Use live api data
           </button>
         </div>
-        {Object.keys(apiDataRecieved).length !== 0 &&
-          apiResponseOk &&
-          showCanvas === true && <Canvas data={apiDataRecieved} />}
+        {Object.keys(apiDataRecieved).length !== 0 && apiResponseOk && (
+          <AnimatePresence>
+            {showCanvas === true && (
+              <motion.div
+                key="canvasel"
+                initial={{ opacity: 0 }}
+                animate={{
+                  opacity: 1,
+                  transition: { duration: 0.3, delay: 0.3 },
+                }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                <Canvas data={apiDataRecieved} />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        )}
         {/* canvas here to test without api call */}
         {/* <Canvas /> */}
         <div className="container py-24 sm:py-32 text-center rounded-3xl bg-white !max-w-2xl p-8 shadow-[0px_0px_112px_-2px_rgba(255,255,255,0.75)] z-20">
