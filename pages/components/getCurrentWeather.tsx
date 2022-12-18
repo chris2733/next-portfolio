@@ -6,9 +6,13 @@ import { format, getTime, getUnixTime } from "date-fns";
 export default function CurrentWeather({
   passDataToParent,
   useTestData,
+  testData,
+  testDataTime,
 }: {
   passDataToParent: Function;
   useTestData: boolean;
+  testData: Object;
+  testDataTime: number;
 }) {
   const [apiData, setapiData] = useState({});
   const [apiCallOk, setApiCallOk] = useState(false);
@@ -17,57 +21,10 @@ export default function CurrentWeather({
   const currentUnix =
     getUnixTime(utcToZonedTime(new Date(), "Europe/London")) * 1000;
 
-  // test data to show night and day
-  const testDataCardiff: object = {
-    coord: {
-      lon: -3.18,
-      lat: 51.48,
-    },
-    weather: [
-      {
-        id: 803,
-        main: "Clouds",
-        description: "broken clouds",
-        icon: "04n",
-      },
-    ],
-    base: "stations",
-    main: {
-      temp: 7.04,
-      feels_like: 4.58,
-      temp_min: 5.57,
-      temp_max: 8.4,
-      pressure: 1022,
-      humidity: 82,
-    },
-    visibility: 10000,
-    wind: {
-      speed: 3.6,
-      deg: 360,
-    },
-    clouds: {
-      all: 63,
-    },
-    dt: 1665447422,
-    sys: {
-      type: 2,
-      id: 2045739,
-      country: "GB",
-      sunrise: 1665469764,
-      sunset: 1665509356,
-    },
-    timezone: 3600,
-    id: 2653822,
-    name: "Cardiff",
-    cod: 200,
-  };
-
   useEffect(() => {
     if (useTestData === true) {
       console.log("use test data");
-      // set test data instead
-      // const apiDataConverted = SuccessfulResult(testDataCardiff, 1665442803000); //night
-      const apiDataConverted = SuccessfulResult(testDataCardiff, 1665497241000); //day
+      const apiDataConverted = SuccessfulResult(testData, testDataTime);
       setWeatherData(apiDataConverted);
       passDataToParent(apiDataConverted);
       setApiCallOk(true);
@@ -120,7 +77,7 @@ export default function CurrentWeather({
           return;
         });
     }
-  }, [useTestData]);
+  }, [useTestData, testDataTime]);
 
   useEffect(() => {
     if (Object.keys(apiData).length !== 0) {
@@ -248,8 +205,8 @@ function SuccessfulResult(data: any, currentUnix: number) {
   const moonIllumination = SunCalc.getMoonIllumination(weather.time);
 
   // degrees calculated from the right of a circle - adding 90 on so its from the horizon, otherwise canvas draws it from the top
-  const sunDegrees = (sunPosition.altitude * 180) / Math.PI - 90;
-  const moonDegrees = (moonPosition.altitude * 180) / Math.PI - 90;
+  const sunDegrees = (sunPosition.azimuth * 180) / Math.PI;
+  const moonDegrees = (moonPosition.azimuth * 180) / Math.PI;
 
   return {
     weather,
