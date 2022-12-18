@@ -248,8 +248,8 @@ function SuccessfulResult(data: any, currentUnix: number) {
   const moonIllumination = SunCalc.getMoonIllumination(weather.time);
 
   // degrees calculated from the right of a circle - adding 90 on so its from the horizon, otherwise canvas draws it from the top
-  const sunDegrees = (sunPosition.altitude * 180) / Math.PI + 90;
-  const moonDegrees = (moonPosition.altitude * 180) / Math.PI + 90;
+  const sunDegrees = (sunPosition.altitude * 180) / Math.PI - 90;
+  const moonDegrees = (moonPosition.altitude * 180) / Math.PI - 90;
 
   return {
     weather,
