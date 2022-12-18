@@ -1,5 +1,5 @@
 import LetterSplitter from "./components/letterSplitter";
-import WordSplitter from "./components/workSplitter";
+import WordSplitter from "./components/wordSplitter";
 import PageTransitionWrapper from "./components/pageTransition";
 import { NextSeo } from "next-seo";
 import RoundedLinks from "./elements/roundedlinks";
@@ -48,6 +48,13 @@ const About = () => {
             <LetterSplitter
               text={"work"}
               initialDelay={0.5}
+              letterDelay={0.03}
+              letterClass="text-lg uppercase duration-[1.2s] ease-[cubic-bezier(0.25,1,0.5,1)] cursor-default inline-block font-medium"
+            />
+            <span className="mx-[2px]"></span>
+            <LetterSplitter
+              text={"links"}
+              initialDelay={0.7}
               letterDelay={0.03}
               letterClass="text-lg uppercase duration-[1.2s] ease-[cubic-bezier(0.25,1,0.5,1)] cursor-default inline-block font-medium"
             />

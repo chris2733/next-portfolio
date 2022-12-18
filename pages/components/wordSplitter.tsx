@@ -3,7 +3,6 @@ import { motion } from "framer-motion";
 export default function WordSplitter({
   text,
   boldText,
-  boldTextClass,
   initialDelay,
   wordDelay,
   wordClass,
@@ -11,7 +10,6 @@ export default function WordSplitter({
 }: {
   text?: string;
   boldText?: string;
-  boldTextClass?: boolean;
   initialDelay?: number;
   wordDelay?: number;
   wordClass?: string;
@@ -52,7 +50,7 @@ export default function WordSplitter({
                     },
                   },
                 }}
-                className={`${speed} inline-block mr-[0.2em] font-medium ${wordClass} ${boldTextClass}`}
+                className={`${speed} inline-block mr-[0.2em] font-medium ${wordClass}`}
               >
                 {`${el} `}
               </motion.span>
@@ -75,7 +73,7 @@ export default function WordSplitter({
                       },
                     },
                   }}
-                  className={`${speed} inline-block mr-[0.2em] font-medium px-0 group-hover:px-1 ${wordClass} ${boldTextClass}`}
+                  className={`${speed} inline-block mr-[0.2em] font-medium px-0 group-hover:px-1 ${wordClass}`}
                 >
                   {` - `}
                 </motion.span>

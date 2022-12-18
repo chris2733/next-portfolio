@@ -1,7 +1,7 @@
 import { NextSeo } from "next-seo";
 import AnimateIn from "./components/animateIn";
 import LetterSplitter from "./components/letterSplitter";
-import WordSplitter from "./components/workSplitter";
+import WordSplitter from "./components/wordSplitter";
 import PageTransitionWrapper from "./components/pageTransition";
 import RoundedLinks from "./elements/roundedlinks";
 import { useEffect, useState } from "react";
