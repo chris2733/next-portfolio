@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { formatInTimeZone } from "date-fns-tz";
+import { formatInTimeZone, utcToZonedTime, zonedTimeToUtc } from "date-fns-tz";
+import { format, getTime, getUnixTime } from "date-fns";
 
 export default function CurrentWeather({
   passDataToParent,
@@ -12,7 +13,9 @@ export default function CurrentWeather({
   const [apiData, setapiData] = useState({});
   const [apiCallOk, setApiCallOk] = useState(false);
   const [weatherData, setWeatherData] = useState<any>({});
-  const currentUnix = new Date().getTime();
+  // HEEREEE is where we set the right timezone
+  const currentUnix =
+    getUnixTime(utcToZonedTime(new Date(), "Europe/London")) * 1000;
 
   // test data to show night and day
   const testDataCardiff: object = {
@@ -101,7 +104,7 @@ export default function CurrentWeather({
         )
         .then(function (response) {
           // handle success
-          console.log("Openmap weather api GREAET SUCCESS");
+          console.log("Openmap weather api GREAET SUCCESS:", response);
           setapiData(response.data);
           // console.log(response.data);
           // set local storage to contain response and cooldown
@@ -171,7 +174,7 @@ function SuccessfulResult(data: any, currentUnix: number) {
   // getting sun position with suncalc
   const SunCalc = require("suncalc");
 
-  // get sky light colours from mooncalc
+  // need to pass in the right timezone thing here
   const skyLightTypes = SunCalc.getTimes(
     weather.time,
     weather.lat,
@@ -205,20 +208,18 @@ function SuccessfulResult(data: any, currentUnix: number) {
       : skyLightCurrentIndex + 1;
   const nextSkyLight: string = skyLightTypesSortUnix[skyLightNextIndex][0];
   // set the current progression of the current skylight here, how far through that section it is
-  const currentSkyLightStartDate = new Date(
-    skyLightTypesSortUnix[skyLightCurrentIndex][1]
+  const currentSkyLightStart = formatInTimeZone(
+    new Date(skyLightTypesSortUnix[skyLightCurrentIndex][1]),
+    "Europe/London",
+    "HHmm"
   );
-  const currentSkyLightEndDate = new Date(
-    skyLightTypesSortUnix[skyLightNextIndex][1]
+  let currentSkyLightEnd = formatInTimeZone(
+    new Date(skyLightTypesSortUnix[skyLightNextIndex][1]),
+    "Europe/London",
+    "HHmm"
   );
-  const currentSkyLightStart = `${currentSkyLightStartDate.getHours()}${String(
-    currentSkyLightStartDate.getMinutes()
-  ).padStart(2, "0")}`;
-  let currentSkyLightEnd = `${currentSkyLightEndDate.getHours()}${String(
-    currentSkyLightEndDate.getMinutes()
-  ).padStart(2, "0")}`;
   // need to make sure date is set to gmt - that was a wierd fucking bug
-  let timeNow = formatInTimeZone(weather.time, "Europe/Dublin", "HHmm");
+  let timeNow = formatInTimeZone(weather.time, "Europe/London", "HHmm");
   // progress here - time since the start of current sky light segment, as a percentage of the size of current sky light segment
   // now... if the start sky light is less than the current, say if its rolling over from midnight it fucks everything up - have to convert something like 2am to a 24hr clock so my maths works out
   if (Number(timeNow) < Number(currentSkyLightStart)) {
@@ -246,9 +247,9 @@ function SuccessfulResult(data: any, currentUnix: number) {
   // moon illumination, phase and angle, see docs
   const moonIllumination = SunCalc.getMoonIllumination(weather.time);
 
-  // degrees calculated from like top of a circle i think
-  const sunDegrees = (sunPosition.azimuth * 180) / Math.PI;
-  const moonDegrees = (moonPosition.azimuth * 180) / Math.PI;
+  // degrees calculated from the right of a circle - adding 90 on so its from the horizon, otherwise canvas draws it from the top
+  const sunDegrees = (sunPosition.altitude * 180) / Math.PI + 90;
+  const moonDegrees = (moonPosition.altitude * 180) / Math.PI + 90;
 
   return {
     weather,
