@@ -1,9 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-// **********
-// todo
-// cars randomly coming accross
-
 export default function Canvas({ data }: { data: any }) {
   // console.log(data);
 
@@ -226,7 +222,6 @@ export default function Canvas({ data }: { data: any }) {
 
   const drawOnce = useCallback(
     (paintbrush: CanvasRenderingContext2D) => {
-      paintbrush.clearRect(0, 0, width, height);
       // draw sky
       drawSky(
         paintbrush,
@@ -259,7 +254,7 @@ export default function Canvas({ data }: { data: any }) {
 
   // draw on canvas here
   const draw = useCallback(
-    (paintbrush: CanvasRenderingContext2D, frameCount: any) => {
+    (paintbrush: CanvasRenderingContext2D) => {
       // horizon
       // paintbrush.beginPath();
       // paintbrush.moveTo(0, height - horizon);
@@ -312,44 +307,62 @@ export default function Canvas({ data }: { data: any }) {
     [buildings, height, lamppostEnd, lamppostSpace, lamppostStart, width]
   );
 
+  const [count, setCount] = useState(0);
+  const requestRef: any = useRef();
+  const previousTimeRef = useRef();
+
+  const renderCanvas = useCallback(
+    (time: any) => {
+      if (previousTimeRef.current != undefined) {
+        if (canvasEl.current) {
+          // check if canvas context isnt null.. then add it to paintbrush
+          // seems to be the only way to make ts happy without using any
+          const canvas = canvasEl.current;
+          const ctx = canvas.getContext("2d");
+          if (
+            !ctx ||
+            !(ctx instanceof CanvasRenderingContext2D) ||
+            ctx === null
+          ) {
+            return;
+          }
+          const paintbrush: CanvasRenderingContext2D = ctx;
+          // paintbrush.clearRect(0, 0, width, height);
+          // paintbrush.beginPath();
+          draw(paintbrush);
+        }
+      }
+      previousTimeRef.current = time;
+      requestRef.current = requestAnimationFrame(renderCanvas);
+    },
+    [draw]
+  );
+
   useEffect(() => {
     // set canvas to full screen size
     setWidth(window.innerWidth);
     setHeight(window.innerHeight);
     // check it isnt null - thanks typescript
     if (canvasEl.current) {
-      // check if canvas context isnt null.. then add it to paintbrush
-      // seems to be the only way to make ts happy without using any
       const canvas = canvasEl.current;
       const ctx = canvas.getContext("2d");
       if (!ctx || !(ctx instanceof CanvasRenderingContext2D) || ctx === null) {
         return;
       }
       const paintbrush: CanvasRenderingContext2D = ctx;
-
-      let frameCount: number = 0;
-      let animationFrameId: any;
-
-      //Our draw came here
-      const render = () => {
-        frameCount++;
-        draw(paintbrush, frameCount);
-
-        var fps = 3;
-        const frameTimeout = setTimeout(function () {
-          //throttle requestAnimationFrame
-          animationFrameId = window.requestAnimationFrame(render);
-        }, 1000 / fps);
-      };
-      render();
       drawOnce(paintbrush);
 
-      return () => {
-        window.cancelAnimationFrame(animationFrameId);
-      };
+      var fps = 3;
+      const frameTimeout = setTimeout(function () {
+        //throttle requestAnimationFrame
+        requestRef.current = requestAnimationFrame(renderCanvas);
+        // paintbrush.clearRect(0, 0, width, height);
+        // paintbrush.beginPath();
+      }, 1000 / fps);
+      return () => cancelAnimationFrame(requestRef.current);
     }
     // call draw here, so its reloaded on each draw
-  }, [drawOnce, draw]);
+  }, [renderCanvas, drawOnce]);
 
   return (
     <div className="absolute top-0 left-0 w-full h-full z-30 bg-white bg-opacity-80">
