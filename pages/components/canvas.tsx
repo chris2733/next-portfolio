@@ -21,6 +21,13 @@ export default function Canvas({ data }: { data: any }) {
   const nextSkyLight: string = data.nextSkyLight;
   const skyProgress: number = data.skyProgress;
 
+  // set rain amount here
+  const rainAmount = 200;
+  const rainDropLength = 15;
+  const rainDropWidth = 0.5;
+  const rainDropColour = "rgba(255,255,255,0.7)";
+  const rainHeightAdjust = 0 - height / 7;
+
   interface skyColourEach {
     stop: number;
     color: string;
@@ -214,14 +221,69 @@ export default function Canvas({ data }: { data: any }) {
     currentSkyLightGradients && currentSkyLightGradients[0].color
   );
 
+  const rainDrops = (rainAmount: number) => {
+    const rain: { startPos: [number, number]; speed: number; start: number }[] =
+      [];
+    for (let index = 0; index < rainAmount; index++) {
+      const startPos: [number, number] = [
+        randomIntFromInterval(0, width),
+        rainHeightAdjust * randomIntFromInterval(0, 9),
+      ];
+      const speed: number = randomIntFromInterval(4, 10);
+      rain.push({ startPos, speed, start: 0 });
+    }
+    return rain;
+  };
+  const rainDropsArray = rainDrops(rainAmount);
+
   // set lamppost data here
   const lamppostStart = randomIntFromInterval(0, 30);
   const lamppostEnd = randomIntFromInterval(0, 30);
   const lamppostSpace = randomIntFromInterval(150, 180);
   const lampostLightColour: string = "#f0dfa899";
 
-  const drawOnce = useCallback(
+  // const drawOnce = useCallback(
+  //   (paintbrush: CanvasRenderingContext2D) => {
+  //     // draw sky
+  //     drawSky(
+  //       paintbrush,
+  //       width,
+  //       height,
+  //       currentSkyLight,
+  //       currentSkyLightGradients
+  //     );
+  //     // sun/moon positioning
+  //     drawSunMoon(
+  //       paintbrush,
+  //       data,
+  //       width,
+  //       height,
+  //       horizon,
+  //       radianAdjust,
+  //       sunColour,
+  //       moonColour
+  //     );
+  //   },
+  //   [
+  //     currentSkyLight,
+  //     currentSkyLightGradients,
+  //     data,
+  //     height,
+  //     radianAdjust,
+  //     width,
+  //   ]
+  // );
+
+  // draw on canvas here
+  const draw = useCallback(
     (paintbrush: CanvasRenderingContext2D) => {
+      // horizon
+      // paintbrush.beginPath();
+      // paintbrush.moveTo(0, height - horizon);
+      // paintbrush.lineTo(width, height - horizon);
+      // paintbrush.strokeStyle = "red";
+      // paintbrush.stroke();
+
       // draw sky
       drawSky(
         paintbrush,
@@ -241,26 +303,6 @@ export default function Canvas({ data }: { data: any }) {
         sunColour,
         moonColour
       );
-    },
-    [
-      currentSkyLight,
-      currentSkyLightGradients,
-      data,
-      height,
-      radianAdjust,
-      width,
-    ]
-  );
-
-  // draw on canvas here
-  const draw = useCallback(
-    (paintbrush: CanvasRenderingContext2D) => {
-      // horizon
-      // paintbrush.beginPath();
-      // paintbrush.moveTo(0, height - horizon);
-      // paintbrush.lineTo(width, height - horizon);
-      // paintbrush.strokeStyle = "red";
-      // paintbrush.stroke();
 
       // draw each building layer here
       buildings.forEach(
@@ -303,8 +345,32 @@ export default function Canvas({ data }: { data: any }) {
         "black",
         lampostLightColour
       );
+
+      drawRain(
+        paintbrush,
+        width,
+        height,
+        rainDropsArray,
+        rainDropWidth,
+        rainDropLength,
+        rainDropColour,
+        rainHeightAdjust
+      );
     },
-    [buildings, height, lamppostEnd, lamppostSpace, lamppostStart, width]
+    [
+      buildings,
+      currentSkyLight,
+      currentSkyLightGradients,
+      data,
+      height,
+      lamppostEnd,
+      lamppostSpace,
+      lamppostStart,
+      radianAdjust,
+      rainDropsArray,
+      rainHeightAdjust,
+      width,
+    ]
   );
 
   const [count, setCount] = useState(0);
@@ -327,21 +393,23 @@ export default function Canvas({ data }: { data: any }) {
             return;
           }
           const paintbrush: CanvasRenderingContext2D = ctx;
-          // paintbrush.clearRect(0, 0, width, height);
-          // paintbrush.beginPath();
+          paintbrush.clearRect(0, 0, width, height);
+          paintbrush.beginPath();
           draw(paintbrush);
         }
       }
       previousTimeRef.current = time;
       requestRef.current = requestAnimationFrame(renderCanvas);
     },
-    [draw]
+    [draw, height, width]
   );
 
   useEffect(() => {
     // set canvas to full screen size
     setWidth(window.innerWidth);
     setHeight(window.innerHeight);
+    // set rain amount here according to width
+    // ***************
     // check it isnt null - thanks typescript
     if (canvasEl.current) {
       const canvas = canvasEl.current;
@@ -349,10 +417,10 @@ export default function Canvas({ data }: { data: any }) {
       if (!ctx || !(ctx instanceof CanvasRenderingContext2D) || ctx === null) {
         return;
       }
-      const paintbrush: CanvasRenderingContext2D = ctx;
-      drawOnce(paintbrush);
+      // const paintbrush: CanvasRenderingContext2D = ctx;
+      // drawOnce(paintbrush);
 
-      var fps = 3;
+      var fps = 5;
       const frameTimeout = setTimeout(function () {
         //throttle requestAnimationFrame
         requestRef.current = requestAnimationFrame(renderCanvas);
@@ -362,7 +430,7 @@ export default function Canvas({ data }: { data: any }) {
       return () => cancelAnimationFrame(requestRef.current);
     }
     // call draw here, so its reloaded on each draw
-  }, [renderCanvas, drawOnce]);
+  }, [renderCanvas]);
 
   return (
     <div className="absolute top-0 left-0 w-full h-full z-30 bg-white bg-opacity-80">
@@ -1150,4 +1218,37 @@ function resetShadows(paintbrush: CanvasRenderingContext2D) {
   paintbrush.shadowOffsetX = 0;
   paintbrush.shadowOffsetY = 0;
   paintbrush.shadowBlur = 0;
+}
+
+function drawRain(
+  paintbrush: CanvasRenderingContext2D,
+  width: number,
+  height: number,
+  rainDropsArray: {
+    startPos: [number, number];
+    speed: number;
+    start: number;
+  }[],
+  rainDropWidth: number,
+  rainDropLength: number,
+  rainDropColour: string,
+  rainHeightAdjust: number
+) {
+  rainDropsArray.forEach((drop, index) => {
+    if (drop.startPos[1] > height) {
+      rainDropsArray[index].startPos[1] = rainHeightAdjust;
+      rainDropsArray[index].startPos[0] = randomIntFromInterval(0, width);
+      rainDropsArray[index].speed = randomIntFromInterval(8, 16);
+    } else {
+      rainDropsArray[index].speed += drop.speed * 0.02;
+      rainDropsArray[index].startPos[1] += drop.speed;
+    }
+    paintbrush.beginPath();
+    paintbrush.moveTo(drop.startPos[0], drop.startPos[1]);
+    paintbrush.lineTo(drop.startPos[0], drop.startPos[1] + rainDropLength);
+    paintbrush.strokeStyle = rainDropColour;
+    paintbrush.lineWidth = rainDropWidth;
+    paintbrush.stroke();
+    paintbrush.closePath();
+  });
 }
