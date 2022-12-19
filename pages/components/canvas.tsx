@@ -22,7 +22,7 @@ export default function Canvas({ data }: { data: any }) {
   const skyProgress: number = data.skyProgress;
 
   // set rain amount here
-  const rainAmount = 200;
+  const [rainAmount, setRainAmount] = useState(200);
   const rainDropLength = 15;
   const rainDropWidth = 0.5;
   const rainDropColour = "rgba(255,255,255,0.7)";
@@ -373,7 +373,6 @@ export default function Canvas({ data }: { data: any }) {
     ]
   );
 
-  const [count, setCount] = useState(0);
   const requestRef: any = useRef();
   const previousTimeRef = useRef();
 
@@ -409,7 +408,7 @@ export default function Canvas({ data }: { data: any }) {
     setWidth(window.innerWidth);
     setHeight(window.innerHeight);
     // set rain amount here according to width
-    // ***************
+    setRainAmount(Math.ceil(width / 100));
     // check it isnt null - thanks typescript
     if (canvasEl.current) {
       const canvas = canvasEl.current;
@@ -420,7 +419,7 @@ export default function Canvas({ data }: { data: any }) {
       // const paintbrush: CanvasRenderingContext2D = ctx;
       // drawOnce(paintbrush);
 
-      var fps = 5;
+      var fps = 8;
       const frameTimeout = setTimeout(function () {
         //throttle requestAnimationFrame
         requestRef.current = requestAnimationFrame(renderCanvas);

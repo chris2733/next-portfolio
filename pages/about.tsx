@@ -124,6 +124,9 @@ const About = () => {
     clouds: {
       all: 63,
     },
+    rain: {
+      "1h": 3.16,
+    },
     dt: 1665447422,
     sys: {
       type: 2,
