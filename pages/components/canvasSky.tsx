@@ -17,8 +17,6 @@ export default function Canvas({
   horizon: number;
   radianAdjust: number;
 }) {
-  // console.log(data);
-
   // canvas element ref'd here
   const canvasEl = useRef<HTMLCanvasElement>(null);
 
@@ -137,11 +135,7 @@ export default function Canvas({
     // call draw here, so its reloaded on each draw
   }, [draw, height, width]);
 
-  return (
-    <div className="absolute top-0 left-0 w-full h-full z-30 bg-white bg-opacity-80">
-      <canvas ref={canvasEl} height={height} width={width}></canvas>
-    </div>
-  );
+  return <canvas ref={canvasEl} height={height} width={width}></canvas>;
 }
 
 // from here

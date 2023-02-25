@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import CanvasSky from "./canvasSky";
 import { useEffect, useState } from "react";
 import degToRadian from "pages/utils/degToRadian";
+import CanvasMotion from "./canvasMotion";
 
 export default function CanvasWrapper({
   apiDataRecieved,
@@ -23,24 +24,37 @@ export default function CanvasWrapper({
   }, []);
 
   return (
-    <motion.div
-      key="canvasel"
-      initial={{ opacity: 0 }}
-      animate={{
-        opacity: 1,
-        transition: { duration: 0.3, delay: 0.3 },
-      }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.3 }}
-      className="z-10"
-    >
-      <CanvasSky
-        data={apiDataRecieved}
-        width={width}
-        height={height}
-        horizon={horizon}
-        radianAdjust={radianAdjust}
-      />
-    </motion.div>
+    <div className="absolute top-0 left-0 w-full h-full z-30 bg-white bg-opacity-80">
+      <motion.div
+        key="canvasel"
+        initial={{ opacity: 0 }}
+        animate={{
+          opacity: 1,
+          transition: { duration: 0.3, delay: 0.3 },
+        }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.3 }}
+        className="z-10"
+      >
+        <div className="z-10">
+          <CanvasSky
+            data={apiDataRecieved}
+            width={width}
+            height={height}
+            horizon={horizon}
+            radianAdjust={radianAdjust}
+          />
+        </div>
+        <div className="z-20">
+          <CanvasMotion
+            data={apiDataRecieved}
+            width={width}
+            height={height}
+            horizon={horizon}
+            radianAdjust={radianAdjust}
+          />
+        </div>
+      </motion.div>
+    </div>
   );
 }

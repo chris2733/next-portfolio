@@ -1,17 +1,20 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-export default function Canvas({ data }: { data: any }) {
-  // console.log(data);
-
-  // set height and width of window at states
-  const [width, setWidth] = useState(0);
-  const [height, setHeight] = useState(0);
+export default function Canvas({
+  data,
+  width,
+  height,
+  horizon,
+  radianAdjust,
+}: {
+  data: any;
+  width: number;
+  height: number;
+  horizon: number;
+  radianAdjust: number;
+}) {
   // canvas element ref'd here
   const canvasEl = useRef<HTMLCanvasElement>(null);
-  // set the position of the horizon, and also the last layer of buildings in background
-  const horizon = 100;
-  // adjustment of -90 degrees, since the start of an arc in canvas seems to start at the centre right of it (east)
-  let radianAdjust = degToRadian(90);
 
   // colours
   const sunColour: string = "#eabc2c99";
@@ -363,6 +366,7 @@ export default function Canvas({ data }: { data: any }) {
       currentSkyLightGradients,
       data,
       height,
+      horizon,
       lamppostEnd,
       lamppostSpace,
       lamppostStart,
@@ -404,9 +408,6 @@ export default function Canvas({ data }: { data: any }) {
   );
 
   useEffect(() => {
-    // set canvas to full screen size
-    setWidth(window.innerWidth);
-    setHeight(window.innerHeight);
     // set rain amount here according to width
     setRainAmount(Math.ceil(width / 100));
     // check it isnt null - thanks typescript
