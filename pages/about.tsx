@@ -5,9 +5,7 @@ import WordSplitter from "./components/workSplitter";
 import PageTransitionWrapper from "./components/pageTransition";
 import RoundedLinks from "./elements/roundedlinks";
 import { useEffect, useState } from "react";
-import CurrentWeather from "./components/getCurrentWeather";
-import Canvas from "./components/canvas";
-import CanvasSky from "./components/canvasSky";
+import CurrentWeather from "./utils/getCurrentWeather";
 import { AnimatePresence, motion } from "framer-motion";
 import CanvasWrapper from "./components/canvasWrapper";
 
@@ -21,21 +19,57 @@ const About = () => {
   const [testDataTime, setTestDataTime] = useState(1665497241000);
   const [hideText, setHideText] = useState(false);
 
-  const passDataToParent = (data: Object) => {
-    setApiDataRecieved(data);
-    setApiResponseOk(true);
+  // test data to show night and day
+  const testData: object = {
+    coord: {
+      lon: -3.18,
+      lat: 51.48,
+    },
+    weather: [
+      {
+        id: 803,
+        main: "Clouds",
+        description: "broken clouds",
+        icon: "04n",
+      },
+    ],
+    base: "stations",
+    main: {
+      temp: 7.04,
+      feels_like: 4.58,
+      temp_min: 5.57,
+      temp_max: 8.4,
+      pressure: 1022,
+      humidity: 82,
+    },
+    visibility: 10000,
+    wind: {
+      speed: 3.6,
+      deg: 360,
+    },
+    clouds: {
+      all: 63,
+    },
+    rain: {
+      "1h": 3.16,
+    },
+    dt: 1665447422,
+    sys: {
+      type: 2,
+      id: 2045739,
+      country: "GB",
+      sunrise: 1665469764,
+      sunset: 1665509356,
+    },
+    timezone: 3600,
+    id: 2653822,
+    name: "Cardiff",
+    cod: 200,
   };
 
   useEffect(() => {
-    showHideCanvas();
-  }, [useTestData, testDataTime]);
-
-  function showHideCanvas() {
-    setShowCanvas(false);
-    setTimeout(() => {
-      setShowCanvas(true);
-    }, 500);
-  }
+    rerenderCanvas();
+  }, []);
 
   const dataTimeOptions: { name: string; time: number }[] = [
     {
@@ -96,53 +130,28 @@ const About = () => {
     },
   ];
 
-  // test data to show night and day
-  const testData: object = {
-    coord: {
-      lon: -3.18,
-      lat: 51.48,
-    },
-    weather: [
-      {
-        id: 803,
-        main: "Clouds",
-        description: "broken clouds",
-        icon: "04n",
-      },
-    ],
-    base: "stations",
-    main: {
-      temp: 7.04,
-      feels_like: 4.58,
-      temp_min: 5.57,
-      temp_max: 8.4,
-      pressure: 1022,
-      humidity: 82,
-    },
-    visibility: 10000,
-    wind: {
-      speed: 3.6,
-      deg: 360,
-    },
-    clouds: {
-      all: 63,
-    },
-    rain: {
-      "1h": 3.16,
-    },
-    dt: 1665447422,
-    sys: {
-      type: 2,
-      id: 2045739,
-      country: "GB",
-      sunrise: 1665469764,
-      sunset: 1665509356,
-    },
-    timezone: 3600,
-    id: 2653822,
-    name: "Cardiff",
-    cod: 200,
-  };
+  function rerenderCanvas(
+    useTestDataTrue?: boolean,
+    setTestDataTimeNumber?: number
+  ) {
+    setShowCanvas(false);
+    setTimeout(() => {
+      useTestDataTrue && setUseTestData(useTestDataTrue);
+      setTestDataTimeNumber && setTestDataTime(setTestDataTimeNumber);
+      CurrentWeather(
+        useTestData,
+        testData,
+        setTestDataTimeNumber ? setTestDataTimeNumber : testDataTime
+      ).then((data) => {
+        // console.log("Retreived current weather: ", data);
+        if (data !== undefined && Object.keys(data).length !== 0) {
+          setApiDataRecieved(data);
+          setApiResponseOk(true);
+        }
+      });
+      setShowCanvas(true);
+    }, 500);
+  }
 
   return (
     <>
@@ -157,13 +166,13 @@ const About = () => {
           </button>
           <button
             className="bg-white opacity-50"
-            onClick={() => setUseTestData(true)}
+            onClick={() => rerenderCanvas(true)}
           >
             use Test data
           </button>
           <button
             className="bg-white opacity-50"
-            onClick={() => setUseTestData(false)}
+            onClick={() => rerenderCanvas(false)}
           >
             Use live api data
           </button>
@@ -172,7 +181,7 @@ const About = () => {
               name="time"
               id=""
               onChange={(el) => {
-                setTestDataTime(Number(el.target.value));
+                rerenderCanvas(undefined, Number(el.target.value));
               }}
             >
               {dataTimeOptions.map((el, id) => (
@@ -183,7 +192,7 @@ const About = () => {
             </select>
           )}
         </div>
-        {Object.keys(apiDataRecieved).length !== 0 && apiResponseOk && (
+        {apiResponseOk && (
           <AnimatePresence>
             {showCanvas === true && (
               <CanvasWrapper apiDataRecieved={apiDataRecieved} />
@@ -214,12 +223,6 @@ const About = () => {
                 wordClass=""
               />
             </div>
-            <CurrentWeather
-              passDataToParent={passDataToParent}
-              useTestData={useTestData}
-              testData={testData}
-              testDataTime={testDataTime}
-            />
             <div className="mt-2 flex items-center justify-center gap-3">
               <AnimateIn delay={2} duration={0.6}>
                 <RoundedLinks
