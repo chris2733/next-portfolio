@@ -2,16 +2,14 @@ import AnimateIn from "./animateIn";
 import LetterSplitter from "./../components/letterSplitter";
 import RoundedLinks from "./../elements/roundedlinks";
 
-const Masthead = ({ pageData }: { pageData?: any }) => {
+const Masthead = () => {
   interface fieldTypes {
     titles?: any;
     links?: any;
   }
   const fields: fieldTypes = {
-    ...("page" in pageData && { titles: pageData.page.data.slices[0].items }),
-    ...("page" in pageData && { links: pageData.page.data.slices[1].items }),
+    titles: [{ title: "Chris Law" }, { title: "front end developer" }],
   };
-  console.log(pageData, fields);
   const headlineClasses =
     "hover:text-blue-300 duration-[1.2s] ease-[cubic-bezier(0.25,1,0.5,1)] cursor-default inline-block mx-[1px] text-masthead";
   return (
