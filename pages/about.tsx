@@ -7,7 +7,9 @@ import RoundedLinks from "./elements/roundedlinks";
 import { useEffect, useState } from "react";
 import CurrentWeather from "./components/getCurrentWeather";
 import Canvas from "./components/canvas";
+import CanvasSky from "./components/canvasSky";
 import { AnimatePresence, motion } from "framer-motion";
+import CanvasWrapper from "./components/canvasWrapper";
 
 const About = () => {
   const text = "About me here";
@@ -17,6 +19,7 @@ const About = () => {
   const [useTestData, setUseTestData] = useState(false);
   const [showCanvas, setShowCanvas] = useState(true);
   const [testDataTime, setTestDataTime] = useState(1665497241000);
+  const [hideText, setHideText] = useState(false);
 
   const passDataToParent = (data: Object) => {
     setApiDataRecieved(data);
@@ -148,6 +151,12 @@ const About = () => {
         <div className="fixed w-auto top-0 left-0 z-40 flex flex-col gap-2">
           <button
             className="bg-white opacity-50"
+            onClick={() => setHideText(!hideText)}
+          >
+            Hide text
+          </button>
+          <button
+            className="bg-white opacity-50"
             onClick={() => setUseTestData(true)}
           >
             use Test data
@@ -177,24 +186,17 @@ const About = () => {
         {Object.keys(apiDataRecieved).length !== 0 && apiResponseOk && (
           <AnimatePresence>
             {showCanvas === true && (
-              <motion.div
-                key="canvasel"
-                initial={{ opacity: 0 }}
-                animate={{
-                  opacity: 1,
-                  transition: { duration: 0.3, delay: 0.3 },
-                }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.3 }}
-              >
-                <Canvas data={apiDataRecieved} />
-              </motion.div>
+              <CanvasWrapper apiDataRecieved={apiDataRecieved} />
             )}
           </AnimatePresence>
         )}
         {/* canvas here to test without api call */}
         {/* <Canvas /> */}
-        <div className="container py-24 sm:py-32 text-center rounded-3xl bg-white !max-w-2xl p-8 shadow-[0px_0px_112px_-2px_rgba(255,255,255,0.75)] z-20">
+        <div
+          className={`container py-24 sm:py-32 text-center rounded-3xl bg-white !max-w-2xl p-8 shadow-[0px_0px_112px_-2px_rgba(255,255,255,0.75)] z-30 transition ${
+            hideText && "opacity-0"
+          }`}
+        >
           <h1 className="inline-block overflow-hidden leading-5 mb-4">
             <LetterSplitter
               text={"about"}
