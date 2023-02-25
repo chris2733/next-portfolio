@@ -91,10 +91,18 @@ export default function CurrentWeather({
   return (
     <div className="">
       {apiCallOk && (
-        <p>
-          Current location: {""}
-          {weatherData.weather.name !== undefined && weatherData.weather.name}
-        </p>
+        <>
+          <p>
+            Current location:{" "}
+            {weatherData.weather.name !== undefined
+              ? weatherData.weather.name
+              : ""}
+          </p>
+          <p>
+            Current time: {new Date(weatherData.weather.time * 1000).getHours()}
+            :{new Date(weatherData.weather.time * 1000).getMinutes()}
+          </p>
+        </>
       )}
     </div>
   );
