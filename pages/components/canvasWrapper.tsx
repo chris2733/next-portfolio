@@ -24,7 +24,7 @@ export default function CanvasWrapper({
   }, []);
 
   return (
-    <div className="absolute top-0 left-0 w-full h-full z-30 bg-white bg-opacity-80">
+    <div className="absolute top-0 left-0 w-full h-full z-10 bg-white bg-opacity-80">
       <motion.div
         key="canvasel"
         initial={{ opacity: 0 }}

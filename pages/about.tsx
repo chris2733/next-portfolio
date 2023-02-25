@@ -1,23 +1,17 @@
 import { NextSeo } from "next-seo";
-import AnimateIn from "./components/animateIn";
-import LetterSplitter from "./components/letterSplitter";
-import WordSplitter from "./components/workSplitter";
 import PageTransitionWrapper from "./components/pageTransition";
-import RoundedLinks from "./elements/roundedlinks";
 import { useEffect, useState } from "react";
 import CurrentWeather from "./utils/getCurrentWeather";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import CanvasWrapper from "./components/canvasWrapper";
+import AboutOverlay from "./components/aboutOverlay";
 
 const About = () => {
-  const text = "About me here";
-
   const [apiDataRecieved, setApiDataRecieved] = useState({});
   const [apiResponseOk, setApiResponseOk] = useState(false);
   const [useTestData, setUseTestData] = useState(false);
   const [showCanvas, setShowCanvas] = useState(true);
   const [testDataTime, setTestDataTime] = useState(1665497241000);
-  const [hideText, setHideText] = useState(false);
 
   // test data to show night and day
   const testData: object = {
@@ -156,14 +150,8 @@ const About = () => {
   return (
     <>
       <NextSeo title="About" />
-      <PageTransitionWrapper classes="min-h-screen flex items-center justify-center relative overflow-hidden">
-        <div className="fixed w-auto top-0 left-0 z-40 flex flex-col gap-2">
-          <button
-            className="bg-white opacity-50"
-            onClick={() => setHideText(!hideText)}
-          >
-            Hide text
-          </button>
+      <PageTransitionWrapper classes="min-h-screen relative overflow-hidden">
+        <div className="fixed w-auto top-0 left-0 z-30 flex flex-col gap-2">
           <button
             className="bg-white opacity-50"
             onClick={() => rerenderCanvas(true)}
@@ -201,50 +189,7 @@ const About = () => {
         )}
         {/* canvas here to test without api call */}
         {/* <Canvas /> */}
-        <div
-          className={`container py-24 sm:py-32 text-center rounded-3xl bg-white !max-w-2xl p-8 shadow-[0px_0px_112px_-2px_rgba(255,255,255,0.75)] z-30 transition ${
-            hideText && "opacity-0"
-          }`}
-        >
-          <h1 className="inline-block overflow-hidden leading-5 mb-4">
-            <LetterSplitter
-              text={"about"}
-              initialDelay={0.4}
-              letterDelay={0.03}
-              letterClass="text-lg uppercase duration-[1.2s] ease-[cubic-bezier(0.25,1,0.5,1)] cursor-default inline-block font-medium"
-            />
-          </h1>
-          <div className="mx-auto max-w-[730px]">
-            <div className="pb-5">
-              <WordSplitter
-                text={text}
-                initialDelay={1}
-                wordDelay={0.002}
-                wordClass=""
-              />
-            </div>
-            <div className="mt-2 flex items-center justify-center gap-3">
-              <AnimateIn delay={2} duration={0.6}>
-                <RoundedLinks
-                  link="/"
-                  buttonClasses="text-black font-bold text-sm"
-                  strokeColour="black"
-                >
-                  home
-                </RoundedLinks>
-              </AnimateIn>
-              <AnimateIn delay={2.1} duration={0.6}>
-                <RoundedLinks
-                  link="/work"
-                  buttonClasses="text-black font-bold text-sm"
-                  strokeColour="black"
-                >
-                  work
-                </RoundedLinks>
-              </AnimateIn>
-            </div>
-          </div>
-        </div>
+        <AboutOverlay />
       </PageTransitionWrapper>
     </>
   );
