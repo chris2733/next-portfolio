@@ -120,6 +120,4 @@ const skyColours: skyColourTypes = {
   ],
 };
 
-export default function skyColoursObj() {
-  return skyColours;
-}
+export default skyColours;
