@@ -36,7 +36,7 @@ export default function CanvasWrapper({
         transition={{ duration: 0.3 }}
         className="z-10"
       >
-        <div className="z-10">
+        <div className="absolute top-0 left-0 w-full h-full z-10">
           <CanvasSky
             data={apiDataRecieved}
             width={width}
@@ -45,7 +45,7 @@ export default function CanvasWrapper({
             radianAdjust={radianAdjust}
           />
         </div>
-        <div className="z-20">
+        <div className="absolute top-0 left-0 w-full h-full z-20">
           <CanvasMotion
             data={apiDataRecieved}
             width={width}

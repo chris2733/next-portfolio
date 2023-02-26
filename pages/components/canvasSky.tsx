@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import degToRadian from "pages/utils/degToRadian";
 import drawSunMoon from "pages/utils/drawSunMoon";
 import drawSky from "pages/utils/drawSky";
-import skyColoursObj from "pages/utils/skyColours";
+import skyColours from "pages/utils/skyColours";
 
 export default function Canvas({
   data,
@@ -28,7 +28,6 @@ export default function Canvas({
   const nextSkyLight: string = data.nextSkyLight;
   const skyProgress: number = data.skyProgress;
 
-  const skyColours = skyColoursObj();
   // get the right colour from skycolours, setup properly in typescript
   // setting the string currentSkyLight as a definite type, in this case being a string that is equal to one of the keys in the object
   type ObjectKey = keyof typeof skyColours;
