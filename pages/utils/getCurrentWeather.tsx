@@ -13,9 +13,8 @@ export default async function CurrentWeather(
 
   try {
     if (useTestData === true) {
-      // console.log("use test data");
       const apiDataConverted = SuccessfulResult(testData, testDataTime);
-      console.log("testdata: ", apiDataConverted);
+      // console.log("testdata: ", apiDataConverted);
       return apiDataConverted;
       // return api result is ok
     } else {
