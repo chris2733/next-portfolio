@@ -1,7 +1,0 @@
-{
-  "apiEndpoint": "https://next-portfolio-cms.prismic.io/api/v2",
-  "libraries": [
-    "@/slices"
-  ],
-  "_latest": "0.5.1"
-}

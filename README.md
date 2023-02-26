@@ -1,9 +1,12 @@
-Setup:
+# H1 My portfolio
 
-`yarn install`
-`yarn run dev`
+Running on Netlify
 
-Because yarn seems to run with prismic, where npm doesn't.
+'npm run dev'
+
+---
+
+---
 
 ---
 

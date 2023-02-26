@@ -1,10 +1,10 @@
 import Masthead from "./components/masthead";
 import PageTransitionWrapper from "./components/pageTransition";
 
-const Landing = ({ pageData }: { pageData: Object }) => {
+const Landing = () => {
   return (
     <PageTransitionWrapper classes="bg-black">
-      <Masthead pageData={pageData} />
+      <Masthead />
     </PageTransitionWrapper>
   );
 };
