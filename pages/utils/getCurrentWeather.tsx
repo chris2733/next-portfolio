@@ -1,7 +1,6 @@
-import { useState, useEffect } from "react";
 import axios from "axios";
-import { formatInTimeZone, utcToZonedTime, zonedTimeToUtc } from "date-fns-tz";
-import { format, getTime, getUnixTime } from "date-fns";
+import { formatInTimeZone, utcToZonedTime } from "date-fns-tz";
+import { getUnixTime } from "date-fns";
 
 export default async function CurrentWeather(
   useTestData: boolean,

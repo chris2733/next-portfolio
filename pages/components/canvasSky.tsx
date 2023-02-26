@@ -1,5 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import degToRadian from "pages/utils/degToRadian";
+import { useCallback, useEffect, useRef } from "react";
 import drawSunMoon from "pages/utils/drawSunMoon";
 import drawSky from "pages/utils/drawSky";
 import skyColours from "pages/utils/skyColours";
