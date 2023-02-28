@@ -233,35 +233,35 @@ export default function Canvas({
     ]
   );
 
-  const requestRef: any = useRef();
-  const previousTimeRef = useRef();
+  // const requestRef: any = useRef();
+  // const previousTimeRef = useRef();
 
-  const renderCanvas = useCallback(
-    (time: any) => {
-      if (previousTimeRef.current != undefined) {
-        if (canvasEl.current) {
-          // check if canvas context isnt null.. then add it to paintbrush
-          // seems to be the only way to make ts happy without using any
-          const canvas = canvasEl.current;
-          const ctx = canvas.getContext("2d");
-          if (
-            !ctx ||
-            !(ctx instanceof CanvasRenderingContext2D) ||
-            ctx === null
-          ) {
-            return;
-          }
-          const paintbrush: CanvasRenderingContext2D = ctx;
-          paintbrush.clearRect(0, 0, width, height);
-          paintbrush.beginPath();
-          draw(paintbrush);
-        }
-      }
-      previousTimeRef.current = time;
-      requestRef.current = requestAnimationFrame(renderCanvas);
-    },
-    [draw, height, width]
-  );
+  // const renderCanvas = useCallback(
+  //   (time: any) => {
+  //     if (previousTimeRef.current != undefined) {
+  //       if (canvasEl.current) {
+  //         // check if canvas context isnt null.. then add it to paintbrush
+  //         // seems to be the only way to make ts happy without using any
+  //         const canvas = canvasEl.current;
+  //         const ctx = canvas.getContext("2d");
+  //         if (
+  //           !ctx ||
+  //           !(ctx instanceof CanvasRenderingContext2D) ||
+  //           ctx === null
+  //         ) {
+  //           return;
+  //         }
+  //         const paintbrush: CanvasRenderingContext2D = ctx;
+  //         paintbrush.clearRect(0, 0, width, height);
+  //         paintbrush.beginPath();
+  //         draw(paintbrush);
+  //       }
+  //     }
+  //     previousTimeRef.current = time;
+  //     requestRef.current = requestAnimationFrame(renderCanvas);
+  //   },
+  //   [draw, height, width]
+  // );
 
   useEffect(() => {
     // set rain amount here according to width
@@ -273,20 +273,29 @@ export default function Canvas({
       if (!ctx || !(ctx instanceof CanvasRenderingContext2D) || ctx === null) {
         return;
       }
-      // const paintbrush: CanvasRenderingContext2D = ctx;
-      // drawOnce(paintbrush);
 
-      var fps = 8;
-      const frameTimeout = setTimeout(function () {
-        //throttle requestAnimationFrame
-        requestRef.current = requestAnimationFrame(renderCanvas);
-        // paintbrush.clearRect(0, 0, width, height);
-        // paintbrush.beginPath();
-      }, 1000 / fps);
-      return () => cancelAnimationFrame(requestRef.current);
+      if (canvasEl.current) {
+        // check if canvas context isnt null.. then add it to paintbrush
+        // seems to be the only way to make ts happy without using any
+        const canvas = canvasEl.current;
+        const ctx = canvas.getContext("2d");
+        if (
+          !ctx ||
+          !(ctx instanceof CanvasRenderingContext2D) ||
+          ctx === null
+        ) {
+          return;
+        }
+        const paintbrush: CanvasRenderingContext2D = ctx;
+        paintbrush.clearRect(0, 0, width, height);
+        paintbrush.beginPath();
+        draw(paintbrush);
+      }
+
+      // requestRef.current = requestAnimationFrame(renderCanvas);
     }
     // call draw here, so its reloaded on each draw
-  }, [renderCanvas]);
+  }, []);
 
   return <canvas ref={canvasEl} height={height} width={width}></canvas>;
 }
