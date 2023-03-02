@@ -111,27 +111,12 @@ export default function Canvas({
       if (!ctx || !(ctx instanceof CanvasRenderingContext2D) || ctx === null) {
         return;
       }
-
-      if (canvasEl.current) {
-        // check if canvas context isnt null.. then add it to paintbrush
-        // seems to be the only way to make ts happy without using any
-        const canvas = canvasEl.current;
-        const ctx = canvas.getContext("2d");
-        if (
-          !ctx ||
-          !(ctx instanceof CanvasRenderingContext2D) ||
-          ctx === null
-        ) {
-          return;
-        }
-        const paintbrush: CanvasRenderingContext2D = ctx;
-        paintbrush.clearRect(0, 0, width, height);
-        paintbrush.beginPath();
-        draw(paintbrush);
-      }
+      const paintbrush: CanvasRenderingContext2D = ctx;
+      paintbrush.clearRect(0, 0, width, height);
+      paintbrush.beginPath();
+      draw(paintbrush);
     }
-    // call draw here, so its reloaded on each draw
-  }, [draw, height, width]);
+  }, [draw]);
 
   return <canvas ref={canvasEl} height={height} width={width}></canvas>;
 }
