@@ -52,6 +52,7 @@ export default function CanvasWrapper({
             height={height}
             horizon={horizon}
             radianAdjust={radianAdjust}
+            frameRate={1}
           />
         </div>
       </motion.div>
