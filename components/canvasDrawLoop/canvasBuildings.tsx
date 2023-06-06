@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import randomIntFromInterval from "pages/utils/randomIntFromInterval";
-import drawBuilding from "pages/utils/drawBuilding";
-import buildingsSetup from "pages/utils/buildingsSetup";
-import drawLampposts from "pages/utils/drawLampposts";
-import skyColours from "pages/utils/skyColours";
-import drawRain from "pages/utils/drawRain";
-import getCurrentSkyGradient from "pages/utils/getCurrentSkyGradient";
+import randomIntFromInterval from "../../utils/randomIntFromInterval";
+import drawBuilding from "../../utils/drawBuilding";
+import buildingsSetup from "../../utils/buildingsSetup";
+import drawLampposts from "../../utils/drawLampposts";
+import skyColours from "../../utils/skyColours";
+import drawRain from "../../utils/drawRain";
+import getCurrentSkyGradient from "../../utils/getCurrentSkyGradient";
 
 export default function CanvasBuildings({
   data,

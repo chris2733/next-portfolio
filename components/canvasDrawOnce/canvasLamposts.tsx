@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useRef } from "react";
-import skyColours from "pages/utils/skyColours";
-import getCurrentSkyGradient from "pages/utils/getCurrentSkyGradient";
-import drawLampposts from "pages/utils/drawLampposts";
-import randomIntFromInterval from "pages/utils/randomIntFromInterval";
+import skyColours from "../../utils/skyColours";
+import getCurrentSkyGradient from "../../utils/getCurrentSkyGradient";
+import drawLampposts from "../../utils/drawLampposts";
+import randomIntFromInterval from "../../utils/randomIntFromInterval";
 
 export default function CanvasSky({
   data,

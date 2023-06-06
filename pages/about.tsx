@@ -1,11 +1,11 @@
 import { NextSeo } from "next-seo";
-import PageTransitionWrapper from "./components/pageTransition";
+import PageTransitionWrapper from "components/pageTransition";
 import { useEffect, useState } from "react";
-import CurrentWeather from "./utils/getCurrentWeather";
+import CurrentWeather from "utils/getCurrentWeather";
 import { AnimatePresence } from "framer-motion";
-import CanvasWrapper from "./components/canvasWrapper";
-import AboutOverlay from "./components/aboutOverlay";
-import { testData, dataTimeOptions } from "./utils/testData";
+import CanvasWrapper from "components/canvasWrapper";
+import AboutOverlay from "components/aboutOverlay";
+import { testData, dataTimeOptions } from "utils/testData";
 
 const About = () => {
   const [apiDataRecieved, setApiDataRecieved] = useState({});

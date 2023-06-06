@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import randomIntFromInterval from "pages/utils/randomIntFromInterval";
-import drawRain from "pages/utils/drawRain";
+import randomIntFromInterval from "../..//utils/randomIntFromInterval";
+import drawRain from "../..//utils/drawRain";
 
 export default function CanvasRain({
   width,

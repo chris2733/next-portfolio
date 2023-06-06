@@ -1,9 +1,9 @@
-import LetterSplitter from "./components/letterSplitter";
-import WordSplitter from "./components/workSplitter";
-import PageTransitionWrapper from "./components/pageTransition";
+import LetterSplitter from "components/letterSplitter";
+import WordSplitter from "components/workSplitter";
+import PageTransitionWrapper from "components/pageTransition";
 import { NextSeo } from "next-seo";
-import RoundedLinks from "./elements/roundedlinks";
-import AnimateIn from "./components/animateIn";
+import RoundedLinks from "elements/roundedlinks";
+import AnimateIn from "components/animateIn";
 
 const About = () => {
   const WorkSites: { title: string; description: string; link: string }[] = [

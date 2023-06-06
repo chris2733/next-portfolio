@@ -1,4 +1,4 @@
-import RoundedLinks from "pages/elements/roundedlinks";
+import RoundedLinks from "elements/roundedlinks";
 import AnimateIn from "./animateIn";
 import LetterSplitter from "./letterSplitter";
 import WordSplitter from "./workSplitter";

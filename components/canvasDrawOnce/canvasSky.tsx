@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useRef } from "react";
-import drawSunMoon from "pages/utils/drawSunMoon";
-import drawSky from "pages/utils/drawSky";
-import skyColours from "pages/utils/skyColours";
-import getCurrentSkyGradient from "pages/utils/getCurrentSkyGradient";
+import drawSunMoon from "../../utils/drawSunMoon";
+import drawSky from "../../utils/drawSky";
+import skyColours from "../../utils/skyColours";
+import getCurrentSkyGradient from "../../utils/getCurrentSkyGradient";
 
 export default function CanvasSky({
   data,
