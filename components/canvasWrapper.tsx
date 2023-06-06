@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import CanvasSky from "./canvasDrawOnce/canvasSky";
 import { useEffect, useState } from "react";
-import degToRadian from "/utils/degToRadian";
+import degToRadian from "../utils/degToRadian";
 import CanvasBuildings from "./canvasDrawLoop/canvasBuildings";
 import CanvasLamposts from "./canvasDrawOnce/canvasLamposts";
 import CanvasRain from "./canvasDrawLoop/canvasRain";
