@@ -1,3 +1,4 @@
+import DrawWindow from "./drawWindow";
 import resetShadows from "./resetShadows";
 
 export default function drawBuildingWindows(
@@ -41,7 +42,9 @@ export default function drawBuildingWindows(
     const x = startWindowX + xloop * (windowWidth + windowGapX);
     let y = startWindowY;
     // style window and if lit add shadow
-    drawWindow(
+    DrawWindow(
+      randomBuildingId,
+      randomBuildingId2,
       paintbrush,
       windowWidth,
       windowHeight,
@@ -60,7 +63,9 @@ export default function drawBuildingWindows(
     for (let yloop = 1; yloop < windowNumY; yloop++) {
       y = startWindowY + yloop * (windowHeight + windowGapY);
       // style window and if lit add shadow
-      drawWindow(
+      DrawWindow(
+        randomBuildingId,
+        randomBuildingId2,
         paintbrush,
         windowWidth,
         windowHeight,
@@ -70,40 +75,6 @@ export default function drawBuildingWindows(
         x,
         y
       );
-    }
-  }
-  function drawWindow(
-    paintbrush: CanvasRenderingContext2D,
-    windowWidth: number,
-    windowHeight: number,
-    windowColour: string,
-    windowLitColour: string,
-    windowLit: boolean,
-    x: number,
-    y: number
-  ) {
-    // but random lit window.. havent figured it out exactly, but this seems to look pretty random
-    const dateDigits = String(
-      parseInt(String(new Date().getSeconds())) * randomBuildingId
-    ).slice(-3);
-    const randomLoopDigits = String((x + y) * randomBuildingId2 * 100).slice(
-      -3
-    );
-    // flip state of window lit randomly
-    if (dateDigits === randomLoopDigits) {
-      windowLit = !windowLit;
-    }
-    if (windowLit) {
-      paintbrush.shadowColor = windowLitColour;
-      paintbrush.shadowOffsetX = 0;
-      paintbrush.shadowOffsetY = 0;
-      paintbrush.shadowBlur = 6;
-      paintbrush.fillStyle = windowColour;
-      paintbrush.fillRect(x, y, windowWidth, windowHeight);
-      resetShadows(paintbrush);
-    } else {
-      paintbrush.fillStyle = windowColour;
-      paintbrush.fillRect(x, y, windowWidth, windowHeight);
     }
   }
 }

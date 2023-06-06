@@ -52,7 +52,10 @@ export default function CanvasWrapper({
             height={height}
             horizon={horizon}
             radianAdjust={radianAdjust}
-            frameRate={1}
+            /**
+             * TODO: change framerate depending on screen width - higher value for smaller screens, so more likely to happens
+             **/
+            frameRate={3}
           />
         </div>
       </motion.div>
