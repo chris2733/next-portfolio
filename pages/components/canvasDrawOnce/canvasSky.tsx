@@ -4,7 +4,7 @@ import drawSky from "pages/utils/drawSky";
 import skyColours from "pages/utils/skyColours";
 import getCurrentSkyGradient from "pages/utils/getCurrentSkyGradient";
 
-export default function Canvas({
+export default function CanvasSky({
   data,
   width,
   height,

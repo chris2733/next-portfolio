@@ -7,7 +7,7 @@ import skyColours from "pages/utils/skyColours";
 import drawRain from "pages/utils/drawRain";
 import getCurrentSkyGradient from "pages/utils/getCurrentSkyGradient";
 
-export default function Canvas({
+export default function CanvasBuildings({
   data,
   width,
   height,
@@ -24,13 +24,6 @@ export default function Canvas({
 }) {
   // canvas element ref'd here
   const canvasEl = useRef<HTMLCanvasElement>(null);
-
-  // set rain amount here
-  const [rainAmount, setRainAmount] = useState(200);
-  const rainDropLength = 15;
-  const rainDropWidth = 0.5;
-  const rainDropColour = "rgba(255,255,255,0.7)";
-  const rainHeightAdjust = 0 - height / 7;
 
   // getting & setting sky gradient colours
   type ObjectKey = keyof typeof skyColours;
@@ -79,21 +72,6 @@ export default function Canvas({
     data.currentSkyLight,
     currentSkyLightGradients && currentSkyLightGradients[0].color
   );
-
-  const rainDrops = (rainAmount: number) => {
-    const rain: { startPos: [number, number]; speed: number; start: number }[] =
-      [];
-    for (let index = 0; index < rainAmount; index++) {
-      const startPos: [number, number] = [
-        randomIntFromInterval(0, width),
-        rainHeightAdjust * randomIntFromInterval(0, 9),
-      ];
-      const speed: number = randomIntFromInterval(4, 10);
-      rain.push({ startPos, speed, start: 0 });
-    }
-    return rain;
-  };
-  const rainDropsArray = rainDrops(rainAmount);
 
   // set lamppost data here
   const lamppostStart = randomIntFromInterval(0, 30);
@@ -145,28 +123,8 @@ export default function Canvas({
         "black",
         lampostLightColour
       );
-
-      drawRain(
-        paintbrush,
-        width,
-        height,
-        rainDropsArray,
-        rainDropWidth,
-        rainDropLength,
-        rainDropColour,
-        rainHeightAdjust
-      );
     },
-    [
-      buildings,
-      height,
-      lamppostEnd,
-      lamppostSpace,
-      lamppostStart,
-      rainDropsArray,
-      rainHeightAdjust,
-      width,
-    ]
+    [buildings, height, lamppostEnd, lamppostSpace, lamppostStart, width]
   );
 
   // const requestRef: any = useRef();
@@ -183,8 +141,6 @@ export default function Canvas({
   };
 
   useEffect(() => {
-    // set rain amount here according to width
-    setRainAmount(Math.ceil(width / 100));
     // check if canvas context isnt null.. then add it to paintbrush
     // seems to be the only way to make ts happy without using any
     if (canvasEl.current) {
