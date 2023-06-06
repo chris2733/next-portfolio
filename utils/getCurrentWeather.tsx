@@ -124,11 +124,25 @@ function SuccessfulResult(data: any, currentUnix: number) {
     "Europe/London",
     "HHmm"
   );
-  let currentSkyLightEnd = formatInTimeZone(
-    new Date(skyLightTypesSortUnix[skyLightNextIndex][1]),
-    "Europe/London",
-    "HHmm"
-  );
+  /*
+    adding a check here, since sometimes night & nightEnd return NaN, not sure why yet, but moving to the next skylight until it finds a non NaN works for now
+    TODO: Get a better fix with a loop, or find root issue
+   */
+  let currentSkyLightEnd;
+  if (isNaN(skyLightTypesSortUnix[skyLightNextIndex][1])) {
+    currentSkyLightEnd = formatInTimeZone(
+      new Date(skyLightTypesSortUnix[0][1]),
+      "Europe/London",
+      "HHmm"
+    );
+  } else {
+    currentSkyLightEnd = formatInTimeZone(
+      new Date(skyLightTypesSortUnix[skyLightNextIndex][1]),
+      "Europe/London",
+      "HHmm"
+    );
+  }
+
   // need to make sure date is set to gmt - that was a wierd fucking bug
   let timeNow = formatInTimeZone(weather.time, "Europe/London", "HHmm");
   // progress here - time since the start of current sky light segment, as a percentage of the size of current sky light segment
