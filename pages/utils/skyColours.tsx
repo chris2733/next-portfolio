@@ -1,8 +1,8 @@
-interface skyColourEach {
+export interface skyColourEach {
   stop: number;
   color: string;
 }
-interface skyColourTypes {
+export interface skyColourTypes {
   sunrise?: skyColourEach[]; // sunrise (top edge of the sun appears on the horizon)
   sunriseEnd?: skyColourEach[]; // sunrise ends (bottom edge of the sun touches the horizon)
   goldenHourEnd?: skyColourEach[]; // morning golden hour (soft light, best time for photography) ends

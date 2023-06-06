@@ -1,12 +1,11 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import drawSunMoon from "pages/utils/drawSunMoon";
-import drawSky from "pages/utils/drawSky";
 import randomIntFromInterval from "pages/utils/randomIntFromInterval";
 import drawBuilding from "pages/utils/drawBuilding";
 import buildingsSetup from "pages/utils/buildingsSetup";
 import drawLampposts from "pages/utils/drawLampposts";
 import skyColours from "pages/utils/skyColours";
 import drawRain from "pages/utils/drawRain";
+import getCurrentSkyGradient from "pages/utils/getCurrentSkyGradient";
 
 export default function Canvas({
   data,
@@ -26,14 +25,6 @@ export default function Canvas({
   // canvas element ref'd here
   const canvasEl = useRef<HTMLCanvasElement>(null);
 
-  // colours
-  const sunColour: string = "#eabc2c99";
-  const moonColour: string = "grey";
-  // set the colour stops for different times, from suncalc
-  const currentSkyLight: string = data.currentSkyLight;
-  const nextSkyLight: string = data.nextSkyLight;
-  const skyProgress: number = data.skyProgress;
-
   // set rain amount here
   const [rainAmount, setRainAmount] = useState(200);
   const rainDropLength = 15;
@@ -41,40 +32,15 @@ export default function Canvas({
   const rainDropColour = "rgba(255,255,255,0.7)";
   const rainHeightAdjust = 0 - height / 7;
 
-  // get the right colour from skycolours, setup properly in typescript
-  // setting the string currentSkyLight as a definite type, in this case being a string that is equal to one of the keys in the object
+  // getting & setting sky gradient colours
   type ObjectKey = keyof typeof skyColours;
-  let currentSkyLightGradients = skyColours[currentSkyLight as ObjectKey];
-  const nextSkyLightGradients = skyColours[nextSkyLight as ObjectKey];
-  // re-set the sky gradients according to skyProgress, between currentSkyLight and nextSkyLight
-  let newSky: { stop: number; color: string }[] = [];
-  currentSkyLightGradients &&
-    nextSkyLightGradients &&
-    currentSkyLightGradients.forEach((gradient, index) => {
-      // get stop difference
-      let stopDifference = nextSkyLightGradients[index].stop - gradient.stop;
-      let stop = parseFloat(
-        ((gradient.stop + stopDifference) * skyProgress).toFixed(2)
-      );
-      // get rgb difference
-      let rgbCurrent: number[] = gradient.color
-        .replace(/[()'rgb']/g, " ")
-        .replaceAll(" ", "")
-        .split(",")
-        .map((x) => parseInt(x));
-      let rgbNext: number[] = nextSkyLightGradients[index].color
-        .replace(/[()'rgb']/g, " ")
-        .replaceAll(" ", "")
-        .split(",")
-        .map((x) => parseInt(x));
-      let rgbNew: number[] = [];
-      rgbCurrent.forEach((rgb, index) => {
-        let rgbChange = rgbNext[index] - rgb;
-        rgbNew.push(Number((rgb + rgbChange * skyProgress).toFixed()));
-      });
-      newSky.push({ stop: stop, color: `rgb(${rgbNew})` });
-    });
-  currentSkyLightGradients = newSky;
+  let currentSkyLightGradients = skyColours[data.currentSkyLight as ObjectKey];
+  currentSkyLightGradients = getCurrentSkyGradient(
+    data.currentSkyLight,
+    data.nextSkyLight,
+    data.skyProgress,
+    skyColours
+  );
 
   // setting each building layer in an array to be looped over when drawing
   type BuildingLayerType = {
@@ -110,7 +76,7 @@ export default function Canvas({
     buildings,
     horizon,
     width,
-    currentSkyLight,
+    data.currentSkyLight,
     currentSkyLightGradients && currentSkyLightGradients[0].color
   );
 
@@ -138,33 +104,6 @@ export default function Canvas({
   // draw on canvas here
   const draw = useCallback(
     (paintbrush: CanvasRenderingContext2D) => {
-      // horizon
-      // paintbrush.beginPath();
-      // paintbrush.moveTo(0, height - horizon);
-      // paintbrush.lineTo(width, height - horizon);
-      // paintbrush.strokeStyle = "red";
-      // paintbrush.stroke();
-
-      // draw sky
-      drawSky(
-        paintbrush,
-        width,
-        height,
-        currentSkyLight,
-        currentSkyLightGradients
-      );
-      // sun/moon positioning
-      drawSunMoon(
-        paintbrush,
-        data,
-        width,
-        height,
-        horizon,
-        radianAdjust,
-        sunColour,
-        moonColour
-      );
-
       // draw each building layer here
       buildings.forEach(
         ({ buildingsArray, heightAdjust, scaleAdjust, colour }) => {
@@ -220,15 +159,10 @@ export default function Canvas({
     },
     [
       buildings,
-      currentSkyLight,
-      currentSkyLightGradients,
-      data,
       height,
-      horizon,
       lamppostEnd,
       lamppostSpace,
       lamppostStart,
-      radianAdjust,
       rainDropsArray,
       rainHeightAdjust,
       width,
