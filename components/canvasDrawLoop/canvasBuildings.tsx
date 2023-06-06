@@ -1,10 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import randomIntFromInterval from "../../utils/randomIntFromInterval";
 import drawBuilding from "../../utils/drawBuilding";
 import buildingsSetup from "../../utils/buildingsSetup";
-import drawLampposts from "../../utils/drawLampposts";
 import skyColours from "../../utils/skyColours";
-import drawRain from "../../utils/drawRain";
 import getCurrentSkyGradient from "../../utils/getCurrentSkyGradient";
 
 export default function CanvasBuildings({
@@ -12,14 +9,12 @@ export default function CanvasBuildings({
   width,
   height,
   horizon,
-  radianAdjust,
   frameRate,
 }: {
   data: any;
   width: number;
   height: number;
   horizon: number;
-  radianAdjust: number;
   frameRate: number;
 }) {
   // canvas element ref'd here
@@ -73,12 +68,6 @@ export default function CanvasBuildings({
     currentSkyLightGradients && currentSkyLightGradients[0].color
   );
 
-  // set lamppost data here
-  const lamppostStart = randomIntFromInterval(0, 30);
-  const lamppostEnd = randomIntFromInterval(0, 30);
-  const lamppostSpace = randomIntFromInterval(150, 180);
-  const lampostLightColour: string = "#f0dfa899";
-
   // draw on canvas here
   const draw = useCallback(
     (paintbrush: CanvasRenderingContext2D) => {
@@ -109,22 +98,8 @@ export default function CanvasBuildings({
             });
         }
       );
-
-      // draw lampposts, similar setup to buildinglayer
-      drawLampposts(
-        paintbrush,
-        width,
-        height,
-        lamppostStart,
-        lamppostEnd,
-        lamppostSpace,
-        25,
-        2,
-        "black",
-        lampostLightColour
-      );
     },
-    [buildings, height, lamppostEnd, lamppostSpace, lamppostStart, width]
+    [buildings, height, width]
   );
 
   // const requestRef: any = useRef();

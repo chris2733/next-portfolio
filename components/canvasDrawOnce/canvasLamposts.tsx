@@ -43,7 +43,7 @@ export default function CanvasSky({
         lamppostStart,
         lamppostEnd,
         lamppostSpace,
-        25,
+        45,
         2,
         "black",
         lampostLightColour
