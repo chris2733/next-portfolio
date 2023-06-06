@@ -68,14 +68,7 @@ export default function CanvasWrapper({
           />
         </div>
         <div className="absolute top-0 left-0 w-full h-full z-20">
-          <CanvasRain
-            data={apiDataRecieved}
-            width={width}
-            height={height}
-            horizon={horizon}
-            radianAdjust={radianAdjust}
-            frameRate={60}
-          />
+          <CanvasRain width={width} height={height} frameRate={60} />
         </div>
       </motion.div>
     </div>

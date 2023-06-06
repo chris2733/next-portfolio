@@ -1,25 +1,14 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import randomIntFromInterval from "pages/utils/randomIntFromInterval";
-import drawBuilding from "pages/utils/drawBuilding";
-import buildingsSetup from "pages/utils/buildingsSetup";
-import drawLampposts from "pages/utils/drawLampposts";
-import skyColours from "pages/utils/skyColours";
 import drawRain from "pages/utils/drawRain";
-import getCurrentSkyGradient from "pages/utils/getCurrentSkyGradient";
 
 export default function CanvasRain({
-  data,
   width,
   height,
-  horizon,
-  radianAdjust,
   frameRate,
 }: {
-  data: any;
   width: number;
   height: number;
-  horizon: number;
-  radianAdjust: number;
   frameRate: number;
 }) {
   // canvas element ref'd here
