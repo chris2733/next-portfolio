@@ -5,6 +5,7 @@ import degToRadian from "../utils/degToRadian";
 import CanvasBuildings from "./canvasDrawLoop/canvasBuildings";
 import CanvasLamposts from "./canvasDrawOnce/canvasLamposts";
 import CanvasRain from "./canvasDrawLoop/canvasRain";
+import CanvasTraffic from "./canvasDrawLoop/canvasTraffic";
 
 export default function CanvasWrapper({
   apiDataRecieved,
@@ -46,6 +47,7 @@ export default function CanvasWrapper({
     />,
     <CanvasLamposts data={apiDataRecieved} width={width} height={height} />,
     <CanvasRain width={width} height={height} frameRate={60} />,
+    <CanvasTraffic width={width} height={height} frameRate={60} numCars={5} />,
   ];
   /* eslint-enable react/jsx-key */
 
