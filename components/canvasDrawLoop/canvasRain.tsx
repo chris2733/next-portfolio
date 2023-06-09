@@ -2,39 +2,54 @@ import { useCallback, useEffect, useRef } from "react";
 import randomIntFromInterval from "../..//utils/randomIntFromInterval";
 import drawRain from "../..//utils/drawRain";
 
+type CanvasRain = {
+  width: number;
+  height: number;
+  frameRate: number;
+};
+
+type RainSettings = {
+  amount: number;
+  dropLength: number;
+  dropWidth: number;
+  dropColour: string;
+  heightAdjust: number;
+};
+
 export default function CanvasRain({
   width,
   height,
   frameRate = 1,
-}: {
-  width: number;
-  height: number;
-  frameRate: number;
-}) {
+}: CanvasRain) {
   // canvas element ref'd here
-  const canvasEl = useRef<HTMLCanvasElement>(null);
+  const canvasEl = useRef<HTMLCanvasElement | null>(null);
 
   // set rain amount here
-  const rainAmount = Math.ceil(width / 100);
-  const rainDropLength = 15;
-  const rainDropWidth = 0.5;
-  const rainDropColour = "rgba(255,255,255,0.7)";
-  const rainHeightAdjust = 0 - height / 7;
+  const rain: RainSettings = {
+    amount: Math.ceil(width / 100),
+    dropLength: 15,
+    dropWidth: 0.5,
+    dropColour: "rgba(255,255,255,0.7)",
+    heightAdjust: 0 - height / 7,
+  };
 
   const rainDrops = (rainAmount: number) => {
-    const rain: { startPos: [number, number]; speed: number; start: number }[] =
-      [];
-    for (let index = 0; index < rainAmount; index++) {
+    const rainEach: {
+      startPos: [number, number];
+      speed: number;
+      start: number;
+    }[] = [];
+    for (let index: number = 0; index < rainAmount; index++) {
       const startPos: [number, number] = [
         randomIntFromInterval(0, width),
-        rainHeightAdjust * randomIntFromInterval(0, 9),
+        rain.heightAdjust * randomIntFromInterval(0, 9),
       ];
       const speed: number = randomIntFromInterval(4, 10);
-      rain.push({ startPos, speed, start: 0 });
+      rainEach.push({ startPos, speed, start: 0 });
     }
-    return rain;
+    return rainEach;
   };
-  const rainDropsArray = rainDrops(rainAmount);
+  const rainDropsArray = rainDrops(rain.amount);
 
   // draw on canvas here
   const draw = useCallback(
@@ -44,19 +59,27 @@ export default function CanvasRain({
         width,
         height,
         rainDropsArray,
-        rainDropWidth,
-        rainDropLength,
-        rainDropColour,
-        rainHeightAdjust
+        rain.dropWidth,
+        rain.dropLength,
+        rain.dropColour,
+        rain.heightAdjust
       );
     },
-    [height, rainDropsArray, rainHeightAdjust, width]
+    [
+      width,
+      height,
+      rainDropsArray,
+      rain.dropWidth,
+      rain.dropLength,
+      rain.dropColour,
+      rain.heightAdjust,
+    ]
   );
 
-  let previousTimeRef = useRef<any>();
-  let animationFrameId = useRef<any>();
+  let previousTimeRef: React.MutableRefObject<number | undefined> = useRef();
+  let animationFrameId: React.MutableRefObject<number | undefined> = useRef();
 
-  const frameLoop = (time?: any) => {
+  const frameLoop = (time?: number) => {
     // loop through animation frames Headers, setting the time to check with later
     if (canvasEl.current) {
       previousTimeRef.current = time;
@@ -68,8 +91,8 @@ export default function CanvasRain({
     // check if canvas context isnt null.. then add it to paintbrush
     // seems to be the only way to make ts happy without using any
     if (canvasEl.current) {
-      const canvas = canvasEl.current;
-      const ctx = canvas.getContext("2d");
+      const ctx: CanvasRenderingContext2D | null =
+        canvasEl.current.getContext("2d");
       if (!ctx || !(ctx instanceof CanvasRenderingContext2D) || ctx === null) {
         return;
       }
@@ -77,9 +100,9 @@ export default function CanvasRain({
       paintbrush.clearRect(0, 0, width, height);
       paintbrush.beginPath();
 
-      let lastRenderTime = 0;
-      const startRendering = (timestamp: any) => {
-        const frameDelay = 1000 / frameRate;
+      let lastRenderTime: number = 0;
+      const startRendering = (timestamp: number) => {
+        const frameDelay: number = 1000 / frameRate;
 
         if (timestamp - lastRenderTime >= frameDelay) {
           paintbrush.clearRect(0, 0, width, height);
@@ -95,7 +118,9 @@ export default function CanvasRain({
 
       return () => {
         paintbrush.clearRect(0, 0, width, height);
-        cancelAnimationFrame(animationFrameId.current);
+        if (animationFrameId.current !== undefined) {
+          cancelAnimationFrame(animationFrameId.current);
+        }
       };
     }
     // call draw here, so its reloaded on each draw
