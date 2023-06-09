@@ -4,23 +4,36 @@ import getCurrentSkyGradient from "../../utils/getCurrentSkyGradient";
 import drawLampposts from "../../utils/drawLampposts";
 import randomIntFromInterval from "../../utils/randomIntFromInterval";
 
-export default function CanvasSky({
-  data,
-  width,
-  height,
-}: {
+type CanvasSky = {
   data: any;
   width: number;
   height: number;
-}) {
+};
+
+type lamppost = {
+  start: number;
+  end: number;
+  gap: number;
+  height: number;
+  width: number;
+  postColour: string;
+  lightColour: string;
+};
+
+export default function CanvasSky({ data, width, height }: CanvasSky) {
   // canvas element ref'd here
   const canvasEl = useRef<HTMLCanvasElement>(null);
 
   // set lamppost data here
-  const lamppostStart = randomIntFromInterval(0, 30);
-  const lamppostEnd = randomIntFromInterval(0, 30);
-  const lamppostSpace = randomIntFromInterval(150, 180);
-  const lampostLightColour: string = "#f0dfa899";
+  const lamppost: lamppost = {
+    start: randomIntFromInterval(0, 30),
+    end: randomIntFromInterval(0, 30),
+    gap: randomIntFromInterval(150, 180),
+    height: 45,
+    width: 2,
+    postColour: "black",
+    lightColour: "#f0dfa899",
+  };
 
   // getting & setting sky gradient colours
   type ObjectKey = keyof typeof skyColours;
@@ -40,16 +53,26 @@ export default function CanvasSky({
         paintbrush,
         width,
         height,
-        lamppostStart,
-        lamppostEnd,
-        lamppostSpace,
-        45,
-        2,
-        "black",
-        lampostLightColour
+        lamppost.start,
+        lamppost.end,
+        lamppost.gap,
+        lamppost.height,
+        lamppost.width,
+        lamppost.postColour,
+        lamppost.lightColour
       );
     },
-    [height, lamppostEnd, lamppostSpace, lamppostStart, width]
+    [
+      height,
+      lamppost.end,
+      lamppost.gap,
+      lamppost.height,
+      lamppost.lightColour,
+      lamppost.postColour,
+      lamppost.start,
+      lamppost.width,
+      width,
+    ]
   );
 
   useEffect(() => {
