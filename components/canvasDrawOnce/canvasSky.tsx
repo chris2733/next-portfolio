@@ -4,30 +4,30 @@ import drawSky from "../../utils/drawSky";
 import skyColours from "../../utils/skyColours";
 import getCurrentSkyGradient from "../../utils/getCurrentSkyGradient";
 
+type CanvasSky = {
+  data: any;
+  width: number;
+  height: number;
+  horizon: number;
+  radianAdjust: number;
+};
+
 export default function CanvasSky({
   data,
   width,
   height,
   horizon,
   radianAdjust,
-}: {
-  data: any;
-  width: number;
-  height: number;
-  horizon: number;
-  radianAdjust: number;
-}) {
+}: CanvasSky) {
   // canvas element ref'd here
-  const canvasEl = useRef<HTMLCanvasElement>(null);
+  const canvasEl = useRef<HTMLCanvasElement | null>(null);
 
   // colours
   const sunColour: string = "#eabc2c99";
   const moonColour: string = "grey";
 
   // getting & setting sky gradient colours
-  type ObjectKey = keyof typeof skyColours;
-  let currentSkyLightGradients = skyColours[data.currentSkyLight as ObjectKey];
-  currentSkyLightGradients = getCurrentSkyGradient(
+  const currentSkyLightGradients = getCurrentSkyGradient(
     data.currentSkyLight,
     data.nextSkyLight,
     data.skyProgress,
@@ -70,8 +70,8 @@ export default function CanvasSky({
   useEffect(() => {
     // check it isnt null - thanks typescript
     if (canvasEl.current) {
-      const canvas = canvasEl.current;
-      const ctx = canvas.getContext("2d");
+      const ctx: CanvasRenderingContext2D | null =
+        canvasEl.current.getContext("2d");
       if (!ctx || !(ctx instanceof CanvasRenderingContext2D) || ctx === null) {
         return;
       }
