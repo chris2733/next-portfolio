@@ -80,6 +80,7 @@ export default function CanvasSky({
       paintbrush.beginPath();
       draw(paintbrush);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [draw]);
 
   return <canvas ref={canvasEl} height={height} width={width}></canvas>;

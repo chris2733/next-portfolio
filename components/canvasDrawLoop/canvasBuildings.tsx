@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 import drawBuilding from "../../utils/drawBuilding";
 import buildingsSetup from "../../utils/buildingsSetup";
 import skyColours from "../../utils/skyColours";
@@ -9,7 +9,7 @@ export default function CanvasBuildings({
   width,
   height,
   horizon,
-  frameRate,
+  frameRate = 1,
 }: {
   data: any;
   width: number;
@@ -30,12 +30,23 @@ export default function CanvasBuildings({
     skyColours
   );
 
-  // setting each building layer in an array to be looped over when drawing
+  // Settings types here
+  // Setting each building layer in an array to be looped over when drawing
   type BuildingLayerType = {
     start: number;
     width: number;
     height: number;
   };
+  type BuildingSizing = {
+    minW: number;
+    maxW: number;
+    minH: number;
+    maxH: number;
+    minG: number;
+    maxG: number;
+  };
+
+  // Generating buildings here
   const buildings: {
     buildingsArray: BuildingLayerType[];
     heightAdjust: number;
@@ -44,14 +55,7 @@ export default function CanvasBuildings({
   }[] = useMemo(() => [], []);
   // each building layer pushed here with a height adjusted up in y
   // building constraints setup here
-  const building: {
-    minW: number;
-    maxW: number;
-    minH: number;
-    maxH: number;
-    minG: number;
-    maxG: number;
-  } = {
+  const building: BuildingSizing = {
     minW: 50,
     maxW: 130,
     minH: 70,
@@ -102,10 +106,8 @@ export default function CanvasBuildings({
     [buildings, height, width]
   );
 
-  // const requestRef: any = useRef();
   let previousTimeRef: any = useRef();
   let animationFrameId: any = useRef();
-  const [Framerate, setFramerate] = useState<number>(frameRate ? frameRate : 1);
 
   const frameLoop = (time?: any) => {
     // loop through animation frames Headers, setting the time to check with later
@@ -130,7 +132,7 @@ export default function CanvasBuildings({
 
       const startRendering = () => {
         let lastRenderTime = 0;
-        const frameDelay = 1000 / Framerate;
+        const frameDelay = 1000 / frameRate;
 
         const renderLoop = (timestamp: any) => {
           if (timestamp - lastRenderTime >= frameDelay) {
@@ -155,6 +157,7 @@ export default function CanvasBuildings({
       };
     }
     // call draw here, so its reloaded on each draw
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [draw]);
 
   return <canvas ref={canvasEl} height={height} width={width}></canvas>;

@@ -21,7 +21,7 @@ export default function CanvasTraffic({
   /*
    TODO: sort this cars type 
   */
-  let cars: any = [];
+  let cars: any = ([] = useMemo(() => [], []));
   const size = {
     wheelD: 3, // wheel diameter
     bodyW: 25,
@@ -46,97 +46,100 @@ export default function CanvasTraffic({
   }
 
   // draw on canvas here
-  const draw = useCallback((paintbrush: CanvasRenderingContext2D) => {
-    cars.forEach((car: any) => {
-      // smaller var names here for size and start
-      const size = car.size;
-      let start = car.start;
-      // Get the car moving here
-      if (start.x < 0 - size.bodyW || start.x > width + size.bodyW) {
-        // restart car from offscreen and with new colour
-        if (car.flipDirection) {
-          car.start.x = width + size.bodyW * 2;
+  const draw = useCallback(
+    (paintbrush: CanvasRenderingContext2D) => {
+      cars.forEach((car: any) => {
+        // smaller var names here for size and start
+        const size = car.size;
+        let start = car.start;
+        // Get the car moving here
+        if (start.x < 0 - size.bodyW || start.x > width + size.bodyW) {
+          // restart car from offscreen and with new colour
+          if (car.flipDirection) {
+            car.start.x = width + size.bodyW * 2;
+          } else {
+            car.start.x = 0 - size.bodyW * 2;
+          }
+          car.colour = shadeHexColor(
+            "#" + Math.floor(Math.random() * 16777215).toString(16),
+            -0.3
+          );
         } else {
-          car.start.x = 0 - size.bodyW * 2;
+          if (car.flipDirection) {
+            car.start.x -= 15;
+          } else {
+            car.start.x += 5;
+          }
         }
-        car.colour = shadeHexColor(
-          "#" + Math.floor(Math.random() * 16777215).toString(16),
-          -0.3
+
+        // Draw car body
+        paintbrush.fillStyle = car.colour;
+        paintbrush.beginPath();
+        paintbrush.fillRect(
+          start.x,
+          start.y - size.wheelD,
+          size.bodyW,
+          -size.bodyH
         );
-      } else {
-        if (car.flipDirection) {
-          car.start.x -= 15;
-        } else {
-          car.start.x += 5;
-        }
-      }
 
-      // Draw car body
-      paintbrush.fillStyle = car.colour;
-      paintbrush.beginPath();
-      paintbrush.fillRect(
-        start.x,
-        start.y - size.wheelD,
-        size.bodyW,
-        -size.bodyH
-      );
+        // Draw car roof
+        paintbrush.fillStyle = car.colour;
+        paintbrush.beginPath();
+        paintbrush.moveTo(start.x, start.y - size.bodyH - size.wheelD);
+        paintbrush.lineTo(
+          start.x + size.bodyW * 0.33,
+          start.y - size.bodyH - size.roofH - size.wheelD
+        );
+        paintbrush.lineTo(
+          start.x + size.bodyW * 0.66,
+          start.y - size.bodyH - size.roofH - size.wheelD
+        );
+        paintbrush.lineTo(
+          start.x + size.bodyW,
+          start.y - size.bodyH - size.wheelD
+        );
+        paintbrush.closePath();
+        paintbrush.fill();
 
-      // Draw car roof
-      paintbrush.fillStyle = car.colour;
-      paintbrush.beginPath();
-      paintbrush.moveTo(start.x, start.y - size.bodyH - size.wheelD);
-      paintbrush.lineTo(
-        start.x + size.bodyW * 0.33,
-        start.y - size.bodyH - size.roofH - size.wheelD
-      );
-      paintbrush.lineTo(
-        start.x + size.bodyW * 0.66,
-        start.y - size.bodyH - size.roofH - size.wheelD
-      );
-      paintbrush.lineTo(
-        start.x + size.bodyW,
-        start.y - size.bodyH - size.wheelD
-      );
-      paintbrush.closePath();
-      paintbrush.fill();
+        // Draw car window
+        paintbrush.fillStyle = shadeHexColor("#04528a", 0.5);
+        paintbrush.beginPath();
+        paintbrush.fillRect(
+          start.x + size.bodyW * 0.33,
+          start.y - size.bodyH * 0.9 - size.wheelD,
+          size.bodyW * 0.3,
+          -size.roofH * 0.6
+        );
 
-      // Draw car window
-      paintbrush.fillStyle = shadeHexColor("#04528a", 0.5);
-      paintbrush.beginPath();
-      paintbrush.fillRect(
-        start.x + size.bodyW * 0.33,
-        start.y - size.bodyH * 0.9 - size.wheelD,
-        size.bodyW * 0.3,
-        -size.roofH * 0.6
-      );
-
-      // Draw car wheel
-      paintbrush.fillStyle = "black";
-      paintbrush.beginPath();
-      paintbrush.arc(
-        start.x + size.wheelD * 1.5,
-        start.y - size.wheelD,
-        size.wheelD,
-        0,
-        Math.PI * 2,
-        false
-      );
-      paintbrush.closePath();
-      paintbrush.fill();
-      // Draw car other wheel
-      paintbrush.beginPath();
-      paintbrush.arc(
-        start.x - size.wheelD * 1.5 + size.bodyW,
-        start.y - size.wheelD,
-        size.wheelD,
-        0,
-        Math.PI * 2,
-        false
-      );
-      paintbrush.closePath();
-      paintbrush.fill();
-    });
-  }, []);
+        // Draw car wheel
+        paintbrush.fillStyle = "black";
+        paintbrush.beginPath();
+        paintbrush.arc(
+          start.x + size.wheelD * 1.5,
+          start.y - size.wheelD,
+          size.wheelD,
+          0,
+          Math.PI * 2,
+          false
+        );
+        paintbrush.closePath();
+        paintbrush.fill();
+        // Draw car other wheel
+        paintbrush.beginPath();
+        paintbrush.arc(
+          start.x - size.wheelD * 1.5 + size.bodyW,
+          start.y - size.wheelD,
+          size.wheelD,
+          0,
+          Math.PI * 2,
+          false
+        );
+        paintbrush.closePath();
+        paintbrush.fill();
+      });
+    },
+    [cars, width]
+  );
 
   let previousTimeRef = useRef<any>();
   let animationFrameId = useRef<any>();
@@ -185,7 +188,8 @@ export default function CanvasTraffic({
       };
     }
     // call draw here, so its reloaded on each draw
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [draw]);
 
   return <canvas ref={canvasEl} height={height} width={width}></canvas>;
 }

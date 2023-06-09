@@ -1,11 +1,11 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import randomIntFromInterval from "../..//utils/randomIntFromInterval";
 import drawRain from "../..//utils/drawRain";
 
 export default function CanvasRain({
   width,
   height,
-  frameRate,
+  frameRate = 1,
 }: {
   width: number;
   height: number;
@@ -15,7 +15,7 @@ export default function CanvasRain({
   const canvasEl = useRef<HTMLCanvasElement>(null);
 
   // set rain amount here
-  const [rainAmount, setRainAmount] = useState(200);
+  const rainAmount = Math.ceil(width / 100);
   const rainDropLength = 15;
   const rainDropWidth = 0.5;
   const rainDropColour = "rgba(255,255,255,0.7)";
@@ -55,7 +55,6 @@ export default function CanvasRain({
 
   let previousTimeRef = useRef<any>();
   let animationFrameId = useRef<any>();
-  const [framerate, setFramerate] = useState<number>(frameRate ? frameRate : 1);
 
   const frameLoop = (time?: any) => {
     // loop through animation frames Headers, setting the time to check with later
@@ -66,8 +65,6 @@ export default function CanvasRain({
   };
 
   useEffect(() => {
-    // set rain amount here according to width
-    setRainAmount(Math.ceil(width / 100));
     // check if canvas context isnt null.. then add it to paintbrush
     // seems to be the only way to make ts happy without using any
     if (canvasEl.current) {
@@ -82,7 +79,7 @@ export default function CanvasRain({
 
       let lastRenderTime = 0;
       const startRendering = (timestamp: any) => {
-        const frameDelay = 1000 / framerate;
+        const frameDelay = 1000 / frameRate;
 
         if (timestamp - lastRenderTime >= frameDelay) {
           paintbrush.clearRect(0, 0, width, height);
@@ -102,6 +99,7 @@ export default function CanvasRain({
       };
     }
     // call draw here, so its reloaded on each draw
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [draw]);
 
   return <canvas ref={canvasEl} height={height} width={width}></canvas>;
