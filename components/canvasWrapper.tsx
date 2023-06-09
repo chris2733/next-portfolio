@@ -43,11 +43,11 @@ export default function CanvasWrapper({
       /**
        * TODO: change framerate depending on screen width - higher value for smaller screens, so more likely to happens
        **/
-      frameRate={3}
+      frameRate={1}
     />,
     <CanvasLamposts data={apiDataRecieved} width={width} height={height} />,
     <CanvasRain width={width} height={height} frameRate={60} />,
-    <CanvasTraffic width={width} height={height} frameRate={60} numCars={5} />,
+    // <CanvasTraffic width={width} height={height} frameRate={60} numCars={6} />,
   ];
   /* eslint-enable react/jsx-key */
 

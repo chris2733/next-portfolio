@@ -53,10 +53,9 @@ export default function CanvasRain({
     [height, rainDropsArray, rainHeightAdjust, width]
   );
 
-  // const requestRef: any = useRef();
-  let previousTimeRef: any = useRef();
-  let animationFrameId: any = useRef();
-  const [Framerate, setFramerate] = useState<number>(frameRate ? frameRate : 1);
+  let previousTimeRef = useRef<any>();
+  let animationFrameId = useRef<any>();
+  const [framerate, setFramerate] = useState<number>(frameRate ? frameRate : 1);
 
   const frameLoop = (time?: any) => {
     // loop through animation frames Headers, setting the time to check with later
@@ -81,30 +80,25 @@ export default function CanvasRain({
       paintbrush.clearRect(0, 0, width, height);
       paintbrush.beginPath();
 
-      const startRendering = () => {
-        let lastRenderTime = 0;
-        const frameDelay = 1000 / Framerate;
+      let lastRenderTime = 0;
+      const startRendering = (timestamp: any) => {
+        const frameDelay = 1000 / framerate;
 
-        const renderLoop = (timestamp: any) => {
-          if (timestamp - lastRenderTime >= frameDelay) {
-            frameLoop();
-            paintbrush.clearRect(0, 0, width, height);
-            paintbrush.beginPath();
-            draw(paintbrush);
-            lastRenderTime = timestamp;
-          }
-          animationFrameId.current = requestAnimationFrame(renderLoop);
-        };
-        animationFrameId.current = requestAnimationFrame(renderLoop);
-      };
-      const stopRendering = () => {
-        cancelAnimationFrame(animationFrameId);
+        if (timestamp - lastRenderTime >= frameDelay) {
+          paintbrush.clearRect(0, 0, width, height);
+          paintbrush.beginPath();
+          draw(paintbrush);
+          lastRenderTime = timestamp;
+        }
+        frameLoop(timestamp);
+        animationFrameId.current = requestAnimationFrame(startRendering);
       };
 
-      startRendering();
+      animationFrameId.current = requestAnimationFrame(startRendering);
 
       return () => {
-        stopRendering();
+        paintbrush.clearRect(0, 0, width, height);
+        cancelAnimationFrame(animationFrameId.current);
       };
     }
     // call draw here, so its reloaded on each draw
