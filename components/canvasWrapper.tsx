@@ -26,9 +26,9 @@ export default function CanvasWrapper({
     // call draw here, so its reloaded on each draw
   }, []);
 
-  /* eslint-disable react/jsx-key */
-  const canvases = [
+  const canvases: JSX.Element[] = [
     <CanvasSky
+      key="canvas-sky"
       data={apiDataRecieved}
       width={width}
       height={height}
@@ -36,6 +36,7 @@ export default function CanvasWrapper({
       radianAdjust={radianAdjust}
     />,
     <CanvasBuildings
+      key="canvas-buildings"
       data={apiDataRecieved}
       width={width}
       height={height}
@@ -45,11 +46,20 @@ export default function CanvasWrapper({
        **/
       frameRate={1}
     />,
-    <CanvasLamposts data={apiDataRecieved} width={width} height={height} />,
-    <CanvasRain width={width} height={height} frameRate={60} />,
+    <CanvasLamposts
+      key="canvas-lampposts"
+      data={apiDataRecieved}
+      width={width}
+      height={height}
+    />,
+    <CanvasRain
+      key="canvas-rain"
+      width={width}
+      height={height}
+      frameRate={60}
+    />,
     // <CanvasTraffic width={width} height={height} frameRate={60} numCars={6} />,
   ];
-  /* eslint-enable react/jsx-key */
 
   return (
     <div className="absolute top-0 left-0 w-full h-full z-10 bg-white bg-opacity-80">
