@@ -56,7 +56,7 @@ export default function CanvasWrapper({
       key="canvas-rain"
       width={width}
       height={height}
-      frameRate={60}
+      frameRate={1}
     />,
     // <CanvasTraffic width={width} height={height} frameRate={60} numCars={6} />,
   ];

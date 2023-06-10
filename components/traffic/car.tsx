@@ -1,50 +1,46 @@
-type Car = {
-  body: string;
-  headlight: string;
-  rearlight: string;
-};
+import VehicleColour from "types/vehicleColours";
 
-const Car = ({ body, headlight, rearlight }: Car) => {
+const Car = ({ body, headlight, rearlight }: VehicleColour) => {
   return (
     <svg
-      xmlns="http://www.w3.org/2000/svg"
       width="57"
       height="17"
       viewBox="0 0 57 17"
       fill="none"
+      xmlns="http://www.w3.org/2000/svg"
     >
-      <path fill={body} d="M6 6h39v7H6z" />
-      <circle cx="37" cy="13" r="3.5" fill="#000" stroke="#1D1D1D" />
-      <circle cx="14" cy="13" r="3.5" fill="#000" stroke="#1D1D1D" />
+      <rect x="6" y="6" width="39" height="7" fill={body} />
+      <circle cx="37" cy="13" r="3.5" fill="black" stroke="#1D1D1D" />
+      <circle cx="14" cy="13" r="3.5" fill="black" stroke="#1D1D1D" />
       <path
-        fill={body}
         fillRule="evenodd"
-        d="M29 0H13.28L6 6h32.5L29 0Zm-9.5 1h-6v4h6V1ZM28 1h-7v4h7V1Z"
         clipRule="evenodd"
+        d="M29 0H13.2794L6 6H38.5L29 0ZM19.5 1H13.5V3V5H19.5V1ZM28 1H21V5H28V1Z"
+        fill={body}
       />
-      <path fill={rearlight} d="M6 7h1v3H6z" />
-      <path fill="url(#a)" d="M0 3.5 6 7v3l-6 3.5v-10Z" />
-      <path fill="url(#b)" d="M57 13.5 45 9V7l12-5.5v12Z" />
-      <path fill={headlight} d="M43 7h2v2h-2z" />
+      <rect x="6" y="7" width="1" height="3" fill={rearlight} />
+      <path d="M0 3.5L6 7V10L0 13.5V3.5Z" fill="url(#paint0_radial_6_3)" />
+      <path d="M57 13.5L45 9V7L57 1.5V13.5Z" fill="url(#paint1_radial_6_3)" />
+      <rect x="43" y="7" width="2" height="2" fill={headlight} />
       <defs>
         <radialGradient
-          id="a"
+          id="paint0_radial_6_3"
           cx="0"
           cy="0"
           r="1"
-          gradientTransform="matrix(-5.25 0 0 -3.2679 6 8.5)"
           gradientUnits="userSpaceOnUse"
+          gradientTransform="translate(6 8.5) rotate(-180) scale(5.25 3.2679)"
         >
           <stop stopColor={rearlight} />
           <stop offset="1" stopColor={rearlight} stopOpacity="0" />
         </radialGradient>
         <radialGradient
-          id="b"
+          id="paint1_radial_6_3"
           cx="0"
           cy="0"
           r="1"
-          gradientTransform="matrix(13.50004 .5 -.31123 8.40317 45 8)"
           gradientUnits="userSpaceOnUse"
+          gradientTransform="translate(45 8) rotate(2.1211) scale(13.5093 8.40893)"
         >
           <stop stopColor={headlight} />
           <stop offset="1" stopColor={headlight} stopOpacity="0" />

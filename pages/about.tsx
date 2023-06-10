@@ -84,7 +84,7 @@ const About = () => {
             {showCanvas === true && (
               <>
                 <CanvasWrapper apiDataRecieved={apiDataRecieved} />
-                <Traffic volume={2} />
+                <Traffic />
               </>
             )}
           </AnimatePresence>
