@@ -12,7 +12,7 @@ export default function AboutOverlay() {
     <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center z-20">
       <div className={`absolute top-0 left-1/2 -translate-x-1/2 duration-500`}>
         <button
-          className={`bg-white px-5 py-[4px] rounded-br-full rounded-bl-full shadow-[0px_0px_112px_-2px_rgba(255,255,255,0.75)] uppercase text-xs tracking-wider align-top font-medium duration-300 ${
+          className={`bg-white px-5 py-[4px] rounded-br-full rounded-bl-full shadow-[0px_0px_56px_-2px_rgba(255,255,255,0.75)] uppercase text-xs tracking-wider align-top font-medium duration-300 ${
             hideText
               ? "opacity-50 hover:opacity-90 translate-y-0"
               : "opacity-0 -translate-y-1"
@@ -39,7 +39,7 @@ export default function AboutOverlay() {
             }}
             exit={{ opacity: 0, translateY: "-1vh", scale: 0.98 }}
             transition={{ duration: 0.1 }}
-            className="container py-24 sm:py-32 text-center rounded-lg bg-white !max-w-2xl p-8 shadow-[0px_0px_112px_-2px_rgba(255,255,255,0.75)] z-30 relative"
+            className="container py-24 sm:py-32 text-center rounded-lg bg-white !max-w-2xl p-8 shadow-[0px_0px_56px_-2px_rgba(255,255,255,0.75)] z-30 relative"
           >
             <div className="absolute top-0 right-0">
               <button
