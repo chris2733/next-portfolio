@@ -6,6 +6,7 @@ import { AnimatePresence } from "framer-motion";
 import CanvasWrapper from "components/canvasWrapper";
 import AboutOverlay from "components/aboutOverlay";
 import { testData, dataTimeOptions } from "utils/testData";
+import Traffic from "components/traffic/traffic";
 
 const About = () => {
   const [apiDataRecieved, setApiDataRecieved] = useState({});
@@ -81,7 +82,10 @@ const About = () => {
         {apiResponseOk && (
           <AnimatePresence>
             {showCanvas === true && (
-              <CanvasWrapper apiDataRecieved={apiDataRecieved} />
+              <>
+                <CanvasWrapper apiDataRecieved={apiDataRecieved} />
+                <Traffic volume={2} />
+              </>
             )}
           </AnimatePresence>
         )}
