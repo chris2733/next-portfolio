@@ -31,7 +31,7 @@ export default function CanvasSky({ data, width, height }: CanvasSky) {
     gap: randomIntFromInterval(150, 180),
     height: 45,
     width: 2,
-    postColour: "black",
+    postColour: "#393a3b",
     lightColour: "#f0dfa899",
   };
 
