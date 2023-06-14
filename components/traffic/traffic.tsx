@@ -22,7 +22,12 @@ const Traffic = () => {
     <div className="absolute bottom-0 left-0 h-16 overflow-hidden z-10 w-full">
       {vehicles &&
         vehicles.map((vehicle, index) => (
-          <Vehicle vehicle={vehicle} width={width} key={index} />
+          <Vehicle
+            vehicle={vehicle}
+            width={width}
+            key={index}
+            flip={index % 2 === 0}
+          />
         ))}
     </div>
   );
