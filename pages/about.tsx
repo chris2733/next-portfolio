@@ -11,11 +11,12 @@ import Traffic from "components/traffic/traffic";
 const About = () => {
   const [apiDataRecieved, setApiDataRecieved] = useState({});
   const [apiResponseOk, setApiResponseOk] = useState(false);
-  const [useTestData, setUseTestData] = useState(false);
+  const [useTestData, setUseTestData] = useState(true);
   const [showCanvas, setShowCanvas] = useState(true);
   const [testDataTime, setTestDataTime] = useState<number>(
     dataTimeOptions.filter((el) => el.name === "Dusk")[0].time
   ); // set default test data time to dusk - is nice (but using the previous skylight to get the next, dusk)
+  const [hideRain, sethideRain] = useState<boolean>(true);
 
   useEffect(() => {
     rerenderCanvas();
@@ -49,7 +50,7 @@ const About = () => {
       <NextSeo title="About" />
       <PageTransitionWrapper classes="min-h-screen relative overflow-hidden">
         <div className="fixed w-auto top-0 left-0 z-30 flex flex-col gap-2">
-          <button
+          {/* <button
             className="bg-white opacity-50"
             onClick={() => rerenderCanvas(true, testDataTime)}
           >
@@ -60,6 +61,12 @@ const About = () => {
             onClick={() => rerenderCanvas(false)}
           >
             Use live api data
+          </button> */}
+          <button
+            className="bg-white opacity-50"
+            onClick={() => sethideRain(!hideRain)}
+          >
+            Toggle Rain
           </button>
           {useTestData === true && (
             <select
@@ -83,7 +90,10 @@ const About = () => {
           <AnimatePresence>
             {showCanvas === true && (
               <>
-                <CanvasWrapper apiDataRecieved={apiDataRecieved} />
+                <CanvasWrapper
+                  apiDataRecieved={apiDataRecieved}
+                  hideRain={hideRain}
+                />
                 <Traffic />
               </>
             )}

@@ -9,8 +9,10 @@ import CanvasRain from "./canvasDrawLoop/canvasRain";
 
 export default function CanvasWrapper({
   apiDataRecieved,
+  hideRain = false,
 }: {
   apiDataRecieved: Object;
+  hideRain?: boolean;
 }) {
   const [width, setWidth] = useState(0);
   const [height, setHeight] = useState(0);
@@ -56,7 +58,7 @@ export default function CanvasWrapper({
       key="canvas-rain"
       width={width}
       height={height}
-      frameRate={1}
+      frameRate={30}
     />,
     // <CanvasTraffic width={width} height={height} frameRate={60} numCars={6} />,
   ];
@@ -75,6 +77,7 @@ export default function CanvasWrapper({
         className="z-10"
       >
         {canvases.map((element, index) => {
+          if (element.key === "canvas-rain" && hideRain) return;
           return (
             <div
               className="absolute top-0 left-0 w-full h-full"
