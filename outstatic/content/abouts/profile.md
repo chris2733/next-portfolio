@@ -1,6 +1,6 @@
 ---
 title: 'Profile'
-status: 'draft'
+status: 'published'
 author:
   name: 'Chris'
   picture: 'https://avatars.githubusercontent.com/u/4907924?v=4'
