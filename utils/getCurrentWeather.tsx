@@ -1,38 +1,31 @@
-import { useState, useEffect } from "react";
 import axios from "axios";
-import { formatInTimeZone, utcToZonedTime, zonedTimeToUtc } from "date-fns-tz";
-import { format, getTime, getUnixTime } from "date-fns";
+import { formatInTimeZone, utcToZonedTime } from "date-fns-tz";
+import { getUnixTime } from "date-fns";
 
-export default function CurrentWeather({
-  passDataToParent,
-  useTestData,
-  testData,
-  testDataTime,
-}: {
-  passDataToParent: Function;
-  useTestData: boolean;
-  testData: Object;
-  testDataTime: number;
-}) {
-  const [apiData, setapiData] = useState({});
-  const [apiCallOk, setApiCallOk] = useState(false);
-  const [weatherData, setWeatherData] = useState<any>({});
+export default async function CurrentWeather(
+  useTestData: boolean,
+  testData: Object,
+  testDataTime: number
+) {
   // HEEREEE is where we set the right timezone
   const currentUnix =
     getUnixTime(utcToZonedTime(new Date(), "Europe/London")) * 1000;
 
-  useEffect(() => {
+  try {
     if (useTestData === true) {
-      console.log("use test data");
       const apiDataConverted = SuccessfulResult(testData, testDataTime);
-      setWeatherData(apiDataConverted);
-      passDataToParent(apiDataConverted);
-      setApiCallOk(true);
+      // console.log("testdata: ", apiDataConverted);
+      return apiDataConverted;
+      // return api result is ok
     } else {
       // this may look like it's calling twice in dev, but thats because of strictmode - if this is set to false in next.config.js it only happens once
       if (localStorage.getItem("apiData") === null) {
-        console.log("Getting api data first time");
-        getData();
+        const newData = await getData();
+        // console.log(
+        //   "Getting api data first time: ",
+        //   SuccessfulResult(newData?.data, currentUnix)
+        // );
+        return SuccessfulResult(newData?.data, currentUnix);
       } else if (
         localStorage.getItem("apiData") !== null &&
         typeof localStorage.getItem("apiData") === "string"
@@ -42,65 +35,26 @@ export default function CurrentWeather({
           localStorage.getItem("expiry") !== null &&
           new Date().getTime() > Number(localStorage.getItem("expiry"))
         ) {
-          console.log("expiry date gone by, getting new data");
-          getData();
+          getData().then((data) => {
+            // console.log("Expiry date gone by, getting new data: ", data?.data);
+            return SuccessfulResult(data?.data, currentUnix);
+          });
         } else {
-          console.log("api on cooldown");
           const dataGrabbed: string = localStorage.getItem("apiData")!;
-          setapiData(JSON.parse(dataGrabbed).data);
+          // console.log("api on cooldown: ", dataGrabbed); // works
+          return SuccessfulResult(JSON.parse(dataGrabbed).data, currentUnix);
         }
       } else {
         console.log("Error getting data");
       }
     }
-
-    function getData() {
-      const response = axios
-        .get(
-          `http://api.openweathermap.org/data/2.5/weather?id=2653822&appid=${process.env.NEXT_PUBLIC_OPENMAP_API}&units=metric`
-        )
-        .then(function (response) {
-          // handle success
-          console.log("Openmap weather api GREAET SUCCESS:", response);
-          setapiData(response.data);
-          // console.log(response.data);
-          // set local storage to contain response and cooldown
-          localStorage.setItem("apiData", JSON.stringify(response));
-          // set expiry on localStorage, with new Date().getTime();
-          // set minutes by mins * 60000, to get away from milliseconds
-          const expiry = String(new Date().getTime() + 5 * 60000);
-          localStorage.setItem("expiry", expiry);
-        })
-        .catch(function (error) {
-          // handle error
-          console.log("Openmap weather api " + error.message);
-          return;
-        });
-    }
-  }, [useTestData, testDataTime]);
-
-  useEffect(() => {
-    if (Object.keys(apiData).length !== 0) {
-      const apiDataConverted = SuccessfulResult(apiData, currentUnix);
-      setWeatherData(apiDataConverted);
-      passDataToParent(apiDataConverted);
-      setApiCallOk(true);
-    }
-  }, [apiData]);
-
-  return (
-    <div className="">
-      {apiCallOk && (
-        <p>
-          Current location: {""}
-          {weatherData.weather.name !== undefined && weatherData.weather.name}
-        </p>
-      )}
-    </div>
-  );
+  } catch (error) {
+    console.log("getcurrentweather error: ", error);
+  }
 }
 
 function SuccessfulResult(data: any, currentUnix: number) {
+  // console.log("formatting succesful result: ", data);
   // weather data
   interface weatherData {
     name: string;
@@ -170,11 +124,25 @@ function SuccessfulResult(data: any, currentUnix: number) {
     "Europe/London",
     "HHmm"
   );
-  let currentSkyLightEnd = formatInTimeZone(
-    new Date(skyLightTypesSortUnix[skyLightNextIndex][1]),
-    "Europe/London",
-    "HHmm"
-  );
+  /*
+    adding a check here, since sometimes night & nightEnd return NaN, not sure why yet, but moving to the next skylight until it finds a non NaN works for now
+    TODO: Get a better fix with a loop, or find root issue
+   */
+  let currentSkyLightEnd;
+  if (isNaN(skyLightTypesSortUnix[skyLightNextIndex][1])) {
+    currentSkyLightEnd = formatInTimeZone(
+      new Date(skyLightTypesSortUnix[0][1]),
+      "Europe/London",
+      "HHmm"
+    );
+  } else {
+    currentSkyLightEnd = formatInTimeZone(
+      new Date(skyLightTypesSortUnix[skyLightNextIndex][1]),
+      "Europe/London",
+      "HHmm"
+    );
+  }
+
   // need to make sure date is set to gmt - that was a wierd fucking bug
   let timeNow = formatInTimeZone(weather.time, "Europe/London", "HHmm");
   // progress here - time since the start of current sky light segment, as a percentage of the size of current sky light segment
@@ -216,4 +184,27 @@ function SuccessfulResult(data: any, currentUnix: number) {
     nextSkyLight,
     skyProgress,
   };
+}
+
+async function getData() {
+  try {
+    const data = await axios.get(
+      `http://api.openweathermap.org/data/2.5/weather?id=2653822&appid=${process.env.NEXT_PUBLIC_OPENMAP_API}&units=metric`
+    );
+    // handle success
+    // console.log("Openmap weather api GREAET SUCCESS:", data);
+    // console.log(response.data);
+    // set local storage to contain response and cooldown
+    localStorage.setItem("apiData", JSON.stringify(data));
+    // set expiry on localStorage, with new Date().getTime();
+    // set minutes by mins * 60000, to get away from milliseconds
+    const expiry = String(new Date().getTime() + 1 * 60000);
+    localStorage.setItem("expiry", expiry);
+
+    // return data here
+    // console.log("fetching new data: ", data);
+    return data;
+  } catch (error) {
+    console.log("Openmap weather api: " + error);
+  }
 }

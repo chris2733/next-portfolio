@@ -1,5 +1,5 @@
-import Masthead from "./components/masthead";
-import PageTransitionWrapper from "./components/pageTransition";
+import Masthead from "components/masthead";
+import PageTransitionWrapper from "components/pageTransition";
 
 const Landing = () => {
   return (

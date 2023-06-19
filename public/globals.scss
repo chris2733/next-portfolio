@@ -7,46 +7,46 @@
 
 html,
 body {
-	@apply p-0 m-0;
+  @apply p-0 m-0;
 }
 
 a {
-	@apply cursor-pointer;
-	color: inherit;
-	text-decoration: none;
+  @apply cursor-pointer;
+  color: inherit;
+  text-decoration: none;
 }
 
 .underline-line {
-	/* I don't know why this is needed, I just added it and it worked in IE Edge. If we remove this width, the gradient breaks in IE Edge */
-	width: calc(100%);
-	background-image: linear-gradient(transparent calc(100% - 50px), black 0px);
-	background-repeat: no-repeat;
-	background-size: 50% 10%;
-	background-position: left bottom;
-	transition: background-size 1s;
+  /* I don't know why this is needed, I just added it and it worked in IE Edge. If we remove this width, the gradient breaks in IE Edge */
+  width: calc(100%);
+  background-image: linear-gradient(transparent calc(100% - 50px), black 0px);
+  background-repeat: no-repeat;
+  background-size: 50% 10%;
+  background-position: left bottom;
+  transition: background-size 1s;
 }
 
 .underlineanim {
-	&-line {
-		/* I don't know why this is needed, I just added it and it worked in IE Edge. If we remove this width, the gradient breaks in IE Edge */
-		width: calc(100%);
-		background-image: linear-gradient(transparent calc(100% - 20px), black 0px);
-		background-repeat: no-repeat;
-		background-size: 0% 6%;
-		background-position: left bottom;
-		transition: background-size 0.4s;
-	}
-	&:hover .underlineanim-line {
-		background-size: 100% 6%;
-	}
+  &-line {
+    /* I don't know why this is needed, I just added it and it worked in IE Edge. If we remove this width, the gradient breaks in IE Edge */
+    width: calc(100%);
+    background-image: linear-gradient(transparent calc(100% - 20px), black 0px);
+    background-repeat: no-repeat;
+    background-size: 0% 6%;
+    background-position: left bottom;
+    transition: background-size 0.4s;
+  }
+  &:hover .underlineanim-line {
+    background-size: 100% 6%;
+  }
 }
 
 * {
-	box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 .container {
-	@apply mx-auto max-w-[90%] w-[90%];
+  @apply mx-auto max-w-[90%] w-[90%];
 }
 
 // @media (prefers-color-scheme: dark) {
@@ -58,3 +58,30 @@ a {
 // 		background: black;
 // 	}
 // }
+
+.highlightedlink-parent:hover,
+.highlightedlink-parent:focus {
+  .highlightedlink::after {
+    background: #556ff957;
+  }
+}
+
+.highlightedlink {
+  position: relative;
+  &::after {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 101%;
+    height: 50%;
+    bottom: 20%;
+    left: -2%;
+    z-index: -2;
+    background: rgba(0, 0, 0, 0.1);
+    transition: all 0.7s ease;
+    opacity: 0;
+  }
+  &.__visible::after {
+    opacity: 1;
+  }
+}
