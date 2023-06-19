@@ -46,7 +46,7 @@ const About = () => {
         <div className="container py-24 sm:py-32 text-center">
           <h1 className="inline-block overflow-hidden leading-5 mb-4">
             <LetterSplitter
-              text={"work"}
+              text={"showcase"}
               initialDelay={0.5}
               letterDelay={0.03}
               letterClass="text-lg uppercase duration-[1.2s] ease-[cubic-bezier(0.25,1,0.5,1)] cursor-default inline-block font-medium"
