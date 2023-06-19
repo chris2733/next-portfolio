@@ -1,6 +1,6 @@
 {
-  "commit": "723e6808bccdf0268693758810aa0336f644c621",
-  "generated": "2023-06-19T22:23:10.232Z",
+  "commit": "12f118bf3d1e8d353bcc566060a29c214bcd688f",
+  "generated": "2023-06-19T22:23:46.630Z",
   "metadata": [
     {
       "__outstatic": {
@@ -19,6 +19,24 @@
       "slug": "profile",
       "status": "published",
       "title": "Profile"
+    },
+    {
+      "__outstatic": {
+        "commit": "12f118bf3d1e8d353bcc566060a29c214bcd688f",
+        "hash": "760498235",
+        "path": "outstatic/content/work/cadw.md"
+      },
+      "author": {
+        "name": "Chris",
+        "picture": "https://avatars.githubusercontent.com/u/4907924?v=4"
+      },
+      "collection": "work",
+      "coverImage": "",
+      "description": "",
+      "publishedAt": "2023-06-19T22:29:38.819Z",
+      "slug": "cadw",
+      "status": "draft",
+      "title": "Cadw"
     }
   ]
 }
