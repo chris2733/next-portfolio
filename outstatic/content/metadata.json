@@ -1,28 +1,10 @@
 {
-  "commit": "41117b05e95ecbd3827c15bc120c6b38ac0e6da6",
-  "generated": "2023-06-19T21:56:42.989Z",
+  "commit": "d455846d59664fc2c885308cc409bbc6c009d328",
+  "generated": "Mon, 19 Jun 2023 21:58:16 GMT",
   "metadata": [
     {
       "__outstatic": {
-        "commit": "4bdf5f601fac1adf5bb2a6d8553c7e55118471ae",
-        "hash": "2642854969",
-        "path": "outstatic/content/abouts/about.md"
-      },
-      "author": {
-        "name": "Chris",
-        "picture": "https://avatars.githubusercontent.com/u/4907924?v=4"
-      },
-      "collection": "abouts",
-      "coverImage": "",
-      "description": "",
-      "publishedAt": "2023-06-19T21:37:26.946Z",
-      "slug": "about",
-      "status": "draft",
-      "title": "About"
-    },
-    {
-      "__outstatic": {
-        "commit": "41117b05e95ecbd3827c15bc120c6b38ac0e6da6",
+        "commit": "c7bfc7bdb176a1225540ce3c855a985b67c19058",
         "hash": "1414798564",
         "path": "outstatic/content/abouts/profile.md"
       },
