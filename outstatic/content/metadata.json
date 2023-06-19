@@ -1,0 +1,24 @@
+{
+  "commit": "644b740f76ef5d38ce32e57a84d5b452508d90d3",
+  "generated": "Mon, 19 Jun 2023 21:48:13 GMT",
+  "metadata": [
+    {
+      "__outstatic": {
+        "commit": "4bdf5f601fac1adf5bb2a6d8553c7e55118471ae",
+        "hash": "2642854969",
+        "path": "outstatic/content/abouts/about.md"
+      },
+      "author": {
+        "name": "Chris",
+        "picture": "https://avatars.githubusercontent.com/u/4907924?v=4"
+      },
+      "collection": "abouts",
+      "coverImage": "",
+      "description": "",
+      "publishedAt": "2023-06-19T21:37:26.946Z",
+      "slug": "about",
+      "status": "draft",
+      "title": "About"
+    }
+  ]
+}
