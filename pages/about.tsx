@@ -94,7 +94,7 @@ const About = () => {
                   apiDataRecieved={apiDataRecieved}
                   hideRain={hideRain}
                 />
-                <Traffic />
+                {/* <Traffic /> */}
               </>
             )}
           </AnimatePresence>

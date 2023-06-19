@@ -54,12 +54,12 @@ export default function CanvasWrapper({
       width={width}
       height={height}
     />,
-    <CanvasRain
-      key="canvas-rain"
-      width={width}
-      height={height}
-      frameRate={30}
-    />,
+    // <CanvasRain
+    //   key="canvas-rain"
+    //   width={width}
+    //   height={height}
+    //   frameRate={30}
+    // />,
     // <CanvasTraffic width={width} height={height} frameRate={60} numCars={6} />,
   ];
 
