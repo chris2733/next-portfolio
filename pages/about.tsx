@@ -7,8 +7,13 @@ import CanvasWrapper from "components/canvasWrapper";
 import AboutOverlay from "components/aboutOverlay";
 import { testData, dataTimeOptions } from "utils/testData";
 import Traffic from "components/traffic/traffic";
+import {
+  getDocuments,
+  getCollections,
+  getDocumentBySlug,
+} from "outstatic/server";
 
-const About = () => {
+const About = ({ pageContent }: { pageContent: any }) => {
   const [apiDataRecieved, setApiDataRecieved] = useState({});
   const [apiResponseOk, setApiResponseOk] = useState(false);
   const [useTestData, setUseTestData] = useState(true);
@@ -44,6 +49,8 @@ const About = () => {
       setShowCanvas(true);
     }, 500);
   }
+
+  console.log(pageContent.content);
 
   return (
     <>
@@ -101,10 +108,24 @@ const About = () => {
         )}
         {/* canvas here to test without api call */}
         {/* <Canvas /> */}
-        <AboutOverlay />
+        <AboutOverlay content={pageContent?.content} />
       </PageTransitionWrapper>
     </>
   );
 };
 
 export default About;
+
+export const getStaticProps = async () => {
+  const pageContent = getDocumentBySlug("abouts", "profile", [
+    "title",
+    "publishedAt",
+    "slug",
+    "author",
+    "content",
+    "coverImage",
+  ]);
+  return {
+    props: { pageContent },
+  };
+};

@@ -5,9 +5,12 @@ import WordSplitter from "./workSplitter";
 import { useState } from "react";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import { AnimatePresence, motion } from "framer-motion";
+import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 
-export default function AboutOverlay() {
+export default function AboutOverlay({ content }: { content: any }) {
   const [hideText, setHideText] = useState(false);
+  const [pageContent, setpageContent] = useState(content);
+
   return (
     <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center z-20">
       <div className={`absolute top-0 left-1/2 -translate-x-1/2 duration-500`}>
@@ -59,12 +62,13 @@ export default function AboutOverlay() {
             </h1>
             <div className="mx-auto max-w-[730px]">
               <div className="pb-5">
-                <WordSplitter
+                <ReactMarkdown>{pageContent}</ReactMarkdown>
+                {/* <WordSplitter
                   text="About me here"
                   initialDelay={0.2}
                   wordDelay={0.002}
                   wordClass=""
-                />
+                /> */}
               </div>
               <div className="mt-2 flex items-center justify-center gap-3">
                 <AnimateIn delay={1} duration={0.6}>
