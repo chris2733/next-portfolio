@@ -1,12 +1,12 @@
 {
-  "commit": "c155aec05bd0456b37f3d4db5f19b0e89dbe0481",
-  "generated": "Mon, 19 Jun 2023 21:55:39 GMT",
+  "commit": "41117b05e95ecbd3827c15bc120c6b38ac0e6da6",
+  "generated": "2023-06-19T21:56:39.810Z",
   "metadata": [
     {
       "__outstatic": {
-        "commit": "4bdf5f601fac1adf5bb2a6d8553c7e55118471ae",
-        "hash": "2642854969",
-        "path": "outstatic/content/abouts/about.md"
+        "commit": "41117b05e95ecbd3827c15bc120c6b38ac0e6da6",
+        "hash": "475795910",
+        "path": "outstatic/content/abouts/profile.md"
       },
       "author": {
         "name": "Chris",
@@ -16,9 +16,9 @@
       "coverImage": "",
       "description": "",
       "publishedAt": "2023-06-19T21:37:26.946Z",
-      "slug": "about",
+      "slug": "profile",
       "status": "draft",
-      "title": "About"
+      "title": "Profile"
     }
   ]
 }
