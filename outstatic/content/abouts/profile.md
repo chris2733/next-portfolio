@@ -28,3 +28,5 @@ spacing here
 
 sdfsdfsdfsdfsdfsdf
 
+This personal site is built with NextJS using Outstatic as a CMS, and this page is an experiment in progress - a randomly generated city skyline using [canvas].
+
