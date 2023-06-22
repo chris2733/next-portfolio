@@ -1,6 +1,6 @@
 {
-  "commit": "5ebf3024506dd900f9c098fad4bdfea35ac22df1",
-  "generated": "2023-06-22T20:58:36.016Z",
+  "commit": "52212c810f219176e61036ea8ee4217c328b54db",
+  "generated": "2023-06-22T20:58:39.656Z",
   "metadata": [
     {
       "__outstatic": {
@@ -79,8 +79,8 @@
     },
     {
       "__outstatic": {
-        "commit": "5ebf3024506dd900f9c098fad4bdfea35ac22df1",
-        "hash": "1770437093",
+        "commit": "52212c810f219176e61036ea8ee4217c328b54db",
+        "hash": "4166057402",
         "path": "outstatic/content/work/hensol-castle.md"
       },
       "author": {
@@ -92,7 +92,7 @@
       "description": "",
       "publishedAt": "2023-06-22T21:04:12.797Z",
       "slug": "hensol-castle",
-      "status": "draft",
+      "status": "published",
       "title": "Hensol Castle",
       "url": "https://www.hensolcastle.com/"
     }
