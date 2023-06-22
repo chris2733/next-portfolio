@@ -1,6 +1,6 @@
 {
-  "commit": "719e9bc4c03930ed7c0719b665bf6845de2b3b13",
-  "generated": "2023-06-22T21:06:22.139Z",
+  "commit": "dd5d520a8e2846b0d2d9feb26b91e51935fa15db",
+  "generated": "2023-06-22T21:11:24.390Z",
   "metadata": [
     {
       "__outstatic": {
@@ -114,6 +114,24 @@
       "slug": "profile",
       "status": "published",
       "title": "Profile"
+    },
+    {
+      "__outstatic": {
+        "commit": "dd5d520a8e2846b0d2d9feb26b91e51935fa15db",
+        "hash": "995382632",
+        "path": "outstatic/content/abouts/canvaslink.md"
+      },
+      "author": {
+        "name": "Chris",
+        "picture": "https://avatars.githubusercontent.com/u/4907924?v=4"
+      },
+      "collection": "abouts",
+      "coverImage": "",
+      "description": "",
+      "publishedAt": "2023-06-22T21:23:09.121Z",
+      "slug": "canvaslink",
+      "status": "published",
+      "title": "Canvaslink"
     }
   ]
 }
