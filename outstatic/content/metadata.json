@@ -1,6 +1,6 @@
 {
-  "commit": "52212c810f219176e61036ea8ee4217c328b54db",
-  "generated": "2023-06-22T20:58:39.656Z",
+  "commit": "abbf22bca72a345b27f9cc916935d2539ec6b9e5",
+  "generated": "2023-06-22T20:58:43.365Z",
   "metadata": [
     {
       "__outstatic": {
@@ -41,25 +41,6 @@
     },
     {
       "__outstatic": {
-        "commit": "ba7da4c971d36c0bbac73df885eaea642f7a0439",
-        "hash": "2551921039",
-        "path": "outstatic/content/work/hamilton-gardens.md"
-      },
-      "author": {
-        "name": "Chris",
-        "picture": "https://avatars.githubusercontent.com/u/4907924?v=4"
-      },
-      "collection": "work",
-      "coverImage": "",
-      "description": "",
-      "publishedAt": "2023-06-22T21:03:31.910Z",
-      "slug": "hamilton-gardens",
-      "status": "draft",
-      "title": "Hamilton Gardens",
-      "url": "https://hamiltongardens.ie/"
-    },
-    {
-      "__outstatic": {
         "commit": "dc909faab694442e77cebb9abac0897a1a311d54",
         "hash": "4069489549",
         "path": "outstatic/content/work/burns-pet-food.md"
@@ -95,6 +76,25 @@
       "status": "published",
       "title": "Hensol Castle",
       "url": "https://www.hensolcastle.com/"
+    },
+    {
+      "__outstatic": {
+        "commit": "abbf22bca72a345b27f9cc916935d2539ec6b9e5",
+        "hash": "1947691012",
+        "path": "outstatic/content/work/hamilton-gardens.md"
+      },
+      "author": {
+        "name": "Chris",
+        "picture": "https://avatars.githubusercontent.com/u/4907924?v=4"
+      },
+      "collection": "work",
+      "coverImage": "",
+      "description": "",
+      "publishedAt": "2023-06-22T21:03:31.910Z",
+      "slug": "hamilton-gardens",
+      "status": "published",
+      "title": "Hamilton Gardens",
+      "url": "https://hamiltongardens.ie/"
     }
   ]
 }
