@@ -1,6 +1,6 @@
 {
-  "commit": "4403c14d543ca710b54854b217a6bf935e0d6b99",
-  "generated": "2023-06-22T20:57:25.325Z",
+  "commit": "f8f5fa26a906388ce328c34c05729a8757ee1fb6",
+  "generated": "2023-06-22T20:57:27.705Z",
   "metadata": [
     {
       "__outstatic": {
@@ -41,8 +41,8 @@
     },
     {
       "__outstatic": {
-        "commit": "4403c14d543ca710b54854b217a6bf935e0d6b99",
-        "hash": "2011055595",
+        "commit": "f8f5fa26a906388ce328c34c05729a8757ee1fb6",
+        "hash": "4069489549",
         "path": "outstatic/content/work/burns-pet-food.md"
       },
       "author": {
@@ -54,7 +54,7 @@
       "description": "",
       "publishedAt": "2023-06-22T21:03:05.464Z",
       "slug": "burns-pet-food",
-      "status": "draft",
+      "status": "published",
       "title": "Burns Pet Food",
       "url": "https://burnspet.co.uk/"
     }
