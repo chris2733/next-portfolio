@@ -1,6 +1,6 @@
 {
-  "commit": "dc909faab694442e77cebb9abac0897a1a311d54",
-  "generated": "2023-06-22T20:58:10.875Z",
+  "commit": "5ebf3024506dd900f9c098fad4bdfea35ac22df1",
+  "generated": "2023-06-22T20:58:36.016Z",
   "metadata": [
     {
       "__outstatic": {
@@ -76,6 +76,25 @@
       "status": "published",
       "title": "Burns Pet Food",
       "url": "https://burnspet.co.uk/"
+    },
+    {
+      "__outstatic": {
+        "commit": "5ebf3024506dd900f9c098fad4bdfea35ac22df1",
+        "hash": "1770437093",
+        "path": "outstatic/content/work/hensol-castle.md"
+      },
+      "author": {
+        "name": "Chris",
+        "picture": "https://avatars.githubusercontent.com/u/4907924?v=4"
+      },
+      "collection": "work",
+      "coverImage": "",
+      "description": "",
+      "publishedAt": "2023-06-22T21:04:12.797Z",
+      "slug": "hensol-castle",
+      "status": "draft",
+      "title": "Hensol Castle",
+      "url": "https://www.hensolcastle.com/"
     }
   ]
 }
