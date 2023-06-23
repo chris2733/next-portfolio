@@ -5,7 +5,7 @@ import { NextSeo } from "next-seo";
 import RoundedLinks from "elements/roundedlinks";
 import AnimateIn from "components/animateIn";
 import { getDocuments } from "outstatic/server";
-import OutstaticWork from "types/outstaticwork";
+import OutstaticWork from "../types/outstaticWork";
 
 const Work = ({ pageContent }: { pageContent: OutstaticWork[] }) => {
   console.log(pageContent);
