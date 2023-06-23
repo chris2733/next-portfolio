@@ -49,15 +49,15 @@ a {
   @apply mx-auto max-w-[90%] w-[90%];
 }
 
-// @media (prefers-color-scheme: dark) {
-// 	html {
-// 		color-scheme: dark;
-// 	}
-// 	body {
-// 		color: white;
-// 		background: black;
-// 	}
-// }
+/* @media (prefers-color-scheme: dark) {
+	html {
+		color-scheme: dark;
+	}
+	body {
+		color: white;
+		background: black;
+	}
+} */
 
 .highlightedlink-parent:hover,
 .highlightedlink-parent:focus {
@@ -83,5 +83,26 @@ a {
   }
   &.__visible::after {
     opacity: 1;
+  }
+  &.__singlelink {
+    &:hover,
+    &:focus {
+      &::after {
+        background: #556ff957;
+      }
+    }
+    &::after {
+      bottom: 4%;
+      opacity: 1;
+    }
+  }
+}
+
+.markdownstyle {
+  p {
+    @apply mb-4 text-sm;
+  }
+  a {
+    @extend .highlightedlink, .__singlelink;
   }
 }

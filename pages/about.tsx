@@ -7,8 +7,21 @@ import CanvasWrapper from "components/canvasWrapper";
 import AboutOverlay from "components/aboutOverlay";
 import { testData, dataTimeOptions } from "utils/testData";
 import Traffic from "components/traffic/traffic";
+import {
+  getDocuments,
+  getCollections,
+  getDocumentBySlug,
+} from "outstatic/server";
+import OutstaticTitleContent from "types/outstaticTitleContent";
+import OutstaticContent from "types/outstaticContent";
 
-const About = () => {
+const About = ({
+  pageContent,
+  canvasText,
+}: {
+  pageContent: OutstaticTitleContent;
+  canvasText: OutstaticContent;
+}) => {
   const [apiDataRecieved, setApiDataRecieved] = useState({});
   const [apiResponseOk, setApiResponseOk] = useState(false);
   const [useTestData, setUseTestData] = useState(true);
@@ -18,8 +31,10 @@ const About = () => {
   ); // set default test data time to dusk - is nice (but using the previous skylight to get the next, dusk)
   const [hideRain, sethideRain] = useState<boolean>(true);
 
+  console.log(pageContent, canvasText);
   useEffect(() => {
     rerenderCanvas();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function rerenderCanvas(
@@ -48,9 +63,9 @@ const About = () => {
   return (
     <>
       <NextSeo title="About" />
-      <PageTransitionWrapper classes="min-h-screen relative overflow-hidden">
-        <div className="fixed w-auto top-0 left-0 z-30 flex flex-col gap-2">
-          {/* <button
+      <PageTransitionWrapper classes="min-h-screen relative grid place-items-center grid-cols-1">
+        {/* <div className="fixed w-auto top-0 left-0 z-30 flex flex-col gap-2">
+          <button
             className="bg-white opacity-50"
             onClick={() => rerenderCanvas(true, testDataTime)}
           >
@@ -61,31 +76,14 @@ const About = () => {
             onClick={() => rerenderCanvas(false)}
           >
             Use live api data
-          </button> */}
+          </button>
           <button
             className="bg-white opacity-50"
             onClick={() => sethideRain(!hideRain)}
           >
             Toggle Rain
           </button>
-          {useTestData === true && (
-            <select
-              name="time"
-              id=""
-              onChange={(el) => {
-                rerenderCanvas(undefined, Number(el.target.value));
-                setTestDataTime(Number(el.target.value));
-              }}
-              value={testDataTime}
-            >
-              {dataTimeOptions.map((el, id) => (
-                <option value={el.time} key={`timeoption${id}`}>
-                  {el.name}
-                </option>
-              ))}
-            </select>
-          )}
-        </div>
+        </div> */}
         {apiResponseOk && (
           <AnimatePresence>
             {showCanvas === true && (
@@ -101,10 +99,29 @@ const About = () => {
         )}
         {/* canvas here to test without api call */}
         {/* <Canvas /> */}
-        <AboutOverlay />
+        <AboutOverlay
+          content={pageContent?.content}
+          canvasText={canvasText?.content}
+          dataTimeOptions={dataTimeOptions}
+          useTestData={useTestData}
+          rerenderCanvas={rerenderCanvas}
+          setTestDataTime={setTestDataTime}
+          testDataTime={testDataTime}
+        />
       </PageTransitionWrapper>
     </>
   );
 };
 
 export default About;
+
+export const getStaticProps = async () => {
+  const pageContent = getDocumentBySlug("abouts", "profile", [
+    "title",
+    "content",
+  ]);
+  const canvasText = getDocumentBySlug("abouts", "canvaslink", ["content"]);
+  return {
+    props: { pageContent, canvasText },
+  };
+};

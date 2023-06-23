@@ -1,0 +1,13 @@
+{
+  "title": "work",
+  "type": "object",
+  "properties": {
+    "url": {
+      "required": true,
+      "description": "Url link to work",
+      "fieldType": "String",
+      "dataType": "string",
+      "title": "Url"
+    }
+  }
+}
