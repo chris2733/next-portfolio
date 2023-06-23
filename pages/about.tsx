@@ -13,7 +13,13 @@ import {
   getDocumentBySlug,
 } from "outstatic/server";
 
-const About = ({ pageContent }: { pageContent: any }) => {
+const About = ({
+  pageContent,
+  canvasText,
+}: {
+  pageContent: string;
+  canvasText: string;
+}) => {
   const [apiDataRecieved, setApiDataRecieved] = useState({});
   const [apiResponseOk, setApiResponseOk] = useState(false);
   const [useTestData, setUseTestData] = useState(true);
@@ -50,14 +56,12 @@ const About = ({ pageContent }: { pageContent: any }) => {
     }, 500);
   }
 
-  console.log(pageContent.content);
-
   return (
     <>
       <NextSeo title="About" />
-      <PageTransitionWrapper classes="min-h-screen relative overflow-hidden">
-        <div className="fixed w-auto top-0 left-0 z-30 flex flex-col gap-2">
-          {/* <button
+      <PageTransitionWrapper classes="min-h-screen relative grid place-items-center grid-cols-1">
+        {/* <div className="fixed w-auto top-0 left-0 z-30 flex flex-col gap-2">
+          <button
             className="bg-white opacity-50"
             onClick={() => rerenderCanvas(true, testDataTime)}
           >
@@ -68,31 +72,14 @@ const About = ({ pageContent }: { pageContent: any }) => {
             onClick={() => rerenderCanvas(false)}
           >
             Use live api data
-          </button> */}
+          </button>
           <button
             className="bg-white opacity-50"
             onClick={() => sethideRain(!hideRain)}
           >
             Toggle Rain
           </button>
-          {useTestData === true && (
-            <select
-              name="time"
-              id=""
-              onChange={(el) => {
-                rerenderCanvas(undefined, Number(el.target.value));
-                setTestDataTime(Number(el.target.value));
-              }}
-              value={testDataTime}
-            >
-              {dataTimeOptions.map((el, id) => (
-                <option value={el.time} key={`timeoption${id}`}>
-                  {el.name}
-                </option>
-              ))}
-            </select>
-          )}
-        </div>
+        </div> */}
         {apiResponseOk && (
           <AnimatePresence>
             {showCanvas === true && (
@@ -108,7 +95,15 @@ const About = ({ pageContent }: { pageContent: any }) => {
         )}
         {/* canvas here to test without api call */}
         {/* <Canvas /> */}
-        <AboutOverlay content={pageContent?.content} />
+        <AboutOverlay
+          content={pageContent?.content}
+          canvasText={canvasText?.content}
+          dataTimeOptions={dataTimeOptions}
+          useTestData={useTestData}
+          rerenderCanvas={rerenderCanvas}
+          setTestDataTime={setTestDataTime}
+          testDataTime={testDataTime}
+        />
       </PageTransitionWrapper>
     </>
   );
@@ -119,13 +114,10 @@ export default About;
 export const getStaticProps = async () => {
   const pageContent = getDocumentBySlug("abouts", "profile", [
     "title",
-    "publishedAt",
-    "slug",
-    "author",
     "content",
-    "coverImage",
   ]);
+  const canvasText = getDocumentBySlug("abouts", "canvaslink", ["content"]);
   return {
-    props: { pageContent },
+    props: { pageContent, canvasText },
   };
 };

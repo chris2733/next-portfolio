@@ -84,4 +84,25 @@ a {
   &.__visible::after {
     opacity: 1;
   }
+  &.__singlelink {
+    &:hover,
+    &:focus {
+      &::after {
+        background: #556ff957;
+      }
+    }
+    &::after {
+      bottom: 4%;
+      opacity: 1;
+    }
+  }
+}
+
+.markdownstyle {
+  p {
+    @apply mb-4 text-sm;
+  }
+  a {
+    @extend .highlightedlink, .__singlelink;
+  }
 }
