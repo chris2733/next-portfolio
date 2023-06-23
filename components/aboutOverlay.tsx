@@ -37,6 +37,7 @@ export default function AboutOverlay({
       const splitArray = canvasText.split("[canvas]");
       setcanvasTextContent(splitArray);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

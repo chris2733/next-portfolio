@@ -12,13 +12,15 @@ import {
   getCollections,
   getDocumentBySlug,
 } from "outstatic/server";
+import OutstaticTitleContent from "types/outstaticTitleContent";
+import OutstaticContent from "types/outstaticContent";
 
 const About = ({
   pageContent,
   canvasText,
 }: {
-  pageContent: string;
-  canvasText: string;
+  pageContent: OutstaticTitleContent;
+  canvasText: OutstaticContent;
 }) => {
   const [apiDataRecieved, setApiDataRecieved] = useState({});
   const [apiResponseOk, setApiResponseOk] = useState(false);
@@ -29,8 +31,10 @@ const About = ({
   ); // set default test data time to dusk - is nice (but using the previous skylight to get the next, dusk)
   const [hideRain, sethideRain] = useState<boolean>(true);
 
+  console.log(pageContent, canvasText);
   useEffect(() => {
     rerenderCanvas();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function rerenderCanvas(

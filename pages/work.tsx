@@ -5,8 +5,10 @@ import { NextSeo } from "next-seo";
 import RoundedLinks from "elements/roundedlinks";
 import AnimateIn from "components/animateIn";
 import { getDocuments } from "outstatic/server";
+import OutstaticWork from "types/outstaticwork";
 
-const Work = ({ pageContent }: { pageContent: any }) => {
+const Work = ({ pageContent }: { pageContent: OutstaticWork[] }) => {
+  console.log(pageContent);
   return (
     <>
       <NextSeo title="Work" />
