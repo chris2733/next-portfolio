@@ -7,10 +7,10 @@ const nextConfig = {
     defaultLocale: "en-GB",
   },
   // experimental - not sure if this is effective
-  // webpack: (config) => {
-  //   config.externals = [...config.externals, { canvas: "canvas" }]; // required to make canvas work without glitching
-  //   return config;
-  // },
+  webpack: (config) => {
+    config.externals = [...config.externals, { canvas: "canvas" }]; // required to make canvas work without glitching
+    return config;
+  },
 };
 
 module.exports = nextConfig;
