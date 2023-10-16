@@ -2,10 +2,22 @@ import { motion } from "framer-motion";
 import CanvasSky from "./canvasDrawOnce/canvasSky";
 import { useEffect, useState } from "react";
 import degToRadian from "../utils/degToRadian";
-import CanvasBuildings from "./canvasDrawLoop/canvasBuildings";
+// import CanvasBuildings from "./canvasDrawLoop/canvasBuildings";
 import CanvasLamposts from "./canvasDrawOnce/canvasLamposts";
-import CanvasRain from "./canvasDrawLoop/canvasRain";
+import dynamic from "next/dynamic";
+import Traffic from "./traffic/traffic";
+// import CanvasRain from "./canvasDrawLoop/canvasRain";
 // import CanvasTraffic from "./canvasDrawLoop/canvasTraffic";
+
+const CanvasBuildings = dynamic(
+  () => import("./canvasDrawLoop/canvasBuildings"),
+  {
+    ssr: false,
+  }
+);
+const CanvasRain = dynamic(() => import("./canvasDrawLoop/canvasRain"), {
+  ssr: false,
+});
 
 export default function CanvasWrapper({
   apiDataRecieved,
@@ -54,13 +66,28 @@ export default function CanvasWrapper({
       width={width}
       height={height}
     />,
+    // both of these are old, cant figure out how to get them working in react
     // <CanvasRain
     //   key="canvas-rain"
     //   width={width}
     //   height={height}
     //   frameRate={30}
     // />,
-    // <CanvasTraffic width={width} height={height} frameRate={60} numCars={6} />,
+    // <CanvasTraffic
+    //   key="canvas-traffic"
+    //   width={width}
+    //   height={height}
+    //   frameRate={60}
+    //   numCars={6}
+    // />,
+    <Traffic key="traffic" />,
+    <div
+      key="js-rain"
+      id="canvasrainElWrapper"
+      className="absolute z-40 w-full h-full"
+    >
+      <canvas id="canvasrainEl"></canvas>
+    </div>,
   ];
 
   return (

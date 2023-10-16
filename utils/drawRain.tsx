@@ -29,6 +29,5 @@ export default function drawRain(
     paintbrush.strokeStyle = rainDropColour;
     paintbrush.lineWidth = rainDropWidth;
     paintbrush.stroke();
-    paintbrush.closePath();
   });
 }

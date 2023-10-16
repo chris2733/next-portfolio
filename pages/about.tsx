@@ -14,6 +14,7 @@ import {
 } from "outstatic/server";
 import OutstaticTitleContent from "types/outstaticTitleContent";
 import OutstaticContent from "types/outstaticContent";
+import rainJS from "public/rain.js";
 
 const About = ({
   pageContent,
@@ -29,12 +30,16 @@ const About = ({
   const [testDataTime, setTestDataTime] = useState<number>(
     dataTimeOptions.filter((el) => el.name === "Dusk")[0].time
   ); // set default test data time to dusk - is nice (but using the previous skylight to get the next, dusk)
-  const [hideRain, sethideRain] = useState<boolean>(true);
+  const [hideRain, sethideRain] = useState<boolean>(false);
 
   console.log(pageContent, canvasText);
   useEffect(() => {
     rerenderCanvas();
     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // this needs a little delay as it can't find the element otherwise
+    setTimeout(() => {
+      rainJS(300);
+    }, 2000);
   }, []);
 
   function rerenderCanvas(
@@ -92,7 +97,6 @@ const About = ({
                   apiDataRecieved={apiDataRecieved}
                   hideRain={hideRain}
                 />
-                {/* <Traffic /> */}
               </>
             )}
           </AnimatePresence>
