@@ -15,7 +15,7 @@ const Car = ({ body, headlight, rearlight }: VehicleColour) => {
       <path
         fillRule="evenodd"
         clipRule="evenodd"
-        d="M29 0H13.2794L6 6H38.5L29 0ZM19.5 1H13.5V3V5H19.5V1ZM28 1H21V5H28V1Z"
+        d="M29 0H13.2794L6 6H38.5L29 0ZM19.5 1H13.5V3V5H19.5V1ZM28 1H21V5H33L28 1Z"
         fill={body}
       />
       <rect x="6" y="7" width="1" height="3" fill={rearlight} />

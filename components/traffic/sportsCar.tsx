@@ -15,7 +15,7 @@ const SportsCar = ({ body, headlight, rearlight }: VehicleColour) => {
       <path
         fill={body}
         fillRule="evenodd"
-        d="M27.5 2H12L7 6h34L27.5 2ZM18 3h-4.707v2H18V3Zm8.5 0H20v2h6.5V3Z"
+        d="M27.5 2H12L7 6H41L27.5 2ZM18 3H13.2931V5H18V3ZM26.5 3H20V4V5H32.5L26.5 3Z"
         clipRule="evenodd"
       />
       <path fill={rearlight} d="M6 6.5h1V9H6V6.5Z" />
