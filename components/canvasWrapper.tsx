@@ -2,12 +2,9 @@ import { motion } from "framer-motion";
 import CanvasSky from "./canvasDrawOnce/canvasSky";
 import { useEffect, useState } from "react";
 import degToRadian from "../utils/degToRadian";
-// import CanvasBuildings from "./canvasDrawLoop/canvasBuildings";
 import CanvasLamposts from "./canvasDrawOnce/canvasLamposts";
 import dynamic from "next/dynamic";
 import Traffic from "./traffic/traffic";
-// import CanvasRain from "./canvasDrawLoop/canvasRain";
-// import CanvasTraffic from "./canvasDrawLoop/canvasTraffic";
 
 const CanvasBuildings = dynamic(
   () => import("./canvasDrawLoop/canvasBuildings"),
@@ -15,9 +12,6 @@ const CanvasBuildings = dynamic(
     ssr: false,
   }
 );
-const CanvasRain = dynamic(() => import("./canvasDrawLoop/canvasRain"), {
-  ssr: false,
-});
 
 export default function CanvasWrapper({
   apiDataRecieved,
@@ -59,6 +53,7 @@ export default function CanvasWrapper({
        * TODO: change framerate depending on screen width - higher value for smaller screens, so more likely to happens
        **/
       frameRate={1}
+      onlyRenderOnce={true}
     />,
     <CanvasLamposts
       key="canvas-lampposts"

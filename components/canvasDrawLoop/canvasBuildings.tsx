@@ -12,6 +12,7 @@ type CanvasBuildings = {
   height: number;
   horizon: number;
   frameRate: number;
+  onlyRenderOnce: boolean;
 };
 type BuildingLayer = {
   start: number;
@@ -39,6 +40,7 @@ export default function CanvasBuildings({
   height,
   horizon,
   frameRate = 1,
+  onlyRenderOnce = false,
 }: CanvasBuildings) {
   // canvas element ref'd here
   const canvasEl = useRef<HTMLCanvasElement>(null);
@@ -120,44 +122,60 @@ export default function CanvasBuildings({
   useEffect(() => {
     // check if canvas context isnt null.. then add it to paintbrush
     // seems to be the only way to make ts happy without using any
-    if (canvasEl.current) {
-      const canvas: HTMLCanvasElement = canvasEl.current;
-      const ctx: CanvasRenderingContext2D | null = canvas.getContext("2d");
-      if (!ctx || !(ctx instanceof CanvasRenderingContext2D)) {
-        return;
+    if (onlyRenderOnce) {
+      if (canvasEl.current) {
+        const canvas: HTMLCanvasElement = canvasEl.current;
+        const ctx: CanvasRenderingContext2D | null = canvas.getContext("2d");
+        if (!ctx || !(ctx instanceof CanvasRenderingContext2D)) {
+          return;
+        }
+        const paintbrush: CanvasRenderingContext2D = ctx;
+        paintbrush.clearRect(0, 0, width, height);
+        paintbrush.beginPath();
+
+        draw(paintbrush);
       }
-      const paintbrush: CanvasRenderingContext2D = ctx;
-      paintbrush.clearRect(0, 0, width, height);
-      paintbrush.beginPath();
+    } else {
+      if (canvasEl.current) {
+        const canvas: HTMLCanvasElement = canvasEl.current;
+        const ctx: CanvasRenderingContext2D | null = canvas.getContext("2d");
+        if (!ctx || !(ctx instanceof CanvasRenderingContext2D)) {
+          return;
+        }
+        const paintbrush: CanvasRenderingContext2D = ctx;
+        paintbrush.clearRect(0, 0, width, height);
+        paintbrush.beginPath();
 
-      const startRendering = () => {
-        let lastRenderTime: number = 0;
-        const frameDelay: number = 1000 / frameRate;
+        const startRendering = () => {
+          let lastRenderTime: number = 0;
+          const frameDelay: number = 1000 / frameRate;
 
-        const renderLoop = (timestamp: number) => {
-          if (timestamp - lastRenderTime >= frameDelay) {
-            frameLoop();
-            paintbrush.clearRect(0, 0, width, height);
-            paintbrush.beginPath();
-            draw(paintbrush);
-            lastRenderTime = timestamp;
-          }
+          const renderLoop = (timestamp: number) => {
+            if (timestamp - lastRenderTime >= frameDelay) {
+              frameLoop();
+              paintbrush.clearRect(0, 0, width, height);
+              paintbrush.beginPath();
+              draw(paintbrush);
+              lastRenderTime = timestamp;
+            }
+            animationFrameId.current = requestAnimationFrame(renderLoop);
+          };
           animationFrameId.current = requestAnimationFrame(renderLoop);
         };
-        animationFrameId.current = requestAnimationFrame(renderLoop);
-      };
-      const stopRendering = () => {
-        if (animationFrameId.current !== undefined) {
-          cancelAnimationFrame(animationFrameId.current);
-        }
-      };
+        const stopRendering = () => {
+          if (animationFrameId.current !== undefined) {
+            cancelAnimationFrame(animationFrameId.current);
+          }
+        };
 
-      startRendering();
+        startRendering();
 
-      return () => {
-        stopRendering();
-      };
+        return () => {
+          stopRendering();
+        };
+      }
     }
+
     // call draw here, so its reloaded on each draw
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [draw]);

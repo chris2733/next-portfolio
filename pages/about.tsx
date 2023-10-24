@@ -32,14 +32,17 @@ const About = ({
   ); // set default test data time to dusk - is nice (but using the previous skylight to get the next, dusk)
   const [hideRain, sethideRain] = useState<boolean>(false);
 
-  console.log(pageContent, canvasText);
+  function startRainJS() {
+    setTimeout(() => {
+      rainJS(300);
+    }, 500);
+  }
+
   useEffect(() => {
     rerenderCanvas();
     // eslint-disable-next-line react-hooks/exhaustive-deps
     // this needs a little delay as it can't find the element otherwise
-    setTimeout(() => {
-      rainJS(300);
-    }, 2000);
+    startRainJS();
   }, []);
 
   function rerenderCanvas(
@@ -62,7 +65,8 @@ const About = ({
         }
       });
       setShowCanvas(true);
-    }, 500);
+      startRainJS();
+    }, 1200);
   }
 
   return (
