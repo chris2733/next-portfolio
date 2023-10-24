@@ -1,4 +1,5 @@
 import VehicleColour from "types/vehicleColours";
+import randomColour from "utils/randomColour";
 
 const Lorry = ({ body, headlight, rearlight }: VehicleColour) => {
   return (
@@ -10,6 +11,7 @@ const Lorry = ({ body, headlight, rearlight }: VehicleColour) => {
       viewBox="0 0 96 31"
     >
       <path fill={body} d="M6 0h59v27H6zM66 22h18v5H66v-5Z" />
+      <rect x="6" width="59" height="27" fill={randomColour()} />
       <circle cx="78" cy="27" r="3.5" fill="#000" stroke="#1D1D1D" />
       <path
         fill={body}

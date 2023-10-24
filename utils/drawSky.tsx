@@ -35,4 +35,5 @@ export default function drawSky(
       paintbrush.fillRect(xPos, randomY, 1, 1);
     }
   }
+  paintbrush.closePath();
 }

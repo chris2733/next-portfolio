@@ -109,6 +109,7 @@ export default function CanvasRain({
           paintbrush.beginPath();
           draw(paintbrush);
           lastRenderTime = timestamp;
+          paintbrush.closePath();
         }
         frameLoop(timestamp);
         animationFrameId.current = requestAnimationFrame(startRendering);

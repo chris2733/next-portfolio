@@ -9,8 +9,8 @@ const Traffic = () => {
 
   useEffect(() => {
     setWidth(window.innerWidth);
-    // set volume as a ratio of screen width, 6 cars per 200 px, times a multiplier
-    setVolume(Math.ceil(width / 200) * 2);
+    // set volume as a ratio of screen width, 600 seems about right, times a multiplier
+    setVolume(Math.ceil(width / 600) * 2);
   }, [width]);
 
   let vehicles: VehicleMotion[] = [];
