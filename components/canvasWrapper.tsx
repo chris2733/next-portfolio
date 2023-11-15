@@ -86,7 +86,10 @@ export default function CanvasWrapper({
   ];
 
   return (
-    <div className="fixed top-0 left-0 w-full h-full z-10 bg-white bg-opacity-80">
+    <div
+      className="fixed top-0 left-0 w-full h-full z-10 bg-white bg-opacity-80"
+      style={{ height: "100lvh" }}
+    >
       <motion.div
         key="canvasel"
         initial={{ opacity: 0 }}
