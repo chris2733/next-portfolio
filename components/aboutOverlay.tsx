@@ -41,7 +41,7 @@ export default function AboutOverlay({
   }, []);
 
   return (
-    <div className="relative z-20 py-5 lg:py-10 !max-w-2xl">
+    <div className="z-20 py-5 lg:py-10 !max-w-2xl">
       <AnimatePresence>
         {showModal && !hideText && (
           <motion.div
@@ -103,7 +103,7 @@ export default function AboutOverlay({
             }}
             exit={{ opacity: 0, translateY: "-1vh", scale: 0.98 }}
             transition={{ duration: 0.1 }}
-            className="container py-16 text-center rounded-lg bg-white px-12 sm:p-16 shadow-[0px_0px_56px_-2px_rgba(255,255,255,0.75)] z-30 relative"
+            className="container py-14 text-center rounded-lg bg-white px-8 sm:p-16 shadow-[0px_0px_56px_-2px_rgba(255,255,255,0.75)] z-30 relative"
           >
             <CloseButton closeFunction={setHideText} state={hideText} />
             <h1 className="inline-block overflow-hidden leading-5 mb-4">
