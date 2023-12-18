@@ -1,7 +1,7 @@
 function rainJS(
-  rainAmount = 300,
   // rain settings here
-  rainDropLength = 20,
+  rainAmountRatio = 4,
+  rainDropLength = 8,
   rainVelocityMin = 1,
   rainVelocityMax = 6,
   splashRadiusMin = 4,
@@ -24,6 +24,8 @@ function rainJS(
   // settings for canvas sizes stored here for later
   const canvasWidth = windowWidth;
   const canvasHeight = windowHeight;
+  // set the rain amount here dependent on canvas width
+  const rainAmount = Math.round(canvas.width / rainAmountRatio);
 
   // function to get a random number between 2 digits
   function getRandom(min, max) {
@@ -76,7 +78,7 @@ function rainJS(
       // get moving in first place
       this.y += this.dy;
       // speed up movement due to gravity acceleration
-      this.dy += this.dy * 0.02;
+      this.dy += this.dy * 0.01;
       // draw called each time it updates, so it reappears
       this.draw();
     };
