@@ -1,4 +1,4 @@
-function setCanvasReady(
+function rainJS(
   rainAmount = 300,
   // rain settings here
   rainDropLength = 20,
@@ -7,18 +7,17 @@ function setCanvasReady(
   splashRadiusMin = 4,
   splashRadiusMax = 8
 ) {
-  const canvas = document.getElementById("canvasrainEl");
-  if (!canvas) {
+  // getting custom data attr if exists
+  const canvasWrapper = document.querySelector("[data-rainwrapper]");
+  const canvas = document.querySelector("[data-raincanvas]");
+  if (!canvas || !canvasWrapper) {
+    console.error("Cannot find rain wrapper/element");
     return;
   }
 
   // setting window sizes in vars
-  const windowWidth = document.getElementById(
-    "canvasrainElWrapper"
-  ).offsetWidth;
-  const windowHeight = document.getElementById(
-    "canvasrainElWrapper"
-  ).offsetHeight;
+  const windowWidth = canvasWrapper.offsetWidth;
+  const windowHeight = canvasWrapper.offsetHeight;
   // setting canvas params
   canvas.width = windowWidth;
   canvas.height = windowHeight;
@@ -171,5 +170,5 @@ function setCanvasReady(
   animate();
 }
 
-// setCanvasReady(300);
-export default setCanvasReady;
+// rainJS(300);
+export default rainJS;

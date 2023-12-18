@@ -83,10 +83,10 @@ export default function CanvasWrapper({
     <Traffic key="traffic" />,
     <div
       key="js-rain"
-      id="canvasrainElWrapper"
+      data-rainwrapper="canvasrainElWrapper"
       className="absolute z-40 w-full h-full"
     >
-      <canvas id="canvasrainEl"></canvas>
+      <canvas data-raincanvas="canvasrainEl"></canvas>
     </div>,
   ];
 
